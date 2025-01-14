@@ -40,7 +40,7 @@ The riskiest part is depending on APIs for our products because depending on the
 4. Achievements 
 
 ### Stretch Goals
-1. Nutrition themed games?
+1. Nutrition themed games
 2. Daily quests
 3. Filtering system based on allergies
 4. Calorie/water tracker 
