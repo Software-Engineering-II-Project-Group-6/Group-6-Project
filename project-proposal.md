@@ -6,7 +6,11 @@
 
 **Gracie Armour** (Back-End Development, Server Creation, Tester, GitHub Management) 
 
-**Henry James** (Back-End Development, Tester, AI) 
+**Henry James** (Back-End Development, Tester, AI)
+
+**Benjamin Junge** (Front-End Development, Tester)
+
+**Alina Hyk** (undecided)
 
 ## Rules and Communication
 1. **Respect:** Treat teammates courteously; value diverse perspectives and encourage open dialogue.
