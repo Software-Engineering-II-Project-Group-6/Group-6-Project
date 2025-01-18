@@ -40,11 +40,11 @@ The riskiest part is depending on APIs for our products because depending on the
 ### Major Features to Implement
 1. Account creation with specialized goals
 2. Product List and creating a personal nutrition list based on preferences
-3. AI Chatbot to help with dieting
+3. Filtering system based on allergies
 4. Achievements 
 
 ### Stretch Goals
 1. Nutrition themed games
 2. Daily quests
-3. Filtering system based on allergies
+3. AI Chatbot to help with dieting
 4. Calorie/water tracker 
