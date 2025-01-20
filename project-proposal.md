@@ -24,16 +24,25 @@
 **GitHub:** [https://github.com/Software-Engineering-II-Project-Group-6/Group-6-Project](https://github.com/Software-Engineering-II-Project-Group-6/Group-6-Project)
 
 ## MyHealthyBody: A Nutrition Planner Website
+### Abstract
 Our website allows users to create a free, detailed nutrition plan, either manually or with the help of AI. Each product includes detailed descriptions along with its macro values. User profiles can be customized, and various achievements can be unlocked by staying committed to their planner which will make their diet more fun. 
 
+### Goal
 Dieting can be challenging, and it's not easy for most people to give up their favorite foods or sweets. With this app, we aim to make the process easier by offering fun achievements and a user-friendly interface. Additionally, we provide specialized nutrition plans with a variety of options. 
 
-There are similar websites available in today’s market, but most require a monthly or yearly subscription. Unlike those, our service will be completely free. We also aim to make it more fun and engaging, like how Duolingo approaches language learning. The difference is that we focus on food and nutrition, and we do not have a bird threatening to take your family hostage if you miss a daily streak! 
+### Current Practice
+There are similar websites available in today’s market, but most require a monthly or yearly subscription. 
 
+### Novelty
+Unlike those, our service will be completely free. We also aim to make it more fun and engaging, like how Duolingo approaches language learning. The difference is that we focus on food and nutrition, and we do not have a bird threatening to take your family hostage if you miss a daily streak! 
+
+### Effects
 With this website, even if we manage to help just one person stay committed to their diet and achieve their goals, it will be a win for us. Making a difference in the world begins with small, simple steps. 
 
+### Technical Approach
 Our dynamic website will be developed using MongoDB, Node.js, and Mongoose. We also plan to utilize some free APIs available on GitHub for product information. 
 
+### Risks
 The riskiest part is depending on APIs for our products because depending on the APIs we choose; our product range can stay a bit limited. Although it won’t be a problem if we act early to find a solid API, it could be dangerous to wait until the last minute. We are going to mitigate this risk by acting and implementing this system earlier. 
 
 ## Implementations
