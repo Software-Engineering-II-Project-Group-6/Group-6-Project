@@ -1,2 +1,2 @@
-# Group-6-Project
-Group 6's Software Engineering II project repo
+# MyHealthyBody - A Nutrition Planner Website
+Our website allows users to create a free, detailed nutrition plan, either manually or with the help of AI. Each product includes detailed descriptions along with its macro values, and filterable information such as allergens. User profiles can be customized, and various achievements can be unlocked by staying committed to their planner which will make their diet more fun!
