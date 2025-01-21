@@ -31,10 +31,10 @@ Our website allows users to create a free, detailed nutrition plan, either manua
 Dieting can be challenging, and it's not easy for most people to give up their favorite foods or sweets. With this app, we aim to make the process easier by offering fun achievements and a user-friendly interface. Additionally, we provide specialized nutrition plans with a variety of options. 
 
 ### Current Practice
-There are similar websites available in today’s market, but most require a monthly or yearly subscription. 
+There are similar websites available in today’s market, but most require a monthly or yearly subscription—such as the apps PlateJoy and Noom—and even those that don’t—such as MyPlate Calorie Counter or Yummly Recipes & Cooking Tools—still have in-app purchases. Very few have any sort of fun, reward-oriented features, and any that do typically do so with Noom's tone of “fitness” and sport-like determination, rather than gamified fun. 
 
 ### Novelty
-Unlike those, our service will be completely free. We also aim to make it more fun and engaging, like how Duolingo approaches language learning. The difference is that we focus on food and nutrition, and we do not have a bird threatening to take your family hostage if you miss a daily streak! 
+Unlike our competitors, our service will be completely free. We also aim to make it more fun and engaging, like how Duolingo approaches language learning. The difference is that we focus on food and nutrition, and we do not have a bird threatening to take your family hostage if you miss a daily streak! 
 
 ### Effects
 With this website, even if we manage to help just one person stay committed to their diet and achieve their goals, it will be a win for us. Making a difference in the world begins with small, simple steps. 
