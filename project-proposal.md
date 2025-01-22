@@ -120,6 +120,46 @@ The riskiest part is depending on APIs for our products because depending on the
 7. **Exceptions:**  
 - If there is an issue with the server, the user is notified that their streak could not be updated. The system will attempt to update the streak during the user’s next login. 
 
+### Use Case 4 (by Henry)
+1. **Actors:** User who wants to easily navigate health and nutrition
+2. **Triggers:** User has made an account and signed in
+3. **Preconditions:** User has a valid account, all input fields have valid inputs, and they have started making a nutritional plan.
+4. **Postconditions:** Users nutritional plan and chats have been saved to the database.
+5. **List of steps:**  
+- User enters a valid account information 
+- User enters in all necessary information such as allergy information 
+- User starts a chat or nutritional plan 
+- User is walked through a health plan or suggestion
+- User saves a chat or plan
+- Information is saved to the database
+- User logs off 
+6. **Extensions/Variations:** 
+- Guide and welcome message is pushed on new users.
+- If necessary information is not inputted a prompt for this information should be displayed 
+7. **Exceptions:** 
+- **API failure:** This project will use a few APIs that could go down.
+- Server can go down or have an issue.
+- The database can have a problem and not save user data.
+
+### Use Case 5 (by Benjamin)
+1. **Actors:** User who wants a recipe that fits their plan
+2. **Triggers:** User clicks the get recipe button
+3. **Preconditions:** User has a valid account, all input fields have valid inputs, and they have finished making a nutritional plan.
+4. **Postconditions:** A recipe is displayed  and a button is made available to the user to migrate the macros from the recipe into the users daily log.
+5. **List of steps:** 
+- User clicks button to get a recipe
+- A quarry is sent to check with the data on the user
+- Built in recipes are examined to match with the plan in question
+- A list of potential meals is displayed with images so user can choose
+- User chooses the recipe they want, and the instructions and ingredients are displayed
+- Options for the recipe to be saved in a saved recipe folder or the nutrients added to the user's daily log are displayed 
+6. **Extensions/Variations:**
+- **Variation:** User may leave site during this process causing interruption 
+7. **Exceptions:**
+- **API Failure:** The external nutrition API is down or returns errors; the system notifies the user and offers limited product options or a retry.
+- **Insufficient User Data:** If user profile data (e.g., weight, dietary preferences) is incomplete, the system prompts the user to fill in missing information before proceeding.
+- **Insufficient Options:** If the user profile is set in such a way that the system cannot find recipes that would match the plan. Alert user an allow user to potentially quarry Ai (strech goal) 
+
 ## Non-Functional Requirements
 - Due to the nutritional, health-related nature of our product, we should comply with HIPAA, using the resources and tools provided by the Department of Health and Human Services [here](https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/index.html) 
 - This website is intended to be public-facing, and have profiles which store user data, so the tools used must be scalable and provide ample security 
