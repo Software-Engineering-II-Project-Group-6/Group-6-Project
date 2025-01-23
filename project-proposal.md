@@ -10,7 +10,7 @@
 
 **Benjamin Junge** (Front-End Development, Tester)
 
-**Alina Hyk** (undecided)
+**Alina Hyk** (Documentation, Implementation, Testing, AI Integration (secondary: front-end Development))
 
 ## Rules and Communication
 1. **Respect:** Treat teammates courteously; value diverse perspectives and encourage open dialogue.
@@ -158,12 +158,34 @@ The riskiest part is depending on APIs for our products because depending on the
 7. **Exceptions:**
 - **API Failure:** The external nutrition API is down or returns errors; the system notifies the user and offers limited product options or a retry.
 - **Insufficient User Data:** If user profile data (e.g., weight, dietary preferences) is incomplete, the system prompts the user to fill in missing information before proceeding.
-- **Insufficient Options:** If the user profile is set in such a way that the system cannot find recipes that would match the plan. Alert user an allow user to potentially quarry Ai (strech goal) 
+- **Insufficient Options:** If the user profile is set in such a way that the system cannot find recipes that would match the plan. Alert user an allow user to potentially quarry Ai (strech goal)
+
+### Use Case 6 (by Alina)
+1. **Actors:** User who is tired of regular apps that focus on strict structures and lack the flexibility to adapt to individual needs and preferences.
+2. **Triggers:** The user has created a Personal Planner and is now looking for the integration of Achievements & Quests.
+3. **Preconditions:** The user has a valid account and has entered all necessary information and successfully completed their Personal Planner setup.
+4. **Postconditions:** A personalized list of Achievements & Quests for the week is successfully completed and displayed to the user.
+5. **List of steps (success scenario):** 
+- The user completes their Personal Planner. 
+- Information from the Personal Planner is processed, and the data is passed along for the creation of Achievements & Quests. 
+- Achievements & Quests for each day of the upcoming week are created, taking the user’s goals, dietary requirements, and calorie/water tracking into account.
+- A list of Achievements & Quests for the week is displayed to the user to motivate them and provide a fun structure for their week.
+- For each day, the user successfully completes challenges, followed by rewards and interactive goal tracking in the app.
+- Once the week has passed and all challenges are completed, the user receives a summary of their achievements, including an in-depth description of how these contributed to their goals. 
+6. **Extensions/Variations:** 
+- The user can edit their goals or preferences within the Personal Planner, which leads to corresponding updates in the Achievements & Quests for the week.
+- The user’s progress over the week may vary, meaning they might not complete all the proposed activities and challenges. 
+7. **Exceptions:** 
+- **Personal Planner failure:** The Personal Planner is not developed successfully or fails to consider certain preferences, allergies, or goals of the user, leading to a misleading Achievements & Quests plan.
+- **Server issues:** Server failure prevents the user from proceeding with their weekly plan for Achievements & Quests.
+- **Visualization & data set issues:** If visualization, summarization, or information retrieval features fail, the user does not receive a high-quality, complete summary report of the Achievements & Quests for the week.
 
 ## Non-Functional Requirements
 - Due to the nutritional, health-related nature of our product, we should comply with HIPAA, using the resources and tools provided by the Department of Health and Human Services [here](https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/index.html) 
 - This website is intended to be public-facing, and have profiles which store user data, so the tools used must be scalable and provide ample security 
 - Given that the website itself is intended to be a free product, the tools used should be free, or have minimal overhead costs
+- When implementing the AI agent feature, we need to ensure that high-quality safeguards are built to prevent misinformation, as it can pose a threat to the health of users. Additionally, when selecting the data sources for Retrieval-Augmented Generation (RAG) enhancements, it is essential to verify the quality and reliability of all sources used in the dataset.
+- The website and its entire functionality should be accessible to people with various physical and mental ability levels, accommodating diverse user preferences and needs based on personal, health, medical, and religious reasoning. All these groups should be equally well supported, with features designed with inclusivity and accessibility in mind. 
 
 ## External Requirements
 - The product must have robust error handling for searching, user information fields, and any other inputs, so that one user error will not crash the website or cause a user to lose data or access
@@ -184,6 +206,14 @@ Node.js, MongoDB, HTML, JavaScript
 - **Liam:** Front-end Development, Tester
   - Our product requires a user interface (UI) that is visually appealing, user-friendly, and integrates seamlessly with the back end. I will be tasked with ensuring the application delivers a functional and engaging experience for users.
   - With experience in HTML, JavaScript, and UI/UX design, Liam is well-suited for this role. They will address any potential weaknesses identified during testing to ensure the application is robust and easy to use.
+- **Benjamin:** Front-end Development, Tester 
+  - Our project requires that we create a seamless and sleek UI that will allow people who use out product to do so very easily as there are many barriers to eating and living in a healthy way it is a core value for our project to need as little work on their end as possible. Therefore UI/UX is very important.
+  - With experience in HTML, CSS and JavaScript Benjamin is positioned to emphasize their skills in perfecting the UI.
+  - Testing is also a barrier to the project being completed so many group members are planning to test section of the project created by other teams.
+- **Alina Hyk:** Documentation, Implementation, Testing, AI Integration (secondary: front-end Development) 
+  - Our product will require extensive documentation and measurement of different moving parts and features. It will need clear user manuals, a policy for handling user data, and the safe implementation of the tools. I will be responsible for managing the documentation, monitoring, implementation, and testing processes.
+  - One of the unique features of our project, currently in the stretch goals, is an AI-driven chatbot designed to further enhance user experience by making it more informative, engaging, and personalized, aligning with our mission. My role will involve leading the development and integration of the Retrieval-Augmented Generation (RAG)-based AI chatbot into the website. I will ensure the proper setup of OpenAI API calls, data preparation, embedding creation, pipeline configuration, and the generation of accurate responses to user queries.
+  - Finally, if necessary, I will contribute to front-end development, as it is a central focus of our product. While we do not currently have a team member who is completely confident in this domain, I am prepared to step in to ensure the successful completion of the project. 
  
 ### Schedule
 #### Phase 1: Project Architecture and Design Specifications (2 weeks)
