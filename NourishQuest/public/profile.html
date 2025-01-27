@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="User Profile" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NourishQuest - Profile</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">NourishQuest</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="product-list.html">Nutrition Plans</a></li>
+          <li><a href="profile.html" class="active">Profile</a></li>
+          <li><a href="achievements.html">Achievements</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="profile-section">
+      <h1>Your Profile</h1>
+      <div class="profile-card">
+        <img
+          src="images/user-placeholder.png"
+          alt="User Avatar"
+          class="profile-avatar"
+        />
+        <h2 id="username">John Doe</h2>
+
+        <p>Email: <span id="email">placeholder@example.com</span></p>
+        <p>Goal: <span id="goal">Maintain Weight</span></p>
+        <p>Allergies: <span id="allergies">None</span></p>
+        <p>Daily Calorie Goal: <span id="dailyCalorieGoal">2000</span></p>
+
+        <button class="btn">Edit Profile</button>
+      </div>
+
+      <section class="current-plan">
+        <h2>Your Current Nutrition Plan</h2>
+        <ul>
+          <li>Breakfast: Oatmeal & Berries</li>
+          <li>Lunch: Grilled Chicken Salad</li>
+          <li>Dinner: Salmon & Vegetables</li>
+        </ul>
+        <button class="btn">Edit Plan</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 NourishQuest. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const response = await fetch("/auth/profile-data", {
+            credentials: "include", // important for session
+          });
+          if (response.status === 401) {
+            //Unauthorized -> redirect to login
+            window.location.href = "login.html";
+            return;
+          }
+          const data = await response.json();
+          //data.user should have user info
+
+          document.getElementById("username").textContent = data.user.username;
+          document.getElementById("email").textContent = data.user.email;
+        } catch (err) {
+          console.error(err);
+          window.location.href = "login.html";
+        }
+      });
+    </script>
+  </body>
+</html>
