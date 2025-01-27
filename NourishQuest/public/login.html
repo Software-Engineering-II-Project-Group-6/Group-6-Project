@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NourishQuest - Login</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <header>
+      <nav class="navbar">
+        <div class="logo">NourishQuest</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="product-list.html">Nutrition Plans</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="achievements.html">Achievements</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main style="padding: 2rem">
+      <h1>Login</h1>
+
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div style="margin-bottom: 1rem">
+          <label for="email">Email:</label><br />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <div style="margin-bottom: 1rem">
+          <label for="password">Password:</label><br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+      </form>
+
+      <p style="margin-top: 1rem">
+        Don't have an account?
+        <a href="register.html">Register here</a>.
+      </p>
+    </main>
+
+    <!-- Handling login -->
+    <script>
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            alert("Login successful!");
+            //Redirect
+            window.location.href = "profile.html";
+          } else {
+            alert(data.msg || "Login failed. Check your credentials.");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("An error occurred. Please try again.");
+        }
+      });
+    </script>
+  </body>
+</html>
