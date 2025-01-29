@@ -2,7 +2,7 @@
 ## Team Members
 **Yigit Onuk:** Back-End Development, Database Handler, Tester
 **Gracie Armour:** Back-End Development, Server Creation, Tester, GitHub Management
-**Liam McAfee:** 
+**Liam McAfee:** Front-End Development, Tester
 
 ## Project Artifacts
 ### Tools Used
