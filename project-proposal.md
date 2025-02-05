@@ -282,3 +282,290 @@ Node.js, MongoDB, HTML, JavaScript
 External feedback will be most helpful when we have prototyped new designs or implementations to fulfill various requirements, this way we will have enough to show off concept or proof of concept, but receive feedback on it before we have put significant time into a more polished implementation, making it easier to correct based on said feedback.
 
 We will receive external feedback via our Project Manager meetings each Monday, as well as in response to our presentations throughout the term.
+
+## Software Architecture
+### Major Software Components
+#### 1. Front-End
+**Technologies:** HTML, CSS, JavaScript.
+
+**Responsibility:** Provides the user interface (UI) for account registration, plan creation, achievement tracking, daily streaks, and recipe retrieval.
+
+**Rationale:** Must be intuitive, visually appealing, and accessible across different devices.
+
+#### 2. Back-End
+**Technologies:** Node.js with Express (or similar) for handling HTTP requests and implementing business logic.
+
+**Responsibility:**
+- Receives requests from the front-end. (“Get user data,” “Create plan,” “Filter recipes”)
+- Interfaces with the database to read/write user information, product data, achievements, etc.
+- Applies business rules. (checking user allergies, calculating macros etc.)
+
+**Rationale:** Centralizes all business logic, ensures security and data validations, orchestrates data flow among components.
+
+
+
+#### 3. Database
+**Technology:** MongoDB, accessed via Mongoose npm package.
+
+**Responsibility:**
+- Stores user profiles (credentials, personal goals, allergies).
+- Stores products, recipes, achievements, and daily logs. (This one comes from API)
+- Stores user plans, progress, and relevant metadata.
+
+**Rationale:** A NoSQL document-based database (MongoDB) allows flexible schemas for quickly evolving nutrition data and user-specific customizations.
+
+
+
+### Interfaces Between Components
+**Front End – Back End Communication:** RESTful APIs (JSON-based). HTTP endpoints such as POST /api/signup, GET /api/products, POST /api/createPlan, etc.
+
+**Back End – Database Communication:** Mongoose models (e.g., User, Product, Plan, Achievement etc.). Query logic encapsulated in service or repository classes.
+
+
+
+### Data Storage
+**High-Level Schema of User (MongoDB Collections via Mongoose):**
+``` javascript
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  // Hashed password (Using bcrypt)
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
+  goals: {
+    type: String,
+    default: "Maintain Weight",
+  },
+  allergies: {
+    type: [String],
+    default: [],
+  },
+  dailyCalorieGoal: {
+    type: Number,
+    default: 2000,
+  },
+  achievements: {
+    type: [String],
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+```
+This is the only schema we have ready yet but the others will have a similar structure.
+
+### Architectural Assumptions
+- **API Reliability:** We assume that external nutrition APIs will be largely available with minimal downtime.
+- **User Growth:** We assume a moderate number of users initially, manageable by a single database instance and basic load balancing.
+- **Security:** We assume secure user authentication and minimal risk of malicious attacks at small scale, though we design for best practices in password hashing, input sanitization, and general security.
+- **Scalability:** Using Node.js and MongoDB fosters horizontal scaling. We assume that in the short term, a single-server environment is enough.
+
+
+### Alternative Architectural Decisions
+#### Alternative for Data Storage
+- **Option:** Using a relational database (e.g., PostgreSQL).
+- **Pros:**
+  - Clear schema enforcement.
+  - Traditional relational queries (SQL) can be easier for certain analytics.
+- **Cons:**
+  - Less flexible for rapidly changing user/nutrition data models.
+  - Migrations can be more cumbersome for schema changes.
+- **Why We Chose MongoDB:**
+  - Flexibility for storing nutrition data with potentially varied fields.
+  - Faster iteration in early stages.
+
+
+#### Alternative for Server Framework
+- **Option:** Using Python (Flask or Django)
+- **Pros:**
+  - Python has strong library support for data science and ML.
+- **Cons:**
+  - Additional overhead in bridging to Node.js front-end environment, or rewriting the front-end in a different ecosystem.
+  - Team’s current skill set is primarily in JavaScript/Node.js.
+- **Why We Chose MongoDB:**
+  - JavaScript is used for both client and server, minimizing context-switch.
+  - Established ecosystem (Express, Mongoose) for quick web app development.
+
+
+## Software Design
+#### Front-End
+**main.js:** Orchestrates page load, manages top-level events, handles authentication (client and server side).
+
+**plan.js:** Contains logic for creating or editing a user’s nutrition plan, integrating data fetched from the back-end.
+
+**achievements.js:** Renders achievements or gamification progress, progress bars, and notifications (notifications are just a possibility for now).
+
+
+#### Back-End
+**Routes:** Define HTTP endpoints and attach to respective controllers.
+
+**Controllers:** Handle incoming requests (validation, error handling) and call functions.
+
+**Services:** Encapsulate business logic (plan calculation, filtering for allergies, retrieving data from external APIs etc.).
+
+**Models:** Mongoose schemas and data access objects.
+
+**Utilities:** Reusable helpers (error handlers, API request wrappers).
+
+
+#### Database
+**userModel.js:** Mongoose schema and model for User.
+
+**planModel.js:** Mongoose schema and model for Plan.
+
+**productModel.js:** Mongoose schema and model for Product.
+
+**achievementModel.js:** Mongoose schema and model for Achievement.
+
+Other more model/schema possibilities too…
+
+
+### Responsibilities
+#### Front-End
+Present data to the user, handle user interactions, send valid requests to the back-end.
+
+#### Back-End
+Validate and process data, coordinate logic between different modules, provide secure API endpoints.
+
+#### Database
+Persist all user-specific or product-related data in a structured, query able format.
+
+## Coding Guidelines
+[**HTML**](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/HTML)
+
+[**CSS**](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/CSS)
+
+[**JS/Node**](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide/Code_style_guide/JavaScript)
+
+For all the coding part, we will follow mdn web docs guidelines. Because it is widely adopted, covers ES6+ best practices in sync with HTML and CSS.
+
+For enforcing it, we will do regular coding checks in our synchronous biweekly Discord meetings and any out of place/irregular code will get fixed.
+
+
+## Updates to Process Description
+### Risk Assessment
+| Risk  | Likelihood | Impact | Rationale | Mitigation Steps | Detection |
+| ----- | ---------- | ------ | --------- | ---------------- | --------- |
+| Unreliable External API | Medium | High | We rely on free APIs for nutrition data, which may experience downtime or limit usage. | - Identify reliable APIs early - Cache frequently requested data | - Temporarily switch to backup API |
+| Scope Creep / Time Management | Medium | Medium | With fewer team members, adding too many “fun” features can easily overwhelm the schedule. | - With fewer team members, adding too many “fun” features can easily overwhelm the schedule. | - Postpone lower-priority features - Stick to the critical path if we start to fall behind |
+| Security Vulnerabilities | Low/Medium | High | Handling user credentials (and potential personal data) poses security risks that could harm users and our reputation | - Penetration tests on staging | - Temporarily disable new user signups |
+| Team Member Bandwidth | Medium | Medium | Any illness, schedule conflict, or unforeseen event can slow progress. | - Weekly stand-ups checking for overload - Watch if tasks stall | - Weekly stand-ups checking for overload - Watch if tasks stall |
+| Integration/Deployment Issues | Low | Medium | Environment misconfigurations can block releases and reduce system stability. | - Automated build checks | - Roll back to last stable release |
+
+### Project Schedule
+Yigit handles database-related tasks and now takes on front-end design with Liam.
+
+Henry helps Gracie with back-end tasks.
+
+| Milestone / Task | Owner(s) | Effort | Dependencies | Target Date |
+| ---------------- | -------- | ------ | ------------ | ----------- |
+| Phase 1: Architecture & Design |  |  |  | Due: 02/04 |
+| 1. Create initial wireframes (registration, plan creation) | Yigit | 1 person-week | None | 01/27 |
+| 2. Define Mongoose schemas (User, Product, Plan) | Yigit | 1 person-week | None | 01/27 |
+| 3. Finalize Architecture & Design Document | Everyone | 1 person-week | (1), (2) | 02/03 |
+| Phase 2: Core Implementation |  |  |  | Due: 02/18 |
+| 4. Implement user registration & login | Yigit | 1 person-week | (2) finalized schema | 02/10 |
+| 5. Integrate external nutrition API for product listings | Yigit, Liam | 1 person-week | (2) finalized schema | 02/10 |
+| 6. Basic plan creation flow (back-end logic) | Gracie, Henry | 1 person-week | (4), (5) | 02/17 |
+| 7. Basic front-end for plan creation & product list | Yigit, Liam | 1 person-week | (6) back-end endpoints ready | 02/17 |
+| Phase 3: Achievements & Gamification |  |  |  | Due: 02/25 |
+| 8. Implement achievements model & triggers | Henry, Gracie, Liam | 1 person-week | (6) plan creation complete | 02/24 |
+| 9. Front-end updates for achievement display | Everyone | 1 person-week | (8) achievement logic ready | 02/24 |
+| Phase 4: Testing & Beta Release |  |  |  | Due: 03/03 |
+| 10. Unit tests (models, controllers, services) | Everyone | 1 person-week | Implementation tasks (4)-(9) | 03/01 |
+| 11. Integration & usability testing (staging environment) | Everyone | 1 person-week | (10) | 03/03 |
+| Phase 5: Final Release |  |  |  | Due: 03/09 |
+| 12. Fix priority bugs, polish UI, finalize documentation | Everyone | 1 person-week | (11) test feedback | 03/09 |
+| 13. Deploy final version publicly | Gracie | 0.5 week | (12) | 03/09 |
+
+
+### Team Structure
+#### Gracie
+**Roles:**
+- Back-end development (server creation, core APIs, back-end code)
+- GitHub repository management
+- Testing (with a focus on server-side unit tests and integration)
+
+**Additional Details:**
+- Oversees environment setup for deployments
+- Coordinates any final merges/deployments
+
+#### Henry
+**Roles:**
+- Assists Gracie with back-end logic (Express controllers, API endpoints)
+- Works on achievements/gamification triggers in the back end with Gracie
+- Testing (focusing on end-to-end scenarios with back-end changes)
+
+**Additional Details:**
+- Serves as an additional resource for code reviews
+- Will document back-end endpoints if needed
+
+#### Yigit
+**Roles:**
+- Database creation and handling (MongoDB, Mongoose schemas)
+- Front-end design (in collaboration with Liam)
+- Integration of external nutrition APIs
+- Testing (covering both front-end data flows and database integration)
+
+**Additional Details:**
+- Ensures secure and efficient data storage (indexes, fallback caching)
+
+#### Liam
+**Roles:**
+- Front-end development, UI/UX design, achievement planning/design in theory
+- Testing (front-end unit tests, usability checks)
+
+**Additional Details:**
+- Focuses on accessibility and responsive design
+- Coordinates with Yigit to ensure consistent design patterns
+
+
+### Test Plan and Bugs
+#### Unit Testing
+**Scope:** Models, controllers, and services.
+
+**Owners:**
+- **Back-end (Gracie, Henry):** Unit tests for Express routes, controllers, achievements logic.
+- **Database/Models (Yigit):** CRUD operations, schema validations.
+- **Front-end (Liam, Yigit):** UI functions, small components in plain JavaScript.
+
+
+#### Integration Testing
+**Scope:** Full user flows (e.g., user signs up, creates a plan, achievement unlocked).
+
+**Owners:** All four members participate in creating and running tests.
+
+
+#### Usability Testing
+**Scope:** Checking the front-end’s ease of use, clarity of messaging.
+
+**Owners:** Primarily Liam (front-end lead), with support from Yigit.
+
+
+#### Bug Tracking
+**Tool:** GitHub Issues. (required by the course)
+
+**Process:**
+- Each reported bug includes reproduction steps, severity, expected/actual outcome.
+= Bugs are fixed in separate branches, tested, then merged via pull requests.
+
+
+### Documentation Plan
+We will maintain a brief yet comprehensive set of documents to guide our users, administrators, and future developers. The User Guide (led by Liam, with Yigit’s input) will explain how to sign up, create/edit nutrition plans, and view achievements, focusing on the front-end experience. The Admin/Deployment Guide (managed by Gracie) will provide clear instructions on installing dependencies, configuring environment variables, and deploying the site. Each team member will add to a Developer Guide, outlining key modules, directory structures, and coding conventions. Finally, the API Reference (jointly updated by Gracie, Henry, and Yigit) will detail endpoints, request/response formats, and error handling. While we aim to include basic tooltips or on-screen help for users, more advanced in-app guidance may be postponed if time is limited!
