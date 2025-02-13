@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+    <title>NourishQuest</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: Epilogue, 'Noto Sans', sans-serif"
+  >
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+      <!-- Header -->
+      <header
+        class="flex items-center justify-between border-b border-solid border-[#e8f3f2] px-10 py-3"
+      >
+        <!-- Left Section -->
+        <div class="flex items-center gap-4 text-[#0e1b19]">
+          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">
+            <!-- Link to home ("/") which may redirect to dashboard if logged in -->
+            <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+          </h2>
+        </div>
+
+        <!-- Right Section: match "recipes.html" structure -->
+        <div class="flex flex-1 justify-end items-center gap-8">
+          <!-- Nav links -->
+          <div class="flex items-center gap-4">
+            <!-- Replace "#" with real routes if they exist -->
+            <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+              >My Profile</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+              >My Plan</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+              >Foods</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+              >Leaderboards</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+              >Achievements</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+              >Dashboard</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+              >Recipes</a
+            >
+          </div>
+
+          <!-- Log Out + Avatar -->
+          <div class="flex items-center gap-8">
+            <!-- Log Out Button as a POST form -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <!-- Avatar -->
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Achievements Section -->
+      <main class="px-40 flex flex-1 justify-center py-5">
+        <div class="flex flex-col max-w-[960px] flex-1">
+          <!-- Section Title -->
+          <div class="flex flex-wrap justify-between gap-3 p-4">
+            <p class="text-[#0e1b19] text-[32px] font-bold leading-tight">
+              Achievements
+            </p>
+          </div>
+
+          <!-- Weekly Achievements -->
+          <h2
+            class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+          >
+            Weekly Achievements
+          </h2>
+          <!-- Weekly Achievement: Calorie Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <!-- Medal Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">
+                  Calorie Tracker
+                </p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your weekly calorie intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">500</p>
+            </div>
+          </div>
+
+          <!-- Weekly Achievement: Protein Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between mt-4"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">
+                  Protein Tracker
+                </p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your weekly protein intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">500</p>
+            </div>
+          </div>
+
+          <!-- Weekly Achievement: Fat Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between mt-4"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">Fat Tracker</p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your weekly fat intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">500</p>
+            </div>
+          </div>
+
+          <h2
+            class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+          >
+            Daily Achievements
+          </h2>
+
+          <!-- Daily Achievement: Calorie Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">
+                  Calorie Tracker
+                </p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your daily calorie intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">100</p>
+            </div>
+          </div>
+
+          <!-- Daily Achievement: Protein Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between mt-4"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">
+                  Protein Tracker
+                </p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your daily protein intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">100</p>
+            </div>
+          </div>
+
+          <!-- Daily Achievement: Fat Tracker -->
+          <div
+            class="flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between mt-4"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center rounded-lg bg-[#e8f3f2] w-12 h-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p class="text-[#0e1b19] text-base font-medium">Fat Tracker</p>
+                <p class="text-[#4f968f] text-sm">
+                  You've reached your daily fat intake
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                class="rounded-full bg-green-500 text-white px-2 py-1 text-xs font-bold"
+              >
+                Claim
+              </button>
+              <p class="text-[#0e1b19] text-base">100</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

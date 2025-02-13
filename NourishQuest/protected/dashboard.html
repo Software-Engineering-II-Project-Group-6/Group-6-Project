@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <title>NourishQuest</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body style="font-family: Epilogue, 'Noto Sans', sans-serif">
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#f8fbfb] group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Upper Right Menu -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <h2
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+            </h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-4">
+              <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+                >My Profile</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+                >My Plan</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+                >Foods</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+                >Leaderboards</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+                >Achievements</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+                >Dashboard</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+                >Recipes</a
+              >
+            </div>
+            <!-- Log Out -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <!-- Heads up for other devs: this will dynamically replace this text via our script below -->
+                <p
+                  id="greeting"
+                  class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
+                >
+                  <!-- Empty before the script -->
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Have a very healthy day! (Maybe add different texts that
+                  change everytime the page loads)
+                </p>
+              </div>
+            </div>
+
+            <!-- Menu: Breakfast -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Breakfast
+            </h2>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+              >
+                <!-- Check Icon -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Complete
+                </p>
+                <p
+                  class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                >
+                  Print their daily menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Menu: Lunch -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Lunch
+            </h2>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Complete
+                </p>
+                <p
+                  class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                >
+                  Print their daily menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Menu: Dinner -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Dinner
+            </h2>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24px"
+                  height="24px"
+                  fill="currentColor"
+                  viewBox="0 0 256 256"
+                >
+                  <path
+                    d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Complete
+                </p>
+                <p
+                  class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                >
+                  Print their daily menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Hydration -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Hydration
+            </h2>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-14 justify-between"
+            >
+              <p
+                class="text-[#0e1b19] text-base font-normal leading-normal flex-1 truncate"
+              >
+                1 glass of water
+              </p>
+              <div class="shrink-0">
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit"
+                >
+                  <span class="truncate">Log</span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-14 justify-between"
+            >
+              <p
+                class="text-[#0e1b19] text-base font-normal leading-normal flex-1 truncate"
+              >
+                1 bottle of water
+              </p>
+              <div class="shrink-0">
+                <button
+                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit"
+                >
+                  <span class="truncate">Log</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Daily Progress -->
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Daily Progress
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 62%"></div>
+              </div>
+              <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                1,240 / 2,000 fl oz
+              </p>
+            </div>
+
+            <!-- Hydration Log Timeline -->
+            <div class="grid grid-cols-[40px_1fr] gap-x-2 px-4">
+              <div class="flex flex-col items-center gap-1 pt-3">
+                <div
+                  class="text-[#0e1b19]"
+                  data-icon="BeerBottle"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M245.66,42.34l-32-32a8,8,0,0,0-11.32,11.32l1.48,1.47L148.65,64.51l-38.22,7.65a8.05,8.05,0,0,0-4.09,2.18L23,157.66a24,24,0,0,0,0,33.94L64.4,233a24,24,0,0,0,33.94,0l83.32-83.31a8,8,0,0,0,2.18-4.09l7.65-38.22,41.38-55.17,1.47,1.48a8,8,0,0,0,11.32-11.32Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2 grow"></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  8:00 AM
+                </p>
+                <p class="text-[#4f968f] text-base font-normal leading-normal">
+                  8 fl oz
+                </p>
+              </div>
+
+              <div class="flex flex-col items-center gap-1">
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2"></div>
+                <div
+                  class="text-[#0e1b19]"
+                  data-icon="BeerBottle"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M245.66,42.34l-32-32a8,8,0,0,0-11.32,11.32l1.48,1.47L148.65,64.51l-38.22,7.65a8.05,8.05,0,0,0-4.09,2.18L23,157.66a24,24,0,0,0,0,33.94L64.4,233a24,24,0,0,0,33.94,0l83.32-83.31a8,8,0,0,0,2.18-4.09l7.65-38.22,41.38-55.17,1.47,1.48a8,8,0,0,0,11.32-11.32Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2 grow"></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  12:00 PM
+                </p>
+                <p class="text-[#4f968f] text-base font-normal leading-normal">
+                  16 fl oz
+                </p>
+              </div>
+
+              <div class="flex flex-col items-center gap-1">
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2"></div>
+                <div
+                  class="text-[#0e1b19]"
+                  data-icon="BeerBottle"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M245.66,42.34l-32-32a8,8,0,0,0-11.32,11.32l1.48,1.47L148.65,64.51l-38.22,7.65a8.05,8.05,0,0,0-4.09,2.18L23,157.66a24,24,0,0,0,0,33.94L64.4,233a24,24,0,0,0,33.94,0l83.32-83.31a8,8,0,0,0,2.18-4.09l7.65-38.22,41.38-55.17,1.47,1.48a8,8,0,0,0,11.32-11.32Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2 grow"></div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  2:00 PM
+                </p>
+                <p class="text-[#4f968f] text-base font-normal leading-normal">
+                  24 fl oz
+                </p>
+              </div>
+
+              <div class="flex flex-col items-center gap-1 pb-3">
+                <div class="w-[1.5px] bg-[#d0e6e4] h-2"></div>
+                <div
+                  class="text-[#0e1b19]"
+                  data-icon="BeerBottle"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24px"
+                    height="24px"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
+                  >
+                    <path
+                      d="M245.66,42.34l-32-32a8,8,0,0,0-11.32,11.32l1.48,1.47L148.65,64.51l-38.22,7.65a8.05,8.05,0,0,0-4.09,2.18L23,157.66a24,24,0,0,0,0,33.94L64.4,233a24,24,0,0,0,33.94,0l83.32-83.31a8,8,0,0,0,2.18-4.09l7.65-38.22,41.38-55.17,1.47,1.48a8,8,0,0,0,11.32-11.32Z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col py-3">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  5:00 PM
+                </p>
+                <p class="text-[#4f968f] text-base font-normal leading-normal">
+                  32 fl oz
+                </p>
+              </div>
+            </div>
+
+            <!-- Finish for Today Button -->
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Finish for today</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script for grabbing the user info -->
+    <script>
+      (async () => {
+        try {
+          const response = await fetch("/api/current-user");
+          if (!response.ok) {
+            console.warn("Could not fetch user data. Status:", response.status);
+            return;
+          }
+
+          // Parse the JSON
+          const userData = await response.json();
+
+          // Grab the greeting element and update the username
+          const greetingEl = document.getElementById("greeting");
+          if (greetingEl && userData.username) {
+            greetingEl.innerText = `Hello, ${userData.username}!`;
+          }
+        } catch (error) {
+          console.error("Error fetching current user:", error);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,74 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>NourishQuest - Register</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+    <title>NourishQuest</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
-  <body>
-    <header>
-      <nav class="navbar">
-        <div class="logo">NourishQuest</div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="product-list.html">Nutrition Plans</a></li>
-          <li><a href="profile.html">Profile</a></li>
-          <li><a href="achievements.html">Achievements</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <main style="padding: 2rem">
-      <h1>Register</h1>
-      <form id="registerForm">
-        <div>
-          <label for="username">Username:</label><br />
-          <input type="text" id="username" name="username" required />
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+      <!-- Header Bar -->
+      <header
+        class="flex items-center justify-between border-b border-[#e8f3f2] px-10 py-3"
+      >
+        <div class="flex items-center gap-4 text-[#0e1b19]">
+          <h2 class="text-lg font-bold">
+            <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+          </h2>
         </div>
-        <div style="margin-top: 1rem">
-          <label for="email">Email:</label><br />
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div style="margin-top: 1rem">
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" required />
-        </div>
-        <button type="submit" class="btn" style="margin-top: 1rem">
-          Register
+        <button
+          class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+        >
+          <a href="/login">Log In</a>
         </button>
-      </form>
-      <p>Already have an account? <a href="login.html">Login here</a>.</p>
-    </main>
+      </header>
 
-    <script>
-      const registerForm = document.getElementById("registerForm");
-      registerForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      <!-- Registration Form -->
+      <main class="flex flex-1 justify-center py-5 px-40">
+        <div class="flex flex-col w-full max-w-md py-5">
+          <h1 class="text-[22px] font-bold text-center pb-3 pt-5">
+            Create an account
+          </h1>
 
-        const username = document.getElementById("username").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+          <!-- BEGIN FORM -->
+          <form action="/register" method="POST">
+            <!-- Email Field -->
+            <div class="mb-4">
+              <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Email</label
+              >
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+              />
+            </div>
 
-        try {
-          const response = await fetch("/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, email, password }),
-          });
+            <!-- Username Field -->
+            <div class="mb-4">
+              <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Username</label
+              >
+              <input
+                name="username"
+                type="text"
+                placeholder="Create a username"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+              />
+            </div>
 
-          const data = await response.json();
-          if (response.ok) {
-            alert("Registration successful! You can now login.");
-            window.location.href = "login.html";
-          } else {
-            alert(data.msg || "Registration failed.");
-          }
-        } catch (error) {
-          console.error(error);
-          alert("An error occurred. Please try again.");
-        }
-      });
-    </script>
+            <!-- Password Field -->
+            <div class="mb-4">
+              <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Password</label
+              >
+              <input
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+              />
+            </div>
+
+            <!-- Basic Health Information -->
+            <h3 class="text-lg font-bold pb-2 pt-4 text-[#0e1b19]">
+              Basic health information
+            </h3>
+
+            <!-- Row: Age and Height -->
+            <div class="flex gap-4 mb-4">
+              <div class="flex-1">
+                <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                  >Age</label
+                >
+                <input
+                  name="age"
+                  type="number"
+                  placeholder="Enter your age"
+                  class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                  >Height (cm)</label
+                >
+                <input
+                  name="height"
+                  type="number"
+                  placeholder="Enter your height"
+                  class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+                />
+              </div>
+            </div>
+
+            <!-- Row: Weight and Gender -->
+            <div class="flex gap-4 mb-4">
+              <div class="flex-1">
+                <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                  >Weight (lbs)</label
+                >
+                <input
+                  name="weight"
+                  type="number"
+                  placeholder="Enter your weight"
+                  class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                  >Gender</label
+                >
+                <select
+                  name="gender"
+                  class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base"
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary/Other</option>
+                  <option value="rather not say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Terms of Service -->
+            <div class="mb-4">
+              <label class="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  class="h-5 w-5 rounded border-2 border-[#d0e6e4] bg-transparent text-[#1ce3cf] focus:outline-none"
+                />
+                <span class="text-base text-[#0e1b19]">
+                  I agree to the Terms of Service and Privacy Policy.
+                </span>
+              </label>
+            </div>
+
+            <!-- Sign Up Button -->
+            <div>
+              <button
+                class="w-full rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+          <!-- END FORM -->
+        </div>
+      </main>
+    </div>
   </body>
 </html>

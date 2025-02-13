@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NourishQuest - Create Plan</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: Epilogue, 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex w-full h-full min-h-screen flex-col bg-[#f8fbfb] overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <h2
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+            </h2>
+          </div>
+
+          <div class="flex flex-1 justify-end items-center gap-8">
+            <div class="flex items-center gap-4">
+              <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+                >My Profile</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+                >My Plan</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+                >Foods</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+                >Leaderboards</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+                >Achievements</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+                >Dashboard</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+                >Recipes</a
+              >
+            </div>
+
+            <!-- Log Out -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col w-[512px] max-w-[960px] py-5 flex-1"
+          >
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-[72px] flex-col gap-3">
+                <p
+                  class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
+                >
+                  Create Your Plan
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Start by telling us about your goals, how active you are, and
+                  how long you'd like your plan to last.
+                </p>
+              </div>
+            </div>
+
+            <!-- GOALS SECTION -->
+            <h3
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+            >
+              Your Goals
+            </h3>
+
+            <div class="flex flex-col gap-3 p-4">
+              <!-- Example: "Maintain weight" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="goal"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                  checked
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Maintain weight
+                </span>
+              </label>
+
+              <!-- "Add muscle" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="goal"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Add muscle
+                </span>
+              </label>
+
+              <!-- "Lose weight" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="goal"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Lose weight
+                </span>
+              </label>
+            </div>
+
+            <!-- ACTIVITY SECTION -->
+            <h3
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+            >
+              How active are you?
+            </h3>
+            <div class="flex flex-col gap-3 p-4">
+              <!-- 1. Sedentary -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="activity"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                  checked
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Sedentary — spend most of the day sitting (e.g. desk job)
+                </span>
+              </label>
+
+              <!-- 2. Lightly active -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="activity"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Lightly active — spend a good part of the day on your feet
+                  (e.g. teacher, salesperson)
+                </span>
+              </label>
+
+              <!-- 3. Active -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="activity"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Active — spend a good part of the day doing some physical
+                  activity (e.g. food server, mail carrier)
+                </span>
+              </label>
+
+              <!-- 4. Very active -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="activity"
+                  class="peer absolute inset-0 z-10 opacity-0"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  Very active — spend most of the day doing heavy physical
+                  activity (e.g. messenger, dock worker)
+                </span>
+              </label>
+            </div>
+
+            <!-- PLAN LENGTH SECTION -->
+            <h3
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+            >
+              How long would you like your plan to be?
+            </h3>
+            <div class="flex flex-wrap gap-3 p-4">
+              <!-- "4 weeks" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="planLength"
+                  class="peer absolute inset-0 opacity-0 z-10"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#d0e6e4] px-4 h-11 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  4 weeks
+                </span>
+              </label>
+
+              <!-- "8 weeks" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="planLength"
+                  class="peer absolute inset-0 opacity-0 z-10"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#d0e6e4] px-4 h-11 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  8 weeks
+                </span>
+              </label>
+
+              <!-- "12 weeks" -->
+              <label class="relative cursor-pointer">
+                <input
+                  type="radio"
+                  name="planLength"
+                  class="peer absolute inset-0 opacity-0 z-10"
+                />
+                <span
+                  class="block text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#d0e6e4] px-4 h-11 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
+                >
+                  12 weeks
+                </span>
+              </label>
+            </div>
+
+            <!-- Continue Button -->
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                class="flex items-center justify-center rounded-full h-12 px-5 bg-[#1ce3cf] text-[#0e1b19] text-base font-bold leading-normal whitespace-nowrap"
+              >
+                Continue
+              </button>
+            </div>
+
+            <p
+              class="text-[#4f968f] text-sm font-normal leading-normal pb-3 pt-1 px-4"
+            >
+              Note: Creating a new plan will overwrite any existing plan data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (async () => {
+        try {
+          const response = await fetch("/api/current-user");
+          if (!response.ok) {
+            console.warn("Could not fetch user data. Status:", response.status);
+            return;
+          }
+          const userData = await response.json();
+        } catch (err) {
+          console.error("Error fetching user data:", err);
+        }
+      })();
+    </script>
+  </body>
+</html>

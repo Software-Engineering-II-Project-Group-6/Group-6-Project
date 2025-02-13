@@ -1,93 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>NourishQuest - Login</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+    <title>NourishQuest</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
-  <body>
-    <!-- Navigation -->
-    <header>
-      <nav class="navbar">
-        <div class="logo">NourishQuest</div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="product-list.html">Nutrition Plans</a></li>
-          <li><a href="profile.html">Profile</a></li>
-          <li><a href="achievements.html">Achievements</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main style="padding: 2rem">
-      <h1>Login</h1>
-
-      <!-- Login Form -->
-      <form id="loginForm">
-        <div style="margin-bottom: 1rem">
-          <label for="email">Email:</label><br />
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            placeholder="Enter your email"
-          />
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <!-- Center Container -->
+    <div class="flex items-center justify-center min-h-screen">
+      <!-- Card -->
+      <div class="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
+        <!-- Card Header with Link to "/" -->
+        <div class="mb-4 text-center">
+          <a href="/" class="inline-flex items-center space-x-2">
+            <span class="text-2xl font-bold text-[#0e1b19]">NourishQuest</span>
+          </a>
         </div>
 
-        <div style="margin-bottom: 1rem">
-          <label for="password">Password:</label><br />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            placeholder="Enter your password"
-          />
+        <!-- Clickable Header Image linking to "/" -->
+        <a href="/">
+          <div
+            class="mb-4 w-full h-[218px] bg-center bg-no-repeat bg-cover rounded-xl"
+            style="
+              background-image: url('https://assets.clevelandclinic.org/transform/2fcd07c9-41fc-4911-8fa6-fbd9a5edb44c/vegan-food-bowl-1433432507');
+            "
+          ></div>
+        </a>
+
+        <!-- Welcome Message -->
+        <h1 class="text-[#0e1b19] text-2xl font-bold text-center mb-6">
+          Welcome to NourishQuest
+        </h1>
+
+        <!-- LOGIN FORM -->
+        <form action="/login" method="POST">
+          <!-- Email Input -->
+          <div class="mb-4">
+            <label class="block text-[#0e1b19] text-base font-medium mb-2"
+              >Email</label
+            >
+            <input
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              class="w-full rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] h-14 px-4 text-base placeholder:text-[#4f968f]"
+              required
+            />
+          </div>
+          <!-- Password Input -->
+          <div class="mb-4">
+            <label class="block text-[#0e1b19] text-base font-medium mb-2"
+              >Password</label
+            >
+            <input
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              class="w-full rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] h-14 px-4 text-base placeholder:text-[#4f968f]"
+              required
+            />
+          </div>
+          <!-- Login Button -->
+          <div class="flex justify-end">
+            <button
+              type="submit"
+              class="flex items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="mt-6 text-center">
+          <p class="text-[#4f968f] text-sm underline mb-2">
+            Don't have an account?
+          </p>
+          <p class="text-[#4f968f] text-sm underline">
+            <a href="/register">Sign up here</a>
+          </p>
         </div>
-
-        <button type="submit" class="btn">Login</button>
-      </form>
-
-      <p style="margin-top: 1rem">
-        Don't have an account?
-        <a href="register.html">Register here</a>.
-      </p>
-    </main>
-
-    <!-- Handling login -->
-    <script>
-      const loginForm = document.getElementById("loginForm");
-
-      loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        try {
-          const response = await fetch("/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ email, password }),
-          });
-
-          const data = await response.json();
-          if (response.ok) {
-            alert("Login successful!");
-            //Redirect
-            window.location.href = "profile.html";
-          } else {
-            alert(data.msg || "Login failed. Check your credentials.");
-          }
-        } catch (error) {
-          console.error(error);
-          alert("An error occurred. Please try again.");
-        }
-      });
-    </script>
+      </div>
+    </div>
   </body>
 </html>
