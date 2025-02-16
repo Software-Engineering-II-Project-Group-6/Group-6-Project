@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NourishQuest</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#f8fbfb] group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Header -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <h2
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+            </h2>
+          </div>
+
+          <div class="flex flex-1 justify-end items-center gap-8">
+            <div class="flex items-center gap-4">
+              <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+                >My Profile</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+                >My Plan</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+                >Foods</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+                >Leaderboards</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+                >Achievements</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+                >Dashboard</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+                >Recipes</a
+              >
+            </div>
+
+            <!-- Log Out -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p
+                  class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
+                >
+                  My Plan
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Print date here
+                </p>
+              </div>
+            </div>
+
+            <!-- Days Navigation -->
+            <div class="pb-3">
+              <div class="flex border-b border-[#d0e6e4] px-4 gap-8">
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-[#1ce3cf] text-[#0e1b19] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#0e1b19] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Mon
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Tue
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Wed
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Thu
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Fri
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Sat
+                  </p>
+                </a>
+                <a
+                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+                  href="#"
+                >
+                  <p
+                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
+                  >
+                    Sun
+                  </p>
+                </a>
+              </div>
+            </div>
+
+            <h3
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+            >
+              Your menu today
+            </h3>
+
+            <!-- Breakfast -->
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                style="
+                  background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+                "
+              ></div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Breakfast
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Print menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Lunch -->
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                style="
+                  background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+                "
+              ></div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Lunch
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Print menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Dinner -->
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+            >
+              <div
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                style="
+                  background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+                "
+              ></div>
+              <div class="flex flex-col justify-center">
+                <p
+                  class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                >
+                  Dinner
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Print menu here
+                </p>
+              </div>
+            </div>
+
+            <!-- Progress Bars: Calories, Protein, Carbs, Fat, Water -->
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Calories
+                </p>
+                <p class="text-[#0e1b19] text-sm font-normal leading-normal">
+                  1,400/2,000
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 70%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Protein
+                </p>
+                <p class="text-[#0e1b19] text-sm font-normal leading-normal">
+                  75g/150g
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 50%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Carbohydrates
+                </p>
+                <p class="text-[#0e1b19] text-sm font-normal leading-normal">
+                  100g/200g
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 30%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Fat
+                </p>
+                <p class="text-[#0e1b19] text-sm font-normal leading-normal">
+                  45g/100g
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 20%"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Water
+                </p>
+                <p class="text-[#0e1b19] text-sm font-normal leading-normal">
+                  90oz/150oz
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div class="h-2 rounded bg-[#1ce3cf]" style="width: 60%"></div>
+              </div>
+            </div>
+
+            <div class="flex px-4 py-3">
+              <div class="flex px-4 py-3 gap-3">
+                <!-- Reset the Plan -->
+                <button
+                  class="flex items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold leading-normal whitespace-nowrap"
+                >
+                  Reset the Plan
+                </button>
+
+                <!-- Create a New Plan -->
+                <button
+                  class="flex items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold leading-normal whitespace-nowrap"
+                >
+                  Create a New Plan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script to fetch user data and display -->
+    <script>
+      (async () => {
+        try {
+          const response = await fetch("/api/current-user");
+          if (!response.ok) {
+            console.warn("Could not fetch user data. Status:", response.status);
+            return;
+          }
+          const userData = await response.json();
+        } catch (err) {
+          console.error("Error fetching current user:", err);
+        }
+      })();
+    </script>
+  </body>
+</html>

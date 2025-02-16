@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NourishQuest - Add Recipe</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#f8fbfb] group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Header -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <!-- Left Section -->
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <h2
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+            </h2>
+          </div>
+
+          <div class="flex flex-1 justify-end items-center gap-8">
+            <div class="flex items-center gap-4">
+              <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+                >My Profile</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+                >My Plan</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+                >Foods</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+                >Leaderboards</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+                >Achievements</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+                >Dashboard</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+                >Recipes</a
+              >
+            </div>
+
+            <!-- Log Out -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col py-5 flex-1 w-full max-w-[960px]"
+          >
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex flex-col gap-3">
+                <p class="text-[#0e1b19] text-[32px] font-bold leading-tight">
+                  Add Recipe
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Save your favourite recipes here to check them anytime!
+                </p>
+              </div>
+            </div>
+
+            <!-- Recipe Name Field -->
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col flex-1">
+                <input
+                  placeholder="Recipe name"
+                  class="form-input w-full rounded-xl text-[#0e1b19] focus:outline-0 focus:ring-0 border border-[#d0e6e4] bg-[#f8fbfb] h-14 placeholder:text-[#4f968f] p-4 text-base font-normal"
+                />
+              </label>
+            </div>
+
+            <!-- Recipe Description / Instructions Field -->
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col flex-1">
+                <textarea
+                  placeholder="Describe how to make your recipe"
+                  class="form-input w-full rounded-xl text-[#0e1b19] focus:outline-0 focus:ring-0 border border-[#d0e6e4] bg-[#f8fbfb] min-h-36 placeholder:text-[#4f968f] p-4 text-base font-normal"
+                ></textarea>
+              </label>
+            </div>
+
+            <!-- Save Recipe Button -->
+            <div class="flex px-4 py-3">
+              <button
+                class="flex items-center justify-center rounded-full h-12 px-5 bg-[#1ce3cf] text-[#0e1b19] text-base font-bold leading-normal whitespace-nowrap"
+              >
+                Save Recipe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (async () => {
+        try {
+          const response = await fetch("/api/current-user");
+          if (!response.ok) {
+            console.warn("Could not fetch user data. Status:", response.status);
+            return;
+          }
+          const userData = await response.json();
+        } catch (err) {
+          console.error("Error fetching current user:", err);
+        }
+      })();
+    </script>
+  </body>
+</html>

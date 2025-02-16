@@ -1,0 +1,426 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+
+    <title>NourishQuest</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div
+      class="relative flex min-h-screen flex-col bg-[#f8fbfb] overflow-x-hidden"
+      style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <a href="/">
+              <button>
+                <h2
+                  class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+                >
+                  NourishQuest
+                </h2>
+              </button>
+            </a>
+          </div>
+          <div class="flex gap-2">
+            <a href="/login">
+              <button
+                class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold"
+              >
+                <span>Log In</span>
+              </button>
+            </a>
+            <a href="/register">
+              <button
+                class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                <span>Sign Up</span>
+              </button>
+            </a>
+          </div>
+        </header>
+
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <!-- Hero Section -->
+            <div class="@container">
+              <div class="@[480px]:p-4">
+                <div
+                  class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-4"
+                  style="
+                    background-image: linear-gradient(
+                        rgba(0, 0, 0, 0.1) 0%,
+                        rgba(0, 0, 0, 0.4) 100%
+                      ),
+                      url('https://cdn.pickuplimes.com/cache/00/dc/00dcf531ecd1e263614cea2e8dc39c48.jpg');
+                  "
+                >
+                  <h1
+                    class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl text-center"
+                  >
+                    Nourish your body. Feel amazing.
+                  </h1>
+                  <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="/register">
+                      <button
+                        class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold @[480px]:h-12 @[480px]:px-5"
+                      >
+                        <span>Sign up</span>
+                      </button>
+                    </a>
+                    <a href="/login">
+                      <button
+                        class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold @[480px]:h-12 @[480px]:px-5"
+                      >
+                        <span>Log in</span>
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- How It Works -->
+            <div class="flex flex-col gap-10 px-4 py-10 @container">
+              <div class="flex flex-col gap-4">
+                <h1
+                  class="text-[#0e1b19] text-[32px] font-bold leading-tight max-w-[720px]"
+                >
+                  How NourishQuest works
+                </h1>
+                <p
+                  class="text-[#0e1b19] text-base font-normal leading-normal max-w-[720px]"
+                >
+                  Our mission is to help you build healthy habits that last.
+                  Whether you're trying to lose weight, manage a chronic
+                  condition, or just eat better, NourishQuest has the tools,
+                  support, and guidance you need to succeed.
+                </p>
+              </div>
+              <div
+                class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3"
+              >
+                <!-- Card 1 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Set your goals
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Choose from a range of specialized goals to help you meet
+                      your unique nutritional needs.
+                    </p>
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M248,120h-8V88a16,16,0,0,0-16-16H208V64a16,16,0,0,0-16-16H168a16,16,0,0,0-16,16v56H104V64A16,16,0,0,0,88,48H64A16,16,0,0,0,48,64v8H32A16,16,0,0,0,16,88v32H8a8,8,0,0,0,0,16h8v32a16,16,0,0,0,16,16H48v8a16,16,0,0,0,16,16H88a16,16,0,0,0,16-16V136h48v56a16,16,0,0,0,16,16h24a16,16,0,0,0,16-16v-8h16a16,16,0,0,0,16-16V136h8a8,8,0,0,0,0-16ZM32,168V88H48v80Zm56,24H64V64H88V192Zm104,0H168V64h24V175.82c0,.06,0,.12,0,.18s0,.12,0,.18V192Zm32-24H208V88h16Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Track your progress
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Log your meals, track your water intake, and monitor your
+                      macros with our easy-to-use food diary.
+                    </p>
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M178,32c-20.65,0-38.73,8.88-50,23.89C116.73,40.88,98.65,32,78,32A62.07,62.07,0,0,0,16,94c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,220.66,240,164,240,94A62.07,62.07,0,0,0,178,32ZM128,206.8C109.74,196.16,32,147.69,32,94A46.06,46.06,0,0,1,78,48c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,147.61,146.24,196.15,128,206.8Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Improve your health
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Get personalized insights into how your eating habits are
+                      affecting your health.
+                    </p>
+                  </div>
+                </div>
+                <!-- Card 4 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M232,64H208V56a16,16,0,0,0-16-16H64A16,16,0,0,0,48,56v8H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-28.49,64.64-63.51,64.9H128a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Earn rewards
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Unlock achievements for hitting milestones, completing
+                      challenges, and more.
+                    </p>
+                  </div>
+                </div>
+                <!-- Card 5 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Personalize your diet
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Filter recipes based on your dietary preferences and
+                      restrictions, create your own meal plans, and generate
+                      grocery lists to help you stay on track.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call To Action -->
+            <div class="@container">
+              <div class="@[480px]:p-4">
+                <div
+                  class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-4"
+                  style="
+                    background-image: linear-gradient(
+                        rgba(0, 0, 0, 0.1) 0%,
+                        rgba(0, 0, 0, 0.4) 100%
+                      ),
+                      url('https://media.istockphoto.com/id/958682698/photo/group-of-cheerful-diverse-friends-in-the-park.jpg?s=612x612&w=0&k=20&c=nY_8n25WG8qHx5d21hRlRopYZMzvjYzmCJTtEnZYMO0=');
+                  "
+                >
+                  <h1
+                    class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl text-center"
+                  >
+                    Join countless other people using NourishQuest to take
+                    control of their nutrition
+                  </h1>
+                  <div
+                    class="flex w-full max-w-[480px] @[480px]:h-16 justify-center"
+                  >
+                    <a
+                      href="/register"
+                      class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold @[480px]:h-12 @[480px]:px-5"
+                    >
+                      <span>Start your journey</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="flex flex-col gap-10 px-4 py-10 @container">
+              <div class="flex flex-col gap-6">
+                <div class="flex flex-col gap-4">
+                  <h1
+                    class="text-[#0e1b19] text-[32px] font-bold leading-tight max-w-[720px]"
+                  >
+                    Key features
+                  </h1>
+                  <p
+                    class="text-[#0e1b19] text-base font-normal leading-normal max-w-[720px]"
+                  >
+                    Our app is packed with powerful tools to help you transform
+                    your eating habits and achieve your wellness goals.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3"
+              >
+                <!-- Feature Card 1 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Meal planner
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Plan your meals ahead of time to save money, reduce food
+                      waste, and make healthier choices.
+                    </p>
+                  </div>
+                </div>
+                <!-- Feature Card 2 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M224,200h-8V40a8,8,0,0,0-8-8H152a8,8,0,0,0-8,8V80H96a8,8,0,0,0-8,8v40H48a8,8,0,0,0-8,8v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16ZM160,48h40V200H160ZM104,96h40V200H104ZM56,144H88v56H56Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Macro tracker
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Track your daily intake of protein, carbs, fat, fiber, and
+                      other nutrients to ensure you're meeting your needs.
+                    </p>
+                  </div>
+                </div>
+                <!-- Feature Card 3 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M178,32c-20.65,0-38.73,8.88-50,23.89C116.73,40.88,98.65,32,78,32A62.07,62.07,0,0,0,16,94c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,220.66,240,164,240,94A62.07,62.07,0,0,0,178,32ZM128,206.8C109.74,196.16,32,147.69,32,94A46.06,46.06,0,0,1,78,48c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,147.61,146.24,196.15,128,206.8Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Health reports
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Keep tabs on key health metrics like blood sugar,
+                      cholesterol, and blood pressure to prevent or manage
+                      chronic conditions.
+                    </p>
+                  </div>
+                </div>
+                <!-- Feature Card 4 -->
+                <div
+                  class="flex flex-col gap-3 rounded-lg border border-[#d0e6e4] bg-[#f8fbfb] p-4"
+                >
+                  <div class="text-[#0e1b19]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <h2 class="text-[#0e1b19] text-base font-bold">
+                      Recipe filter
+                    </h2>
+                    <p class="text-[#4f968f] text-sm">
+                      Filter recipes by calories, carbs, fat, protein, dietary
+                      preferences, and more to find dishes that fit your
+                      nutritional goals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- I Ended Key Features At This Part -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

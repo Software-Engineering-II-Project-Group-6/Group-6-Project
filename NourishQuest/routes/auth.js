@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 router.get("/register", (req, res) => {
-  res.send("Registration page (serve register.html or use a template engine).");
+  res.send("Registration page.");
 });
 
 router.post("/register", async (req, res) => {
