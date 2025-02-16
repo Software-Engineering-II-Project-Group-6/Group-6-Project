@@ -1,10 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const exhandle = require('express-handlebars');
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const fs = require('fs'); // for protected pages list
 
 // Load models
 const User = require("./models/User");
@@ -41,76 +43,64 @@ function requireLogin(req, res, next) {
   next();
 }
 
+// Handlebars templating engine
+app.engine('handlebars', exhandle.engine({
+  defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
+
+// list of protected pages, for validation
+var protectedList = fs.readdirSync(path.join(__dirname,'protected'));
+protectedList.forEach((name,index) => { protectedList[index] = name.replace(".html","")});
+
+// class to hold data passed to frontend using Handlebars' .render method
+class contextBlock {
+  pageTitle;          // the title to display in the
+  contentList = [];
+
+  constructor(req, title, layout) {
+    this.pageTitle = title;
+
+    if (layout) { // change layout from default
+      this.layout = layout;
+    }
+
+    if (req.session?.userId) {
+      this.loggedIn = true;
+    }
+  }
+
+  
+
+  // debug function to generate printable version of current context
+  rawify() {
+    this.raw = JSON.stringify(this,undefined,4);
+
+    return this;
+  }
+}
+
 // --------------------------
 //         ROUTES
 // --------------------------
 
 // Home route -> public.html
-app.get("/", (req, res) => {
-  if (req.session && req.session.userId) {
+app.get("/:homePath(home|index|index.html)?", (req, res) => {
+  if (req.session?.userId) {
     return res.redirect("/dashboard");
   }
-  return res.sendFile(path.join(__dirname, "public", "public.html"));
+
+  return res.status(200).render('home', new contextBlock(req));
 });
 
 // Register page -> register.html
 app.get("/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "register.html"));
+  res.status(200).render('register', new contextBlock(req, 'Register'));
 });
 
 // Login page -> login.html
 app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
-});
-
-// Dashboard -> dashboard.html
-app.get("/dashboard", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "dashboard.html"));
-});
-
-// Profile -> profile.html
-app.get("/profile", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "profile.html"));
-});
-
-// Recipes -> recipes.html
-app.get("/recipes", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "recipes.html"));
-});
-
-// Leaderboard -> leaderboard.html
-app.get("/leaderboard", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "leaderboard.html"));
-});
-
-// Achievements -> achievements.html
-app.get("/achievements", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "achievements.html"));
-});
-
-// Foods -> foods.html
-app.get("/foods", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "foods.html"));
-});
-
-// Plan -> plan.html
-app.get("/plan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "plan.html"));
-});
-
-// Add recipe
-app.get("/addrecipe", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "addrecipe.html"));
-});
-
-// Create plan
-app.get("/createplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "createplan.html"));
-});
-
-// Finalize plan
-app.get("/finalizeplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "finalizeplan.html"));
+  res.status(200).render('login', new contextBlock(req, 'Login'));
 });
 
 app.get("/api/current-user", requireLogin, async (req, res) => {
@@ -132,6 +122,21 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// universal GET for Protected Pages
+app.get("/:protectedPage", requireLogin, (req, res, next) => {
+  let pageName = req.params.protectedPage;
+  if (!protectedList.includes(pageName)) {
+    return next(); // if the page doesn't exist, forward this request to get caught by the 404 page
+  }
+
+  res.sendFile(path.join(__dirname, "protected", `${pageName}.html`));
+});
+
+
+// --------------------------
+//      POST REQUESTS
+// --------------------------
 
 // Registration (POST /register)
 app.post("/register", async (req, res) => {
@@ -207,6 +212,9 @@ app.post("/logout", (req, res) => {
     return res.redirect("/login");
   });
 });
+
+// routing for 404 error page
+app.use((req, res) => {res.status(404).render('404', new contextBlock(req,'Page Not Found'))});
 
 // --------------------------
 //       START SERVER

@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+
+    <title>NourishQuest{{#if pageTitle}} - {{pageTitle}}{{/if}}</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex min-h-screen flex-col overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        {{> navheader}}
+
+        {{{body}}}
+      </div>
+    </div>
+  </body>
+</html>
