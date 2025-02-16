@@ -1,0 +1,80 @@
+<header
+    class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+>
+    <!-- Left Section -->
+    <div class="flex items-center gap-4 text-[#0e1b19]">
+        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">
+        <!-- Link to home ("/") which may redirect to dashboard if logged in -->
+        <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+        </h2>
+    </div>
+    
+    <!-- Right Section -->
+    {{#if loggedIn}}
+        <div class="flex flex-1 justify-end items-center gap-8">
+          <!-- Nav links -->
+          <div class="flex items-center gap-4">
+            <!-- Replace "#" with real routes if they exist -->
+            <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+              >My Profile</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+              >My Plan</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+              >Foods</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+              >Leaderboards</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+              >Achievements</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+              >Dashboard</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+              >Recipes</a
+            >
+          </div>
+
+          <!-- Log Out + Avatar -->
+          <div class="flex items-center gap-8">
+            <!-- Log Out Button as a POST form -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <!-- Avatar -->
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </div>
+    {{else}}
+        <div class="flex gap-2">
+            <a href="/login">
+                <button
+                class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold"
+                >
+                <span>Log In</span>
+                </button>
+            </a>
+            <a href="/register">
+                <button
+                class="flex min-w-[84px] max-w-[480px] items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+                >
+                <span>Sign Up</span>
+                </button>
+            </a>
+        </div>
+    {{/if}}
+</header>
