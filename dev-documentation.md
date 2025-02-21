@@ -84,13 +84,13 @@ To ensure the software runs correctly, execute the test suite:
    npm test
    ```
 
-2. **Running individual tests** (optional)
+2. **Running individual tests**
    ```sh
    npm run test:filename.test.js
    ```
 
 3. **Test dependencies**
-   - Ensure that `Jest` or any other testing framework is installed.
+   - Ensure that `Jest` testing framework is installed.
    - Some tests may require environment variables (`.env` file setup).
 
 ---
