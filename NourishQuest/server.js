@@ -14,14 +14,16 @@ const PORT = process.env.PORT || 3000;
 
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri);
-mongoose.connection.once("open", () => {
+const dbConnection = mongoose.connection;
+dbConnection.once("open", () => {
   console.log("Connected to MongoDB successfully!");
 });
-mongoose.connection.on("error", (err) => {
+dbConnection.on("error", (err) => {
   console.error("MongoDB connection error:", err);
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(
   session({
@@ -211,6 +213,12 @@ app.post("/logout", (req, res) => {
 // --------------------------
 //       START SERVER
 // --------------------------
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+let server;
+if (process.env.NODE_ENV !== "test") {
+  //If not in testing environment or not using Jest
+  server = app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = { app, server, dbConnection };
