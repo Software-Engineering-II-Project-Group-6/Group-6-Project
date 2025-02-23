@@ -1,0 +1,133 @@
+<!-- Registration Form -->
+<main class="flex flex-1 justify-center py-5 px-40">
+    <div class="flex flex-col w-full max-w-md py-5">
+        <h1 class="text-[22px] font-bold text-center pb-3 pt-5">
+        Create an account
+        </h1>
+
+        <!-- BEGIN FORM -->
+        <form action="/register" method="POST">
+        <!-- Email Field -->
+        <div class="mb-4">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+            >Email</label
+            >
+            <input
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+        </div>
+
+        <!-- Username Field -->
+        <div class="mb-4">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+            >Username</label
+            >
+            <input
+            name="username"
+            type="text"
+            placeholder="Create a username"
+            class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-4">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+            >Password</label
+            >
+            <input
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+        </div>
+
+        <!-- Basic Health Information -->
+        <h3 class="text-lg font-bold pb-2 pt-4 text-[#0e1b19]">
+            Basic health information
+        </h3>
+
+        <!-- Row: Age and Height -->
+        <div class="flex gap-4 mb-4">
+            <div class="flex-1">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Age</label
+            >
+            <input
+                name="age"
+                type="number"
+                placeholder="Enter your age"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+            </div>
+            <div class="flex-1">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Height (cm)</label
+            >
+            <input
+                name="height"
+                type="number"
+                placeholder="Enter your height"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+            </div>
+        </div>
+
+        <!-- Row: Weight and Gender -->
+        <div class="flex gap-4 mb-4">
+            <div class="flex-1">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Weight (lbs)</label
+            >
+            <input
+                name="weight"
+                type="number"
+                placeholder="Enter your weight"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base placeholder:text-[#4f968f]"
+            />
+            </div>
+            <div class="flex-1">
+            <label class="block text-base font-medium pb-2 text-[#0e1b19]"
+                >Gender</label
+            >
+            <select
+                name="gender"
+                class="w-full h-14 p-4 rounded-xl border border-[#d0e6e4] bg-[#f8fbfb] text-base"
+            >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary/Other</option>
+                <option value="rather not say">Prefer not to say</option>
+            </select>
+            </div>
+        </div>
+
+        <!-- Terms of Service -->
+        <div class="mb-4">
+            <label class="flex items-center gap-3">
+            <input
+                type="checkbox"
+                class="h-5 w-5 rounded border-2 border-[#d0e6e4] bg-transparent text-[#1ce3cf] focus:outline-none"
+            />
+            <span class="text-base text-[#0e1b19]">
+                I agree to the Terms of Service and Privacy Policy.
+            </span>
+            </label>
+        </div>
+
+        <!-- Sign Up Button -->
+        <div>
+            <button
+            class="w-full rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold"
+            >
+            Sign Up
+            </button>
+        </div>
+        </form>
+        <!-- END FORM -->
+    </div>
+</main>
