@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require('fs'); // for protected pages list
-const { setupWebSocket } = require('./services/aiChatService');
+const { setupWebSocket } = require('./models/aiChatService');
 
 // Load models
 const User = require("./models/User");
