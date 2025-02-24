@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require('fs'); // for protected pages list
+const { setupWebSocket } = require('./services/aiChatService');
 
 // Load models
 const User = require("./models/User");
@@ -228,5 +229,7 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
+
+setupWebSocket(server);
 
 module.exports = { app, server, dbConnection };
