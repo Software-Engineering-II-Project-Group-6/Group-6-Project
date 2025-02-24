@@ -10,7 +10,6 @@
 
 **Benjamin Junge** (Front-End Development, Tester)
 
-**Alina Hyk** (Documentation, Implementation, Testing, AI Integration (secondary: front-end Development))
 
 ## Rules and Communication
 1. **Respect:** Treat teammates courteously; value diverse perspectives and encourage open dialogue.
@@ -210,11 +209,9 @@ Node.js, MongoDB, HTML, JavaScript
   - Our project requires that we create a seamless and sleek UI that will allow people who use out product to do so very easily as there are many barriers to eating and living in a healthy way it is a core value for our project to need as little work on their end as possible. Therefore UI/UX is very important.
   - With experience in HTML, CSS and JavaScript Benjamin is positioned to emphasize their skills in perfecting the UI.
   - Testing is also a barrier to the project being completed so many group members are planning to test section of the project created by other teams.
-- **Alina Hyk:** Documentation, Implementation, Testing, AI Integration (secondary: front-end Development) 
-  - Our product will require extensive documentation and measurement of different moving parts and features. It will need clear user manuals, a policy for handling user data, and the safe implementation of the tools. I will be responsible for managing the documentation, monitoring, implementation, and testing processes.
-  - One of the unique features of our project, currently in the stretch goals, is an AI-driven chatbot designed to further enhance user experience by making it more informative, engaging, and personalized, aligning with our mission. My role will involve leading the development and integration of the Retrieval-Augmented Generation (RAG)-based AI chatbot into the website. I will ensure the proper setup of OpenAI API calls, data preparation, embedding creation, pipeline configuration, and the generation of accurate responses to user queries.
-  - Finally, if necessary, I will contribute to front-end development, as it is a central focus of our product. While we do not currently have a team member who is completely confident in this domain, I am prepared to step in to ensure the successful completion of the project. 
- 
+- **Henry James** Back-end Developer, AI Integration, tester
+  - Our product will requiure effortless navigation and exploration of all the features we offer. Each feature must be implemented flawlessly to ensure every user has a convinient and engaging experience. Through the use of well structured implementation and rigorous unit tests I will ensure all features including front-end UI features, achievements, food loading, and potentially AI API calls will work flawlessly
+  - With my experience with Node.js, Javascript, and AI chatbot implementations I am confident I can fulfill my role.
 ### Schedule
 #### Phase 1: Project Architecture and Design Specifications (2 weeks)
 **Due:** 02/04/2025 11:59 PM
