@@ -6,3 +6,6 @@ Our repo is broken up into multiple branches:
 - `main` for deployment, to be kept functional and ready to demo at all times
 - `dev` for testing and development, where changes are Pull Requested to for individual in-progress features and bug-fixes
 - `feature-*` these branches are for individual major features, and are where the majority of our team members' code contributions will be. They can be as broken as needed while developing a given feature without affecting full-app testing and the live deployment
+
+# Help and How-Tos
+Instructions on how to get started using the site, report issues, and install your own version of the webserver can be found in our [Wiki](https://github.com/Software-Engineering-II-Project-Group-6/Group-6-Project/wiki)

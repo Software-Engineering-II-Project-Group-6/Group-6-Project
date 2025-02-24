@@ -1,5 +1,7 @@
 # User Manual
 
+This user manual can also be read in an easily-navigatable form on our [Wiki](https://github.com/Software-Engineering-II-Project-Group-6/Group-6-Project/wiki).
+
 ## Introduction
 
 **NourishQuest** is a free web application that users can register for and use to make their dieting journey easier through a gamified approach to nutrition planning. By completing daily tasks and participating in leaderboards, users not only stay competitive and committed to their plans but also develop long-term healthy habits. There’s no reason not to try this app!
