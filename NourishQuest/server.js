@@ -7,7 +7,14 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require('fs'); // for protected pages list
-const { setupWebSocket } = require('./models/aiChatService');
+const http = require('http');
+const { setupWebSocket } = require('./services/socketService');
+const Redis = require('ioredis');
+
+//Initialize Redis Client
+const redis = process.env.REDIS_URL 
+  ? new Redis(process.env.REDIS_URL)
+  : new Redis();
 
 // Load models
 const User = require("./models/User");
@@ -222,14 +229,19 @@ app.use((req, res) => {res.status(404).render('404', new contextBlock(req,'Page 
 // --------------------------
 //       START SERVER
 // --------------------------
-let server;
+const server = http.createServer(app);
+
+// Setup WebSocket after creating the server
+setupWebSocket(server);
+
 if (process.env.NODE_ENV !== "test") {
-  //If not in testing environment or not using Jest
-  server = app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`WebSocket server running on ws://localhost:${PORT}`);
   });
 }
 
-setupWebSocket(server);
+const aiRoutes = require('./routes/aiRoutes');
+app.use('/api/ai', aiRoutes);
 
 module.exports = { app, server, dbConnection };
