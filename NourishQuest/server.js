@@ -6,18 +6,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const fs = require("fs"); // for protected pages list
+const fs = require("fs");
 
-// Load models
 const User = require("./models/User");
 
-// Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB
-const uri = process.env.MONGO_URI;
-mongoose.connect(uri);
+mongoose.connect(process.env.MONGO_URI);
 const dbConnection = mongoose.connection;
 dbConnection.once("open", () => {
   console.log("Connected to MongoDB successfully!");
@@ -26,7 +22,6 @@ dbConnection.on("error", (err) => {
   console.error("MongoDB connection error:", err);
 });
 
-// Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -41,7 +36,6 @@ app.use(
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// ensure user is logged in
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.redirect("/login");
@@ -49,7 +43,6 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// Handlebars templating engine
 app.engine(
   "handlebars",
   exhandle.engine({
@@ -58,16 +51,13 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-// list of protected pages, for validation
 const protectedList = fs
   .readdirSync(path.join(__dirname, "protected"))
-  .map((name, index) => name.replace(".html", ""));
+  .map((f) => f.replace(".html", ""));
 
-// class to hold data passed to frontend using Handlebars' .render method
 class contextBlock {
   pageTitle;
   contentList = [];
-
   constructor(req, title, layout) {
     this.pageTitle = title;
     if (layout) {
@@ -77,18 +67,13 @@ class contextBlock {
       this.loggedIn = true;
     }
   }
-
   rawify() {
     this.raw = JSON.stringify(this, undefined, 4);
     return this;
   }
 }
 
-// --------------------------
-//         ROUTES
-// --------------------------
-
-// Home route -> public.html
+// Basic routes
 app.get("/:homePath(home|index|index.html)?", (req, res) => {
   if (req.session?.userId) {
     return res.redirect("/dashboard");
@@ -96,17 +81,15 @@ app.get("/:homePath(home|index|index.html)?", (req, res) => {
   return res.status(200).render("home", new contextBlock(req));
 });
 
-// Register page -> register.html
 app.get("/register", (req, res) => {
   res.status(200).render("register", new contextBlock(req, "Register"));
 });
 
-// Login page -> login.html
 app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
 });
 
-// Return current user data as JSON
+// GET /api/current-user => to fetch user macros, etc.
 app.get("/api/current-user", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).lean();
@@ -119,82 +102,202 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
       age: user.age,
       height: user.height,
       weight: user.weight,
+      gender: user.gender,
+      dailyCalorieGoal: user.dailyCalorieGoal,
+      macros: user.macros,
     });
   } catch (error) {
-    console.error("Error in /api/current-user route:", error);
+    console.error("Error in /api/current-user:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// /api/foods route
+// createplan.html
+app.get("/createplan", requireLogin, (req, res) => {
+  res.sendFile(path.join(__dirname, "protected", "createplan.html"));
+});
+
+// finalizeplan.html
+app.get("/finalizeplan", requireLogin, (req, res) => {
+  res.sendFile(path.join(__dirname, "protected", "finalizeplan.html"));
+});
+
+// TDEE (Mifflin–St Jeor)
+function calculateTDEE(user, goal, activity) {
+  const weightKg = user.weight * 0.45359237;
+
+  // s offset
+  const s = user.gender === "female" ? -161 : 5;
+
+  // BMR in metric
+  let bmr = 10 * weightKg + 6.25 * user.height - 5 * user.age + s;
+
+  // activity factor
+  let factor = 1.2;
+  if (activity === "lightly") factor = 1.375;
+  if (activity === "active") factor = 1.55;
+  if (activity === "very") factor = 1.725;
+
+  let tdee = bmr * factor;
+
+  // goal adjustments: add or lose
+  if (goal === "add") {
+    tdee += 300;
+  } else if (goal === "lose") {
+    tdee -= 300;
+  }
+
+  return Math.round(tdee);
+}
+
+// POST /api/createplan => store daily cals/macros
+app.post("/api/createplan", requireLogin, async (req, res) => {
+  try {
+    const { goal, activity, planLength } = req.body;
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const finalCals = calculateTDEE(user, goal, activity);
+    const protein = Math.round((finalCals * 0.2) / 4);
+    const fat = Math.round((finalCals * 0.25) / 9);
+    const carbs = Math.round((finalCals * 0.55) / 4);
+
+    user.dailyCalorieGoal = finalCals;
+    user.macros.protein = protein;
+    user.macros.fat = fat;
+    user.macros.carbs = carbs;
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in /api/createplan:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/finalizeplan > store weeklyMealPlan arrays
+app.post("/api/finalizeplan", requireLogin, async (req, res) => {
+  try {
+    const { weeklyPlan } = req.body;
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.weeklyMealPlan = weeklyPlan;
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in /api/finalizeplan:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Reset plan
+app.post("/api/resetplan", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.weeklyMealPlan.monday.breakfast = [];
+    user.weeklyMealPlan.monday.lunch = [];
+    user.weeklyMealPlan.monday.dinner = [];
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error resetting plan:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// GET /api/plan => day switching
+app.get("/api/plan", requireLogin, async (req, res) => {
+  try {
+    const day = (req.query.day || "monday").toLowerCase();
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const mealPlanForDay = user.weeklyMealPlan?.[day] || null;
+    const cartForDay = user.cart?.[day] || null;
+    const consumptionForDay = user.dailyConsumption?.[day] || {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+      water: 0,
+    };
+
+    let hasMealPlan = false,
+      hasCart = false;
+    if (mealPlanForDay) {
+      const { breakfast, lunch, dinner } = mealPlanForDay;
+      const hasB = breakfast && breakfast.length > 0;
+      const hasL = lunch && lunch.length > 0;
+      const hasD = dinner && dinner.length > 0;
+      hasMealPlan = hasB || hasL || hasD;
+    }
+    if (cartForDay) {
+    }
+
+    return res.json({
+      hasMealPlan,
+      mealPlan: mealPlanForDay,
+      hasCart,
+      cart: cartForDay,
+      consumption: consumptionForDay,
+      dailyCalorieGoal: user.dailyCalorieGoal,
+      macros: user.macros,
+      dailyWaterIntake: user.dailyWaterIntake,
+    });
+  } catch (err) {
+    console.error("Error in GET /api/plan:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Example /api/foods => USDA approach
 app.get("/api/foods", requireLogin, async (req, res) => {
   try {
     const searchTerm = req.query.search || "chicken";
-    const pageSize = req.query.page_size || "10";
-    const filter = req.query.filter || "all";
-    const results = await fetchUSDAFoods(searchTerm, pageSize, filter);
-    return res.json(results);
-  } catch (error) {
-    console.error("Final error in /api/foods route:", error);
+    const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
+    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
+      searchTerm
+    )}&pageSize=10&api_key=${apiKey}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res
+        .status(500)
+        .json({ error: `USDA request failed: ${response.status}` });
+    }
+    const data = await response.json();
+    const foods = data.foods || [];
+    const mapped = foods.map((f) => {
+      let protein = 0,
+        fat = 0,
+        carbs = 0;
+      if (f.foodNutrients) {
+        for (const n of f.foodNutrients) {
+          const name = n.nutrientName.toLowerCase();
+          if (name.includes("protein")) protein = n.value || 0;
+          else if (name.includes("fat")) fat = n.value || 0;
+          else if (name.includes("carbohydrate")) carbs = n.value || 0;
+        }
+      }
+      return {
+        name: f.description || "No name",
+        protein,
+        fat,
+        carbs,
+        imageUrl: "https://cdn-icons-png.flaticon.com/512/10366/10366416.png",
+      };
+    });
+    return res.json(mapped);
+  } catch (err) {
+    console.error("Error in /api/foods route:", err);
     return res.status(500).json({ error: "Server error" });
   }
 });
 
-async function fetchUSDAFoods(query, pageSize, filter) {
-  const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
-  const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
-    query
-  )}&pageSize=${pageSize}&api_key=${apiKey}`;
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`USDA request failed with status ${response.status}`);
-  }
-  const data = await response.json();
-  let foods = data.foods || [];
-  if (filter !== "all") {
-    foods = foods.filter((f) => {
-      const desc = f.description ? f.description.toLowerCase() : "";
-      switch (filter) {
-        case "vegetarian":
-          return desc.includes("vegetarian");
-        case "vegan":
-          return desc.includes("vegan");
-        case "glutenfree":
-          return desc.includes("gluten-free") || desc.includes("gluten free");
-        case "lowcarb":
-          return desc.includes("low carb") || desc.includes("lowcarb");
-        default:
-          return true;
-      }
-    });
-  }
-  return foods.map((f) => {
-    let protein = 0;
-    let fat = 0;
-    let carbs = 0;
-    if (f.foodNutrients) {
-      for (const n of f.foodNutrients) {
-        const name = n.nutrientName.toLowerCase();
-        if (name.includes("protein")) {
-          protein = n.value || 0;
-        } else if (name.includes("fat")) {
-          fat = n.value || 0;
-        } else if (name.includes("carbohydrate")) {
-          carbs = n.value || 0;
-        }
-      }
-    }
-    return {
-      name: f.description || "No name",
-      imageUrl: "https://cdn-icons-png.flaticon.com/512/10366/10366416.png",
-      protein,
-      fat,
-      carbs,
-    };
-  });
-}
-
-// universal GET for Protected Pages
+// universal GET for protected pages
 app.get("/:protectedPage", requireLogin, (req, res, next) => {
   let pageName = req.params.protectedPage;
   if (!protectedList.includes(pageName)) {
@@ -203,7 +306,7 @@ app.get("/:protectedPage", requireLogin, (req, res, next) => {
   res.sendFile(path.join(__dirname, "protected", `${pageName}.html`));
 });
 
-// Registration (POST /register)
+// POST /register
 app.post("/register", async (req, res) => {
   try {
     const { email, username, password, age, height, weight, gender } = req.body;
@@ -223,51 +326,42 @@ app.post("/register", async (req, res) => {
     });
     await newUser.save();
     return res.redirect("/login");
-  } catch (error) {
-    console.error("Error in /register route:", error);
+  } catch (err) {
+    console.error("Error in /register route:", err);
     return res.status(500).send("Internal server error");
   }
 });
 
-// Handle Login (POST /login)
+// POST /login
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).send("Invalid email or password");
-    }
+    if (!user) return res.status(400).send("Invalid email or password");
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).send("Invalid email or password");
-    }
+    if (!isMatch) return res.status(400).send("Invalid email or password");
     req.session.userId = user._id;
     return res.redirect("/dashboard");
-  } catch (error) {
-    console.error("Error in /login route:", error);
+  } catch (err) {
+    console.error("Error in /login route:", err);
     return res.status(500).send("Internal server error");
   }
 });
 
-// Handle Logout (POST /logout)
+// POST /logout
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
-    if (err) {
-      console.error("Session destruction error:", err);
-    }
+    if (err) console.error("Session destruction error:", err);
     res.clearCookie("connect.sid");
     return res.redirect("/login");
   });
 });
 
-// routing for 404 error page
+// 404
 app.use((req, res) => {
   res.status(404).render("404", new contextBlock(req, "Page Not Found"));
 });
 
-// --------------------------
-//       START SERVER
-// --------------------------
 let server;
 if (process.env.NODE_ENV !== "test") {
   server = app.listen(PORT, () => {

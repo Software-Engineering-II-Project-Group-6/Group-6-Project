@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -11,6 +12,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+
   // Hashed password (bcrypt, etc.)
   password: {
     type: String,
@@ -67,7 +69,7 @@ const userSchema = new mongoose.Schema({
 
   dailyWaterIntake: {
     type: Number,
-    default: 2000, //in ml
+    default: 2000, // in ml
   },
 
   // Points from achievements
@@ -289,208 +291,267 @@ const userSchema = new mongoose.Schema({
   // Weekly Meal Plan
   weeklyMealPlan: {
     monday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     tuesday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     wednesday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     thursday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     friday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     saturday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
     sunday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
+      ],
     },
+  },
+
+  // Daily consumption tracker
+  dailyConsumption: {
+    monday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    tuesday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    wednesday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    thursday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    friday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    saturday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+    sunday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+    },
+  },
+
+  // Streak
+  streak: {
+    type: Number,
+    default: 0,
   },
 
   recipes: [

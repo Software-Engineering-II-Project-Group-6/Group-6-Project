@@ -16,13 +16,12 @@
   </head>
   <body
     class="bg-[#f8fbfb]"
-    style="font-family: Epilogue, 'Noto Sans', sans-serif"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
   >
     <div
       class="relative flex w-full min-h-screen flex-col bg-[#f8fbfb] overflow-x-hidden"
     >
       <div class="layout-container flex h-full grow flex-col">
-        <!-- Header -->
         <header
           class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
         >
@@ -33,7 +32,6 @@
               <a href="/" class="text-[#0e1b19]">NourishQuest</a>
             </h2>
           </div>
-
           <div class="flex flex-1 justify-end items-center gap-8">
             <div class="flex items-center gap-4">
               <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
@@ -58,7 +56,6 @@
                 >Recipes</a
               >
             </div>
-            <!-- Log Out -->
             <form action="/logout" method="POST">
               <button
                 type="submit"
@@ -67,7 +64,6 @@
                 Log Out
               </button>
             </form>
-
             <div
               class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
               style="
@@ -77,19 +73,18 @@
           </div>
         </header>
 
-        <!-- Main Content -->
         <div class="px-40 flex flex-1 justify-center py-5">
           <div
             class="layout-content-container flex flex-col w-[512px] max-w-[960px] py-5 flex-1"
           >
-            <!-- Page Title and Intro -->
             <div class="flex flex-wrap justify-between gap-3 p-4">
               <div class="flex min-w-72 flex-col gap-3">
                 <p
+                  id="planSummary"
                   class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
                 >
-                  Your daily nutritional needs: 0 calories, 0g carbs, 0g
-                  protein, 0g fat
+                  Your daily nutritional needs: 0 cals, 0g carbs, 0g protein, 0g
+                  fat
                 </p>
                 <p class="text-[#4f968f] text-sm font-normal leading-normal">
                   Fulfill your calculated nutritional requirements with a
@@ -98,286 +93,130 @@
               </div>
             </div>
 
-            <!-- Day-of-Week Navigation -->
+            <!-- Day Switcher -->
             <div class="pb-3">
               <div class="flex border-b border-[#d0e6e4] px-4 gap-8">
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-[#1ce3cf] text-[#0e1b19] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-[#1ce3cf] text-[#0e1b19] pb-3 pt-4"
+                  data-day="monday"
                   href="#"
                 >
-                  <p
-                    class="text-[#0e1b19] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Mon
-                  </p>
+                  Mon
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="tuesday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Tue
-                  </p>
+                  Tue
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="wednesday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Wed
-                  </p>
+                  Wed
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="thursday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Thu
-                  </p>
+                  Thu
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="friday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Fri
-                  </p>
+                  Fri
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="saturday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Sat
-                  </p>
+                  Sat
                 </a>
                 <a
-                  class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-[13px] pt-4"
+                  class="day-link border-b-[3px] border-b-transparent text-[#4f968f] pb-3 pt-4"
+                  data-day="sunday"
                   href="#"
                 >
-                  <p
-                    class="text-[#4f968f] text-sm font-bold leading-normal tracking-[0.015em]"
-                  >
-                    Sun
-                  </p>
+                  Sun
                 </a>
               </div>
             </div>
 
-            <!-- Breakfast Section -->
-            <h3
-              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
-            >
+            <!-- Breakfast -->
+            <h3 class="text-lg font-bold text-[#0e1b19] px-4 pt-4 pb-2">
               Breakfast
             </h3>
-            <div class="px-4 py-3">
-              <div class="flex items-stretch rounded-xl overflow-hidden">
+            <div class="px-4">
+              <div class="flex mb-2">
                 <input
-                  placeholder="Search for food"
-                  class="form-input flex-1 resize-none overflow-hidden rounded-none border-none bg-[#e8f3f2] placeholder:text-[#4f968f] px-4 text-base font-normal"
+                  id="breakfastSearchInput"
+                  placeholder="Search breakfast"
+                  class="form-input flex-1 border-none bg-[#e8f3f2] px-4 text-base"
                 />
-                <button class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold">
-                  Add
+                <button
+                  class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold"
+                  onclick="searchFoods('breakfast')"
+                >
+                  Search
                 </button>
               </div>
-            </div>
-            <!-- Breakfast Food Items -->
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Tofu Stir-fry
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 500, Carbs: 40g, Fat: 25g, Protein: 30g
-                </p>
-              </div>
-            </div>
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Quinoa Salad
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 400, Carbs: 45g, Fat: 20g, Protein: 15g
-                </p>
-              </div>
-            </div>
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Mixed Nuts
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 200, Carbs: 20g, Fat: 10g, Protein: 5g
-                </p>
-              </div>
+              <div id="breakfastSearchResults" class="mb-2"></div>
+              <div id="breakfastChosen" class="bg-white rounded p-2"></div>
             </div>
 
-            <!-- Lunch Section -->
-            <h3
-              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
-            >
+            <!-- Lunch -->
+            <h3 class="text-lg font-bold text-[#0e1b19] px-4 pt-4 pb-2">
               Lunch
             </h3>
-            <div class="px-4 py-3">
-              <div class="flex items-stretch rounded-xl overflow-hidden">
+            <div class="px-4">
+              <div class="flex mb-2">
                 <input
-                  placeholder="Search for food"
-                  class="form-input flex-1 resize-none overflow-hidden rounded-none border-none bg-[#e8f3f2] placeholder:text-[#4f968f] px-4 text-base font-normal"
+                  id="lunchSearchInput"
+                  placeholder="Search lunch"
+                  class="form-input flex-1 border-none bg-[#e8f3f2] px-4 text-base"
                 />
-                <button class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold">
-                  Add
+                <button
+                  class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold"
+                  onclick="searchFoods('lunch')"
+                >
+                  Search
                 </button>
               </div>
-            </div>
-            <!-- Lunch Food Items -->
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Salad Bowl
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 350, Carbs: 30g, Fat: 15g, Protein: 12g
-                </p>
-              </div>
-            </div>
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Turkey Sandwich
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 450, Carbs: 40g, Fat: 18g, Protein: 25g
-                </p>
-              </div>
+              <div id="lunchSearchResults" class="mb-2"></div>
+              <div id="lunchChosen" class="bg-white rounded p-2"></div>
             </div>
 
-            <!-- Dinner Section -->
-            <h3
-              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
-            >
+            <!-- Dinner -->
+            <h3 class="text-lg font-bold text-[#0e1b19] px-4 pt-4 pb-2">
               Dinner
             </h3>
-            <div class="px-4 py-3">
-              <div class="flex items-stretch rounded-xl overflow-hidden">
+            <div class="px-4">
+              <div class="flex mb-2">
                 <input
-                  placeholder="Search for food"
-                  class="form-input flex-1 resize-none overflow-hidden rounded-none border-none bg-[#e8f3f2] placeholder:text-[#4f968f] px-4 text-base font-normal"
+                  id="dinnerSearchInput"
+                  placeholder="Search dinner"
+                  class="form-input flex-1 border-none bg-[#e8f3f2] px-4 text-base"
                 />
-                <button class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold">
-                  Add
+                <button
+                  class="px-4 bg-[#1ce3cf] text-[#0e1b19] font-bold"
+                  onclick="searchFoods('dinner')"
+                >
+                  Search
                 </button>
               </div>
-            </div>
-            <!-- Dinner Food Items -->
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Salmon
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 600, Carbs: 50g, Fat: 30g, Protein: 35g
-                </p>
-              </div>
-            </div>
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Brown Rice
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 300, Carbs: 35g, Fat: 15g, Protein: 10g
-                </p>
-              </div>
-            </div>
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
-            >
-              <div
-                class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
-                style="
-                  background-image: url('https://via.placeholder.com/64?text=Food');
-                "
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal">
-                  Steamed Vegetables
-                </p>
-                <p class="text-[#4f968f] text-sm font-normal leading-normal">
-                  Calories: 150, Carbs: 20g, Fat: 5g, Protein: 5g
-                </p>
-              </div>
+              <div id="dinnerSearchResults" class="mb-2"></div>
+              <div id="dinnerChosen" class="bg-white rounded p-2"></div>
             </div>
 
-            <!-- Finalize Plan Button -->
             <div class="flex px-4 py-3 justify-center">
               <button
+                onclick="finalizePlan()"
                 class="flex items-center justify-center rounded-full h-12 px-5 bg-[#1ce3cf] text-[#0e1b19] text-base font-bold leading-normal whitespace-nowrap"
               >
                 Finalize and Create Your Plan
@@ -389,18 +228,176 @@
     </div>
 
     <script>
-      (async () => {
+      const weeklyPlan = {
+        monday: { breakfast: [], lunch: [], dinner: [] },
+        tuesday: { breakfast: [], lunch: [], dinner: [] },
+        wednesday: { breakfast: [], lunch: [], dinner: [] },
+        thursday: { breakfast: [], lunch: [], dinner: [] },
+        friday: { breakfast: [], lunch: [], dinner: [] },
+        saturday: { breakfast: [], lunch: [], dinner: [] },
+        sunday: { breakfast: [], lunch: [], dinner: [] },
+      };
+
+      let activeDay = "monday";
+
+      document.addEventListener("DOMContentLoaded", async () => {
         try {
-          const response = await fetch("/api/current-user");
-          if (!response.ok) {
-            console.warn("Could not fetch user data. Status:", response.status);
+          const res = await fetch("/api/current-user");
+          if (res.ok) {
+            const user = await res.json();
+            const c = user.dailyCalorieGoal || 0;
+            const carbs = user.macros?.carbs || 0;
+            const p = user.macros?.protein || 0;
+            const f = user.macros?.fat || 0;
+            document.getElementById(
+              "planSummary"
+            ).textContent = `Your daily nutritional needs: ${c} cals, ${carbs}g carbs, ${p}g protein, ${f}g fat`;
+          }
+        } catch (err) {
+          console.warn("Could not fetch user macros:", err);
+        }
+
+        const dayLinks = document.querySelectorAll(".day-link");
+        dayLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            setActiveDay(link.getAttribute("data-day"));
+          });
+        });
+        setActiveDay("monday");
+      });
+
+      function setActiveDay(dayName) {
+        activeDay = dayName;
+        const links = document.querySelectorAll(".day-link");
+        links.forEach((lnk) => {
+          lnk.classList.remove("border-b-[#1ce3cf]", "text-[#0e1b19]");
+          lnk.classList.add("border-b-transparent", "text-[#4f968f]");
+        });
+        const activeLink = Array.from(links).find(
+          (l) => l.getAttribute("data-day") === dayName
+        );
+        if (activeLink) {
+          activeLink.classList.remove("border-b-transparent", "text-[#4f968f]");
+          activeLink.classList.add("border-b-[#1ce3cf]", "text-[#0e1b19]");
+        }
+        renderChosenItems();
+      }
+
+      async function searchFoods(meal) {
+        const inputId = meal + "SearchInput";
+        const resultsId = meal + "SearchResults";
+        const query =
+          document.getElementById(inputId).value.trim() || "chicken";
+
+        try {
+          const resp = await fetch(
+            `/api/foods?search=${encodeURIComponent(query)}`
+          );
+          if (!resp.ok) {
+            console.warn("Food search failed:", resp.status);
             return;
           }
-          const userData = await response.json();
+          const foods = await resp.json();
+          renderSearchResults(foods, meal, resultsId);
         } catch (err) {
-          console.error("Error fetching user data:", err);
+          console.error("Error searching foods:", err);
         }
-      })();
+      }
+
+      function renderSearchResults(foods, meal, resultsId) {
+        const container = document.getElementById(resultsId);
+        container.innerHTML = "";
+        if (!foods || foods.length === 0) {
+          container.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+        foods.forEach((food) => {
+          const cals = food.protein * 4 + food.fat * 9 + food.carbs * 4;
+          const itemDiv = document.createElement("div");
+          itemDiv.className =
+            "flex items-center gap-4 bg-[#f8fbfb] min-h-[72px] py-2 border-b border-[#e8f3f2] px-4";
+          itemDiv.innerHTML = `
+            <div
+              class="bg-center bg-no-repeat bg-cover rounded-lg w-14 h-14"
+              style="background-image:url('${food.imageUrl}');"
+            ></div>
+            <div class="flex flex-col justify-center">
+              <p class="text-[#0e1b19] text-base font-medium">${food.name}</p>
+              <p class="text-[#4f968f] text-sm">
+                ~${cals} cals, ${food.carbs}g carbs, ${food.protein}g protein, ${food.fat}g fat
+              </p>
+            </div>
+            <button
+              class="ml-auto mr-4 bg-[#1ce3cf] px-3 py-1 rounded-full text-[#0e1b19] font-bold"
+            >Add</button>
+          `;
+          const addBtn = itemDiv.querySelector("button");
+          addBtn.addEventListener("click", () => {
+            weeklyPlan[activeDay][meal].push({
+              name: food.name,
+              calorie: cals,
+              protein: food.protein,
+              carb: food.carbs,
+              fat: food.fat,
+            });
+            renderChosenItems();
+          });
+          container.appendChild(itemDiv);
+        });
+      }
+
+      function renderChosenItems() {
+        ["breakfast", "lunch", "dinner"].forEach((meal) => {
+          const container = document.getElementById(meal + "Chosen");
+          container.innerHTML = "";
+          const items = weeklyPlan[activeDay][meal];
+          if (!items || items.length === 0) {
+            container.innerHTML = `<p class="text-[#4f968f] text-sm">No items added yet.</p>`;
+            return;
+          }
+          items.forEach((it, idx) => {
+            const row = document.createElement("div");
+            row.className = "flex items-center justify-between border-b py-1";
+            row.innerHTML = `
+              <div>
+                <p class="text-[#0e1b19] text-sm font-medium">${it.name}</p>
+                <p class="text-[#4f968f] text-xs">
+                  ${it.calorie} cals, ${it.carb}g carbs, ${it.protein}g protein, ${it.fat}g fat
+                </p>
+              </div>
+              <button class="text-red-500 text-xs underline">Remove</button>
+            `;
+            const removeBtn = row.querySelector("button");
+            removeBtn.addEventListener("click", () => {
+              weeklyPlan[activeDay][meal].splice(idx, 1);
+              renderChosenItems();
+            });
+            container.appendChild(row);
+          });
+        });
+      }
+
+      async function finalizePlan() {
+        try {
+          const resp = await fetch("/api/finalizeplan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ weeklyPlan }),
+          });
+          if (!resp.ok) {
+            console.warn("Finalize plan failed:", resp.status);
+            return;
+          }
+          const data = await resp.json();
+          if (data.success) {
+            alert("Plan saved successfully!");
+            window.location.href = "/plan";
+          }
+        } catch (err) {
+          console.error("Error finalizing plan:", err);
+        }
+      }
     </script>
   </body>
 </html>
