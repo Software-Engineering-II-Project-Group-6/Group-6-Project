@@ -57,8 +57,6 @@
                 >Recipes</a
               >
             </div>
-
-            <!-- Log Out -->
             <form action="/logout" method="POST">
               <button
                 type="submit"
@@ -77,7 +75,6 @@
           </div>
         </header>
 
-        <!-- Main Content -->
         <div class="px-40 flex flex-1 justify-center py-5">
           <div
             class="layout-content-container flex flex-col w-[512px] max-w-[960px] py-5 flex-1"
@@ -102,13 +99,12 @@
             >
               Your Goals
             </h3>
-
             <div class="flex flex-col gap-3 p-4">
-              <!-- Example: "Maintain weight" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="goal"
+                  value="maintain"
                   class="peer absolute inset-0 z-10 opacity-0"
                   checked
                 />
@@ -118,12 +114,11 @@
                   Maintain weight
                 </span>
               </label>
-
-              <!-- "Add muscle" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="goal"
+                  value="add"
                   class="peer absolute inset-0 z-10 opacity-0"
                 />
                 <span
@@ -132,12 +127,11 @@
                   Add muscle
                 </span>
               </label>
-
-              <!-- "Lose weight" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="goal"
+                  value="lose"
                   class="peer absolute inset-0 z-10 opacity-0"
                 />
                 <span
@@ -155,63 +149,57 @@
               How active are you?
             </h3>
             <div class="flex flex-col gap-3 p-4">
-              <!-- 1. Sedentary -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="activity"
+                  value="sedentary"
                   class="peer absolute inset-0 z-10 opacity-0"
                   checked
                 />
                 <span
                   class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
                 >
-                  Sedentary — spend most of the day sitting (e.g. desk job)
+                  Sedentary
                 </span>
               </label>
-
-              <!-- 2. Lightly active -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="activity"
+                  value="lightly"
                   class="peer absolute inset-0 z-10 opacity-0"
                 />
                 <span
                   class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
                 >
-                  Lightly active — spend a good part of the day on your feet
-                  (e.g. teacher, salesperson)
+                  Lightly active
                 </span>
               </label>
-
-              <!-- 3. Active -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="activity"
+                  value="active"
                   class="peer absolute inset-0 z-10 opacity-0"
                 />
                 <span
                   class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
                 >
-                  Active — spend a good part of the day doing some physical
-                  activity (e.g. food server, mail carrier)
+                  Active
                 </span>
               </label>
-
-              <!-- 4. Very active -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="activity"
+                  value="very"
                   class="peer absolute inset-0 z-10 opacity-0"
                 />
                 <span
                   class="block text-sm font-medium leading-normal rounded-xl border border-[#d0e6e4] px-4 py-3 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
                 >
-                  Very active — spend most of the day doing heavy physical
-                  activity (e.g. messenger, dock worker)
+                  Very active
                 </span>
               </label>
             </div>
@@ -223,12 +211,13 @@
               How long would you like your plan to be?
             </h3>
             <div class="flex flex-wrap gap-3 p-4">
-              <!-- "4 weeks" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="planLength"
+                  value="4"
                   class="peer absolute inset-0 opacity-0 z-10"
+                  checked
                 />
                 <span
                   class="block text-sm font-medium leading-normal flex items-center justify-center rounded-xl border border-[#d0e6e4] px-4 h-11 text-[#0e1b19] peer-checked:border-2 peer-checked:border-[#1ce3cf] peer-checked:bg-[#1ce3cf] peer-checked:text-white transition-colors"
@@ -236,12 +225,11 @@
                   4 weeks
                 </span>
               </label>
-
-              <!-- "8 weeks" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="planLength"
+                  value="8"
                   class="peer absolute inset-0 opacity-0 z-10"
                 />
                 <span
@@ -250,12 +238,11 @@
                   8 weeks
                 </span>
               </label>
-
-              <!-- "12 weeks" -->
               <label class="relative cursor-pointer">
                 <input
                   type="radio"
                   name="planLength"
+                  value="12"
                   class="peer absolute inset-0 opacity-0 z-10"
                 />
                 <span
@@ -269,6 +256,7 @@
             <!-- Continue Button -->
             <div class="flex px-4 py-3 justify-end">
               <button
+                id="continueBtn"
                 class="flex items-center justify-center rounded-full h-12 px-5 bg-[#1ce3cf] text-[#0e1b19] text-base font-bold leading-normal whitespace-nowrap"
               >
                 Continue
@@ -286,18 +274,40 @@
     </div>
 
     <script>
-      (async () => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const continueBtn = document.getElementById("continueBtn");
+        continueBtn.addEventListener("click", handleContinue);
+      });
+
+      async function handleContinue() {
+        const goal =
+          document.querySelector('input[name="goal"]:checked')?.value ||
+          "maintain";
+        const activity =
+          document.querySelector('input[name="activity"]:checked')?.value ||
+          "sedentary";
+        const planLength =
+          document.querySelector('input[name="planLength"]:checked')?.value ||
+          "4";
+
         try {
-          const response = await fetch("/api/current-user");
-          if (!response.ok) {
-            console.warn("Could not fetch user data. Status:", response.status);
+          const resp = await fetch("/api/createplan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ goal, activity, planLength }),
+          });
+          if (!resp.ok) {
+            console.warn("Create plan failed:", resp.status);
             return;
           }
-          const userData = await response.json();
+          const data = await resp.json();
+          if (data.success) {
+            window.location.href = "/finalizeplan";
+          }
         } catch (err) {
-          console.error("Error fetching user data:", err);
+          console.error("Error creating plan:", err);
         }
-      })();
+      }
     </script>
   </body>
 </html>
