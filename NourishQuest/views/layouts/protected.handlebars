@@ -21,9 +21,15 @@
       class="relative flex min-h-screen flex-col overflow-x-hidden"
     >
       <div class="layout-container flex h-full grow flex-col">
-        {{> navDefault}}
+        {{> navLoggedIn}}
 
-        {{{body}}}
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <div
+          class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            {{{body}}}
+          </div>
+        </div>
       </div>
     </div>
   </body>

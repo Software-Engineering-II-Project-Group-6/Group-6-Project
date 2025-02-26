@@ -1,0 +1,59 @@
+
+<div
+  class="w-full"
+>
+  <div class="flex flex-wrap justify-between gap-3 p-4">
+    <div class="flex flex-col gap-3">
+      <p class="text-[#0e1b19] text-[32px] font-bold leading-tight">
+        Add Recipe
+      </p>
+      <p class="text-[#4f968f] text-sm font-normal leading-normal">
+        Save your favourite recipes here to check them anytime!
+      </p>
+    </div>
+  </div>
+
+  <!-- Recipe Name Field -->
+  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+    <label class="flex flex-col flex-1">
+      <input
+        placeholder="Recipe name"
+        class="form-input w-full rounded-xl text-[#0e1b19] focus:outline-0 focus:ring-0 border border-[#d0e6e4] bg-[#f8fbfb] h-14 placeholder:text-[#4f968f] p-4 text-base font-normal"
+      />
+    </label>
+  </div>
+
+  <!-- Recipe Description / Instructions Field -->
+  <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+    <label class="flex flex-col flex-1">
+      <textarea
+        placeholder="Describe how to make your recipe"
+        class="form-input w-full rounded-xl text-[#0e1b19] focus:outline-0 focus:ring-0 border border-[#d0e6e4] bg-[#f8fbfb] min-h-36 placeholder:text-[#4f968f] p-4 text-base font-normal"
+      ></textarea>
+    </label>
+  </div>
+
+  <!-- Save Recipe Button -->
+  <div class="flex px-4 py-3">
+    <button
+      class="flex items-center justify-center rounded-full h-12 px-5 bg-[#1ce3cf] text-[#0e1b19] text-base font-bold leading-normal whitespace-nowrap"
+    >
+      Save Recipe
+    </button>
+  </div>
+</div>
+
+<script>
+    (async () => {
+      try {
+        const response = await fetch("/api/current-user");
+        if (!response.ok) {
+          console.warn("Could not fetch user data. Status:", response.status);
+          return;
+        }
+        const userData = await response.json();
+      } catch (err) {
+        console.error("Error fetching current user:", err);
+      }
+    })();
+</script>

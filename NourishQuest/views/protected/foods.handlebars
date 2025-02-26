@@ -1,0 +1,218 @@
+<!-- Page Title -->
+<div class="flex flex-wrap justify-between gap-3 p-4">
+    <p
+    class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight min-w-[72px]"
+    >
+    Foods
+    </p>
+</div>
+
+<!-- Search Field -->
+<div class="px-4 py-3">
+    <label class="flex flex-col min-w-[40px] h-12 w-full">
+    <div class="flex w-full items-stretch rounded-xl h-full">
+        <input
+        id="searchInput"
+        type="text"
+        placeholder="Search for a food (e.g. chicken)"
+        class="flex-1 form-input resize-none overflow-hidden rounded-xl text-[#0e1b19] focus:outline-none focus:ring-0 border-none bg-[#e8f3f2] h-full placeholder:text-[#4f968f] px-4"
+        />
+    </div>
+    </label>
+</div>
+
+<!-- Search + Page Size Row -->
+<div class="px-4 py-3 flex items-center gap-4">
+    <button
+    id="searchButton"
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    >
+    Search
+    </button>
+
+    <!-- Page Size Dropdown -->
+    <select
+    id="pageSizeSelect"
+    class="bg-[#e8f3f2] text-[#0e1b19] px-2 py-1 rounded-lg font-medium w-36"
+    >
+    <option value="10">10 results</option>
+    <option value="20">20 results</option>
+    <option value="50">50 results</option>
+    </select>
+</div>
+
+<!-- Filter Section -->
+<div class="px-4 py-3 flex flex-wrap gap-4">
+    <button
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    data-filter="all"
+    >
+    All
+    </button>
+    <button
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    data-filter="vegetarian"
+    >
+    Vegetarian
+    </button>
+    <button
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    data-filter="vegan"
+    >
+    Vegan
+    </button>
+    <button
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    data-filter="glutenfree"
+    >
+    Gluten Free
+    </button>
+    <button
+    class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
+    data-filter="lowcarb"
+    >
+    Low Carb
+    </button>
+</div>
+
+<h3
+    class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+>
+    Discover Foods
+</h3>
+
+<!-- Loading indicator -->
+<div id="loadingIndicator" class="px-4 hidden text-[#0e1b19]">
+    <p>Loading, please wait...</p>
+</div>
+
+<!-- Error message -->
+<div id="errorMsg" class="px-4 text-red-700 font-bold hidden"></div>
+
+<!-- Container to hold the dynamic list of foods -->
+<div id="food-list" class="px-4"></div>
+
+<script>
+    let debounceTimer;
+
+    window.addEventListener("DOMContentLoaded", () => {
+    // Default
+    fetchFoods("chicken", "all", 10);
+
+    const searchBtn = document.getElementById("searchButton");
+    const searchInput = document.getElementById("searchInput");
+    const pageSizeSelect = document.getElementById("pageSizeSelect");
+    const filterButtons = document.querySelectorAll("button[data-filter]");
+
+    // Debounce the input
+    searchInput.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+        const query = searchInput.value.trim() || "chicken";
+        const pageSize = pageSizeSelect.value;
+        fetchFoods(query, "all", pageSize);
+        }, 800);
+    });
+
+    // Search button click
+    searchBtn.addEventListener("click", () => {
+        const query = searchInput.value.trim() || "chicken";
+        const pageSize = pageSizeSelect.value;
+        fetchFoods(query, "all", pageSize);
+    });
+
+    // Filter buttons
+    filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+        const query = searchInput.value.trim() || "chicken";
+        const pageSize = pageSizeSelect.value;
+        const filterValue = btn.getAttribute("data-filter");
+        fetchFoods(query, filterValue, pageSize);
+        });
+    });
+    });
+
+    async function fetchFoods(searchTerm, filter, pageSize) {
+    showError("");
+    showLoading(true);
+
+    try {
+        let url = `/api/foods?search=${encodeURIComponent(
+        searchTerm
+        )}&page_size=${pageSize}`;
+        if (filter && filter !== "all") {
+        url += `&filter=${encodeURIComponent(filter)}`;
+        }
+
+        const resp = await fetch(url);
+        if (!resp.ok) {
+        if (resp.status === 429) {
+            showError("Rate limit exceeded. Please wait.");
+        } else if (resp.status === 502) {
+            showError("API might be overloaded. Try later.");
+        } else {
+            showError("Could not fetch. Status: " + resp.status);
+        }
+        return;
+        }
+
+        const foods = await resp.json();
+        renderFoods(foods);
+    } catch (err) {
+        console.error("Error fetching /api/foods:", err);
+        showError("Network error or DNS issue. Please try again later.");
+    } finally {
+        showLoading(false);
+    }
+    }
+
+    function renderFoods(foods) {
+    const container = document.getElementById("food-list");
+    container.innerHTML = "";
+
+    if (!foods || foods.length === 0) {
+        container.innerHTML = "<p>No results found.</p>";
+        return;
+    }
+
+    foods.forEach((food) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className =
+        "flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between border-b border-[#e8f3f2]";
+
+        itemDiv.innerHTML = `
+        <div class="flex items-center gap-4">
+            <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg w-14 h-14"
+            style="background-image: url('${food.imageUrl}');"
+            ></div>
+            <div class="flex flex-col justify-center">
+            <p class="text-[#0e1b19] text-base font-medium line-clamp-1">
+                ${food.name}
+            </p>
+            <p class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2">
+                Protein: ${food.protein}g, Fat: ${food.fat}g, Carbs: ${food.carbs}g
+            </p>
+            </div>
+        </div>
+        `;
+        container.appendChild(itemDiv);
+    });
+    }
+
+    function showLoading(isVisible) {
+    const loader = document.getElementById("loadingIndicator");
+    loader.classList.toggle("hidden", !isVisible);
+    }
+
+    function showError(msg) {
+    const errorDiv = document.getElementById("errorMsg");
+    if (!msg) {
+        errorDiv.textContent = "";
+        errorDiv.classList.add("hidden");
+    } else {
+        errorDiv.textContent = msg;
+        errorDiv.classList.remove("hidden");
+    }
+    }
+</script>
