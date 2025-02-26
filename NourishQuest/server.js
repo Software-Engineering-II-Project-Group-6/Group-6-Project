@@ -53,8 +53,8 @@ app.engine(
 app.set("view engine", "handlebars");
 
 const protectedList = fs
-  .readdirSync(path.join(__dirname, "protected"))
-  .map((f) => f.replace(".html", ""));
+  .readdirSync(path.join(__dirname, "views", "protected"))
+  .map((f) => f.replace(".handlebars", ""));
 
 class contextBlock {
   pageTitle;
@@ -87,6 +87,17 @@ app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
 });
 
+
+// universal GET for protected pages
+app.get("/:protectedPage", requireLogin, (req, res, next) => {
+  let pageName = req.params.protectedPage;
+  if (!protectedList.includes(pageName)) {
+    return next();
+  }
+  res.status(200).render(path.join("protected", pageName), new contextBlock(req, pageName));
+});
+
+
 // GET /api/current-user => to fetch user macros, etc.
 app.get("/api/current-user", requireLogin, async (req, res) => {
   try {
@@ -110,15 +121,6 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
   }
 });
 
-// createplan.html
-app.get("/createplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "createplan.html"));
-});
-
-// finalizeplan.html
-app.get("/finalizeplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "finalizeplan.html"));
-});
 
 // TDEE (Mifflin–St Jeor)
 function calculateTDEE(user, goal, activity) {
@@ -148,6 +150,7 @@ function calculateTDEE(user, goal, activity) {
   return Math.round(tdee);
 }
 
+
 // POST /api/createplan => store daily cals/macros
 app.post("/api/createplan", requireLogin, async (req, res) => {
   try {
@@ -173,6 +176,7 @@ app.post("/api/createplan", requireLogin, async (req, res) => {
   }
 });
 
+
 // POST /api/finalizeplan > store weeklyMealPlan arrays
 app.post("/api/finalizeplan", requireLogin, async (req, res) => {
   try {
@@ -188,6 +192,7 @@ app.post("/api/finalizeplan", requireLogin, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // Reset plan
 app.post("/api/resetplan", requireLogin, async (req, res) => {
@@ -206,6 +211,7 @@ app.post("/api/resetplan", requireLogin, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // GET /api/plan => day switching
 app.get("/api/plan", requireLogin, async (req, res) => {
@@ -259,6 +265,7 @@ app.get("/api/plan", requireLogin, async (req, res) => {
   }
 });
 
+
 // /api/foods => USDA approach
 app.get("/api/foods", requireLogin, async (req, res) => {
   try {
@@ -302,14 +309,6 @@ app.get("/api/foods", requireLogin, async (req, res) => {
   }
 });
 
-// universal GET for protected pages
-app.get("/:protectedPage", requireLogin, (req, res, next) => {
-  let pageName = req.params.protectedPage;
-  if (!protectedList.includes(pageName)) {
-    return next();
-  }
-  res.status(200).render(path.join("protected", pageName), new contextBlock(req, pageName));
-});
 
 // POST /register
 app.post("/register", async (req, res) => {
@@ -337,6 +336,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
+
 // POST /login
 app.post("/login", async (req, res) => {
   try {
@@ -352,6 +352,7 @@ app.post("/login", async (req, res) => {
     return res.status(500).send("Internal server error");
   }
 });
+
 
 // POST /logout
 app.post("/logout", (req, res) => {
