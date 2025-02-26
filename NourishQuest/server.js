@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const cron = require("node-cron");
 
 const User = require("./models/User");
 
@@ -212,12 +213,25 @@ app.post("/api/resetplan", requireLogin, async (req, res) => {
 // GET /api/plan => day switching
 app.get("/api/plan", requireLogin, async (req, res) => {
   try {
-    const day = (req.query.day || "monday").toLowerCase();
+    const day = req.query.day?.toLowerCase() || "monday";
     const user = await User.findById(req.session.userId).lean();
     if (!user) return res.status(404).json({ error: "User not found" });
 
     const mealPlanForDay = user.weeklyMealPlan?.[day] || null;
+    let hasMealPlan = false;
+    if (mealPlanForDay) {
+      const { breakfast, lunch, dinner } = mealPlanForDay;
+      hasMealPlan =
+        (breakfast && breakfast.length > 0) ||
+        (lunch && lunch.length > 0) ||
+        (dinner && dinner.length > 0);
+    }
+
     const cartForDay = user.cart?.[day] || null;
+    let hasCart = false;
+    if (cartForDay) {
+    }
+
     const consumptionForDay = user.dailyConsumption?.[day] || {
       calories: 0,
       protein: 0,
@@ -226,35 +240,29 @@ app.get("/api/plan", requireLogin, async (req, res) => {
       water: 0,
     };
 
-    let hasMealPlan = false,
-      hasCart = false;
-    if (mealPlanForDay) {
-      const { breakfast, lunch, dinner } = mealPlanForDay;
-      const hasB = breakfast && breakfast.length > 0;
-      const hasL = lunch && lunch.length > 0;
-      const hasD = dinner && dinner.length > 0;
-      hasMealPlan = hasB || hasL || hasD;
-    }
-    if (cartForDay) {
-    }
-
     return res.json({
       hasMealPlan,
       mealPlan: mealPlanForDay,
       hasCart,
       cart: cartForDay,
-      consumption: consumptionForDay,
+      consumption: {
+        calories: consumptionForDay.calories || 0,
+        protein: consumptionForDay.protein || 0,
+        carbs: consumptionForDay.carbs || 0,
+        fat: consumptionForDay.fat || 0,
+        water: consumptionForDay.water || 0,
+      },
       dailyCalorieGoal: user.dailyCalorieGoal,
       macros: user.macros,
       dailyWaterIntake: user.dailyWaterIntake,
     });
   } catch (err) {
-    console.error("Error in GET /api/plan:", err);
+    console.error("Error in /api/plan route:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
 
-// Example /api/foods => USDA approach
+// /api/foods => USDA approach
 app.get("/api/foods", requireLogin, async (req, res) => {
   try {
     const searchTerm = req.query.search || "chicken";
@@ -357,9 +365,223 @@ app.post("/logout", (req, res) => {
   });
 });
 
+// DASHBOARD //
+
+//  Get the day name from the current date
+function getTodayName() {
+  const dayNames = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+  const dayIndex = new Date().getDay();
+  return dayNames[dayIndex];
+}
+
+// GET /api/dashboard => returns day plan + dailyConsumption
+app.get("/api/dashboard", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const dayParam = (req.query.day || "").toLowerCase();
+    const dayName = dayParam ? dayParam : getTodayName();
+
+    const dailyWaterGoal = 64;
+
+    const dayPlan = {
+      breakfast: user.weeklyMealPlan?.[dayName]?.breakfast || [],
+      lunch: user.weeklyMealPlan?.[dayName]?.lunch || [],
+      dinner: user.weeklyMealPlan?.[dayName]?.dinner || [],
+    };
+
+    const consumptionForDay = user.dailyConsumption?.[dayName] || {};
+
+    return res.json({
+      dayPlan,
+      dailyConsumption: consumptionForDay,
+      dailyWaterGoal,
+      dailyCalorieGoal: user.dailyCalorieGoal,
+      macros: user.macros,
+    });
+  } catch (err) {
+    console.error("Error in /api/dashboard:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/log-meal => mark a meal as completed & add macros
+app.post("/api/log-meal", requireLogin, async (req, res) => {
+  try {
+    const { meal } = req.body; // "breakfast", "lunch", or "dinner"
+    if (!meal) {
+      return res.status(400).json({ error: "No meal specified" });
+    }
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const day = getTodayName();
+
+    // get array of items in that meal
+    const mealItems = user.weeklyMealPlan?.[day]?.[meal] || [];
+    // sum macros
+    let totalCals = 0,
+      totalProtein = 0,
+      totalCarbs = 0,
+      totalFat = 0;
+
+    mealItems.forEach((item) => {
+      totalCals += item.calorie || 0;
+      totalProtein += item.protein || 0;
+      totalCarbs += item.carb || 0;
+      totalFat += item.fat || 0;
+    });
+
+    // add to dailyConsumption
+    user.dailyConsumption[day].calories += totalCals;
+    user.dailyConsumption[day].protein += totalProtein;
+    user.dailyConsumption[day].carbs += totalCarbs;
+    user.dailyConsumption[day].fat += totalFat;
+
+    // set mealStatus
+    if (!user.dailyConsumption[day].mealStatus) {
+      user.dailyConsumption[day].mealStatus = {};
+    }
+    user.dailyConsumption[day].mealStatus[meal] = "completed";
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in /api/log-meal:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/log-water => add water in ounces
+app.post("/api/log-water", requireLogin, async (req, res) => {
+  try {
+    const { ounces } = req.body;
+    if (!ounces) {
+      return res.status(400).json({ error: "No ounces specified" });
+    }
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const day = getTodayName();
+
+    user.dailyConsumption[day].water += ounces;
+
+    if (!user.dailyConsumption[day].waterLogs) {
+      user.dailyConsumption[day].waterLogs = [];
+    }
+
+    const now = new Date();
+    const hour = now.getHours();
+    const minute = String(now.getMinutes()).padStart(2, "0");
+    const ampm = hour >= 12 ? "PM" : "AM";
+    const hour12 = hour % 12 || 12;
+    const timeStr = `${hour12}:${minute} ${ampm}`;
+
+    user.dailyConsumption[day].waterLogs.push({
+      time: timeStr,
+      ounces,
+    });
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in /api/log-water:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/finish-day => finalize the day
+app.post("/api/finish-day", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const day = getTodayName();
+    if (!user.dailyConsumption[day].mealStatus) {
+      user.dailyConsumption[day].mealStatus = {};
+    }
+    ["breakfast", "lunch", "dinner"].forEach((meal) => {
+      if (!user.dailyConsumption[day].mealStatus[meal]) {
+        user.dailyConsumption[day].mealStatus[meal] = "completed";
+      }
+    });
+
+    user.streak += 1; // INCREASE USER STREAK
+
+    if (user.dailyConsumption[day]) {
+      user.dailyConsumption[day].dayFinished = true;
+    }
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error finishing day:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
 // 404
 app.use((req, res) => {
   res.status(404).render("404", new contextBlock(req, "Page Not Found"));
+});
+
+// Daily reset
+cron.schedule("0 0 * * *", async () => {
+  console.log("Running daily reset job...");
+
+  try {
+    const dayIndex = new Date().getDay();
+    const dayNames = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
+    const currentDay = dayNames[dayIndex];
+
+    const allUsers = await User.find({});
+
+    for (const user of allUsers) {
+      if (user.dailyConsumption[currentDay]) {
+        user.dailyConsumption[currentDay].calories = 0;
+        user.dailyConsumption[currentDay].protein = 0;
+        user.dailyConsumption[currentDay].carbs = 0;
+        user.dailyConsumption[currentDay].fat = 0;
+        user.dailyConsumption[currentDay].water = 0;
+
+        if (Array.isArray(user.dailyConsumption[currentDay].waterLogs)) {
+          user.dailyConsumption[currentDay].waterLogs = [];
+        }
+        if (!user.dailyConsumption[currentDay].mealStatus) {
+          user.dailyConsumption[currentDay].mealStatus = {};
+        }
+        user.dailyConsumption[currentDay].mealStatus.breakfast = "notcompleted";
+        user.dailyConsumption[currentDay].mealStatus.lunch = "notcompleted";
+        user.dailyConsumption[currentDay].mealStatus.dinner = "notcompleted";
+      }
+
+      user.dailyConsumption[currentDay].dayFinished = false;
+      await user.save();
+    }
+
+    console.log("Daily reset job completed successfully!");
+  } catch (err) {
+    console.error("Error in daily reset job:", err);
+  }
 });
 
 let server;

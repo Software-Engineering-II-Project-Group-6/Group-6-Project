@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
 
-  // Hashed password (bcrypt, etc.)
+  // Hashed password
   password: {
     type: String,
     required: true,
@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
 
   dailyWaterIntake: {
     type: Number,
-    default: 2000, // in ml
+    default: 2000, // stored in ml (if you want)
   },
 
   // Points from achievements
@@ -81,7 +81,9 @@ const userSchema = new mongoose.Schema({
   // List of achievements unlocked
   achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
 
-  // Cart
+  // ---------------------------
+  // CART
+  // ---------------------------
   cart: {
     monday: {
       breakfast: {
@@ -288,7 +290,9 @@ const userSchema = new mongoose.Schema({
     },
   },
 
-  // Weekly Meal Plan
+  // ---------------------------
+  // WEEKLY MEAL PLAN (arrays)
+  // ---------------------------
   weeklyMealPlan: {
     monday: {
       breakfast: [
@@ -495,7 +499,9 @@ const userSchema = new mongoose.Schema({
     },
   },
 
-  // Daily consumption tracker
+  // ---------------------------
+  // DAILY CONSUMPTION
+  // ---------------------------
   dailyConsumption: {
     monday: {
       calories: { type: Number, default: 0 },
@@ -503,6 +509,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String }, // "8:00 AM"
+          ounces: { type: Number }, // e.g. 8 or 16
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     tuesday: {
       calories: { type: Number, default: 0 },
@@ -510,6 +528,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     wednesday: {
       calories: { type: Number, default: 0 },
@@ -517,6 +547,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     thursday: {
       calories: { type: Number, default: 0 },
@@ -524,6 +566,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     friday: {
       calories: { type: Number, default: 0 },
@@ -531,6 +585,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     saturday: {
       calories: { type: Number, default: 0 },
@@ -538,6 +604,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
     sunday: {
       calories: { type: Number, default: 0 },
@@ -545,6 +623,18 @@ const userSchema = new mongoose.Schema({
       carbs: { type: Number, default: 0 },
       fat: { type: Number, default: 0 },
       water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
+      },
     },
   },
 
@@ -554,6 +644,7 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
 
+  // Potential recipes array
   recipes: [
     {
       title: { type: String, required: true },

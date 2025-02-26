@@ -11,27 +11,32 @@ This user manual can also be read in an easily-navigatable form on our [Wiki](ht
 The website will be hosted on a server in the future. For now, users who want to try the application must run it on their local machine. To check out the website and create an account, follow these steps:
 
 ### 1. Prerequisites
+
 Ensure you have **Node.js** installed on your local machine. If not, download and install it from [Node.js official website](https://nodejs.org/).
 
 ### 2. Cloning the Repository
+
 - Fork and clone the repository from GitHub.
 - Open a terminal and navigate to the project directory.
 
 ### 3. Installing Dependencies
+
 Run the following commands to install the necessary dependencies:
 
 ```sh
-npm install dotenv  
-npm install body-parser  
-npm install express  
-npm install bcrypt express-session  
-npm install mongodb  
-npm install mongoose 
+npm install dotenv
+npm install body-parser
+npm install express
+npm install bcrypt express-session
+npm install mongodb
+npm install mongoose
+npm install node-cron
 ```
 
 These dependencies are essential for the website to function correctly. Missing any of them will prevent the application from running.
 
 ### 4. Running the Server
+
 Start the server by executing:
 
 ```sh
@@ -43,14 +48,16 @@ The default port is set to **3000**, so the terminal will provide a local addres
 ## Getting Started
 
 ### 1. Registration & Login
-Upon opening the website, users are directed to the **public page**, where they can register or log in. If it's their first time visiting, they should click on the **Sign Up** button and create an account. 
+
+Upon opening the website, users are directed to the **public page**, where they can register or log in. If it's their first time visiting, they should click on the **Sign Up** button and create an account.
 
 The registration process is quick, requiring only basic information. Advanced settings, such as allergy information, can be configured later in the **Profile Settings**.
 
 Once registered, users can log in to their account to proceed further.
 
 ### 2. Dashboard & Features
-After logging in, users will land on their **Dashboard**, which will initially be empty until they create a plan. 
+
+After logging in, users will land on their **Dashboard**, which will initially be empty until they create a plan.
 
 NourishQuest consists of the following fundamental pages:
 
@@ -63,6 +70,7 @@ NourishQuest consists of the following fundamental pages:
 - **Recipes:** Users can view their **custom food recipes** and create new ones by adding a title and description.
 
 ### 3. Logging Out
+
 Users can log out by clicking the **Log Out** button located in the upper-right corner of every page.
 
 _(Note: All features are a work in progress, except for account creation.)_

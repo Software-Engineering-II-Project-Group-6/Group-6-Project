@@ -103,7 +103,7 @@
             <div class="pb-3">
               <div class="flex border-b border-[#d0e6e4] px-4 gap-8">
                 <a
-                  class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-[#1ce3cf] text-[#0e1b19] pb-3.25 pt-4"
+                  class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#0e1b19] pb-3.25 pt-4"
                   data-day="monday"
                   href="#"
                 >
@@ -393,7 +393,21 @@
         const now = new Date();
         dateElem.textContent = now.toDateString();
 
+        const dayNames = [
+          "sunday",
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+        ];
+        const todayIndex = new Date().getDay();
+        const todayName = dayNames[todayIndex];
+
         const dayLinks = document.querySelectorAll(".js-day-link");
+        let found = false;
+
         dayLinks.forEach((link) => {
           link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -401,12 +415,15 @@
             fetchPlan(day);
             setDayActive(link);
           });
+
+          if (link.getAttribute("data-day") === todayName) {
+            found = link;
+          }
         });
 
-        const defaultDay = "monday";
-        fetchPlan(defaultDay);
-        if (dayLinks[0]) {
-          setDayActive(dayLinks[0]);
+        if (found) {
+          fetchPlan(todayName);
+          setDayActive(found);
         }
       });
 
