@@ -59,13 +59,10 @@ const protectedList = fs
 class contextBlock {
   pageTitle;
   contentList = [];
-  constructor(req, title, layout) {
+  constructor(req, title) {
     this.pageTitle = title;
-    if (layout) {
-      this.layout = layout;
-    }
     if (req.session?.userId) {
-      this.loggedIn = true;
+      this.layout = 'protected';
     }
   }
   rawify() {
@@ -311,7 +308,7 @@ app.get("/:protectedPage", requireLogin, (req, res, next) => {
   if (!protectedList.includes(pageName)) {
     return next();
   }
-  res.sendFile(path.join(__dirname, "protected", `${pageName}.html`));
+  res.status(200).render(path.join("protected", pageName), new contextBlock(req, pageName));
 });
 
 // POST /register
