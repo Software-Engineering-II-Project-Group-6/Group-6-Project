@@ -8,7 +8,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require('fs'); // for protected pages list
 const http = require('http');
-const { setupWebSocket } = require('./services/socketService');
+const { setupWebSocket } = require('./public/Socket_Service');
 const Redis = require('ioredis');
 
 //Initialize Redis Client
@@ -240,8 +240,8 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`WebSocket server running on ws://localhost:${PORT}`);
   });
 }
-
-const aiRoutes = require('./routes/aiRoutes');
+// AI routes
+const aiRoutes = require('./routes/AI_Routes');
 app.use('/api/ai', aiRoutes);
 
 module.exports = { app, server, dbConnection };
