@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import NutritionAIChat from '../../components/NutritionAIChat';
+import NutritionAIChat from '../../protected/components/NutritionAIChat';
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
