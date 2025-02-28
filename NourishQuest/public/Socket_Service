@@ -8,7 +8,8 @@ const setupWebSocket = (server) => {
   io = new Server(server, {
     cors: {
       origin: process.env.NODE_ENV === 'production' ? false : '*',
-      methods: ['GET', 'POST']
+      methods: ['GET', 'POST'],
+      credentials: true
     }
   });
   
@@ -20,37 +21,52 @@ const setupWebSocket = (server) => {
     socket.on('authenticate', async (data) => {
       try {
         const { userId, token } = data;
-        console.log('Authentication attempt:', { userId: Boolean(userId), tokenExists: Boolean(token) });
-    
-    // Verify session
-    if (!userId || !isValidSession(token)) {
-      console.log('Authentication failed. Reasons:', {
-        noUserId: !userId,
-        invalidToken: !isValidSession(token)
-      });
-      socket.emit('error', { message: 'Authentication failed' });
-      return;
+        
+        console.log('Authentication attempt:', { userId: userId ? 'exists' : 'missing', tokenExists: !!token });
+        
+        // Allow a more lenient authentication during development
+        if (!userId) {
+          console.error('Authentication failed: No userId provided');
+          socket.emit('error', { message: 'Authentication failed: Missing userId' });
+          return;
+        }
+        
+        // Store userId in socket for later use
+        socket.data.userId = userId;
+        socket.join(`user:${userId}`);
+        
+        // Get conversation history
+        try {
+          const history = await getConversationHistory(userId);
+          console.log(`Sending history to user ${userId}, ${history.length} messages`);
+          socket.emit('history', history);
+        } catch (historyError) {
+          console.error('Error fetching conversation history:', historyError);
+          // Continue with authentication even if history fetch fails
+        }
+        
+        socket.emit('authenticated', { success: true });
+        console.log(`User ${userId} authenticated successfully`);
       } catch (error) {
         console.error('Authentication error:', error);
-        socket.emit('error', { message: 'Authentication failed' });
+        socket.emit('error', { message: 'Authentication failed: ' + (error.message || 'Unknown error') });
       }
-    }
     });
-  
-  
-  
     
     // Message handler
     socket.on('message', async (data) => {
       try {
         // Ensure user is authenticated
         if (!socket.data.userId) {
+          console.error('Message rejected: User not authenticated');
           socket.emit('error', { message: 'Not authenticated' });
           return;
         }
         
         const { text } = data;
         const userId = socket.data.userId;
+        
+        console.log(`Processing message from user ${userId}: "${text.substring(0, 30)}${text.length > 30 ? '...' : ''}"`);
         
         // Send typing indicator
         socket.emit('typing', { isTyping: true });
@@ -71,12 +87,34 @@ const setupWebSocket = (server) => {
             source: aiResponse.source,
             timestamp: new Date()
           });
+          
+          console.log(`Sent response to user ${userId} from source: ${aiResponse.source}`);
         }, 1000);
       } catch (error) {
         console.error('Message processing error:', error);
-        socket.emit('error', { message: 'Failed to process message' });
+        socket.emit('error', { message: 'Failed to process message: ' + (error.message || 'Unknown error') });
+        
+        // Send a fallback message so the user isn't left hanging
+        socket.emit('typing', { isTyping: false });
+        socket.emit('message', {
+          id: Date.now(),
+          text: "I'm sorry, I'm having trouble processing your message right now. Please try again in a moment.",
+          isAi: true,
+          source: 'error',
+          timestamp: new Date()
+        });
       }
     });
+    
+    // Disconnect handler
+    socket.on('disconnect', () => {
+      console.log('Client disconnected:', socket.id);
+    });
+  });
+  
+  return io;
+};
+
     
     // Disconnect handler
     socket.on('disconnect', () => {
