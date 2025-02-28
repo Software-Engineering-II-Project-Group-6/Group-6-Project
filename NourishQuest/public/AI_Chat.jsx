@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error fetching user data:', error);
       })
       .finally(() => {
-        // Render the component regardless of fetch success
-        ReactDOM.render(<NutritionAIChat />, container);
+        // Render the component
+        root.render(<NutritionAIChat />);
       });
   } else {
     console.warn('AI Chat container not found');
