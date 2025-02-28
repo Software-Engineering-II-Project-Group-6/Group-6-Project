@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import NutritionAIChat from '../protected/components/NutritionAIChat';
 
 // Wait for DOM to be fully loaded
