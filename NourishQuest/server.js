@@ -20,7 +20,7 @@ const redis = process.env.REDIS_URL
 const User = require("./models/User");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9090;
 
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri);
