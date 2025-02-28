@@ -115,16 +115,6 @@ const setupWebSocket = (server) => {
   return io;
 };
 
-    
-    // Disconnect handler
-    socket.on('disconnect', () => {
-      console.log('Client disconnected:', socket.id);
-    });
-  });
-  
-  return io;
-};
-
 // Simple session validation helper
 const isValidSession = (token) => {
   // In a real implementation, this would verify against your session store
