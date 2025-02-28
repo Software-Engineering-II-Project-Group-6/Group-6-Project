@@ -1,5 +1,5 @@
 const { Server } = require('socket.io');
-const { processMessage, getConversationHistory } = require('./aiService');
+const { processMessage, getConversationHistory } = require('./AI_Service');
 
 let io;
 
