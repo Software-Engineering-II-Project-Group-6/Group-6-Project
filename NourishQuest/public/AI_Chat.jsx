@@ -4,9 +4,10 @@ import NutritionAIChat from '../protected/components/NutritionAIChat';
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  const root = createRoot(container);
+  const container = document.getElementById('ai-chat-container');
 
   if (container) {
+    const root = createRoot(container);
     // Fetch user data using promises
     fetch('/api/current-user')
       .then(response => {
