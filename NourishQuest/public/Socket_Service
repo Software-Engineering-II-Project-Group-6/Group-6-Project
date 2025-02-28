@@ -34,7 +34,11 @@ const setupWebSocket = (server) => {
         console.error('Authentication error:', error);
         socket.emit('error', { message: 'Authentication failed' });
       }
+    }
     });
+  
+  
+  
     
     // Message handler
     socket.on('message', async (data) => {
