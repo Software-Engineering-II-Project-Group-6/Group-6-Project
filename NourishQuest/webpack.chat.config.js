@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './public/AI_Chat.jsx',
   output: {
-    filename: 'AI_Chat.bundle.jsx',
+    filename: 'AI_Chat.bundle.js',
     path: path.resolve(__dirname, 'public/dist'),
   },
   mode: 'production',
