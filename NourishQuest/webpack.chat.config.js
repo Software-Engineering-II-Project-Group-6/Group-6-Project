@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: './public/AI_Chat.js',
+  entry: './public/AI_Chat.jsx',
   output: {
-    filename: 'AI_Chat.bundle.js',
+    filename: 'AI_Chat.bundle.jsx',
     path: path.resolve(__dirname, 'public/dist'),
   },
   mode: 'production',
