@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { processMessage, getUserContext } = require('../services/aiService');
+const { processMessage, getUserContext } = require('../public/aiService');
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
