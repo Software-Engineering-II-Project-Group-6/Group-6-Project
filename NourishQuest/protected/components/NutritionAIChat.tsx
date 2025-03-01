@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, X, AlertCircle } from 'lucide-react';
 import io from 'socket.io-client';
 
-const NutritionAIChat = () => {
+const NutritionAIChat = ({ userId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -23,7 +23,7 @@ const NutritionAIChat = () => {
 
   // Socket connection setup
   useEffect(() => {
-    if (isOpen && !socket) {
+    if (isOpen && !socket && userId) {
       const socketUrl = window.location.origin; // Use same origin
       const newSocket = io(socketUrl);
       
@@ -79,7 +79,7 @@ const NutritionAIChat = () => {
         newSocket.disconnect();
       };
     }
-  }, [isOpen]);
+  }, [isOpen, userId]);
 
   const formatTimestamp = (timestamp) => {
     return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
