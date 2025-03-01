@@ -121,6 +121,7 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
     }
 
     res.json({
+      _id: user._id, 
       username: user.username,
       email: user.email,
       age: user.age,
