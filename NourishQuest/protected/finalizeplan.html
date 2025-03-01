@@ -403,7 +403,7 @@
       })();
     </script>
     <!-- AI Chat Container -->
-    <div id="ai-chat-container"></div>
+    <div id="ai-chat-container" data-user-id="<%= req.session.userId %>"></div>
     <script src="/dist/AI_Chat.bundle.js"></script>
   </body>
 </html>
