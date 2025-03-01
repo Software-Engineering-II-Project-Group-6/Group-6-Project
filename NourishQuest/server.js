@@ -52,20 +52,19 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
+// This now points to "views/protected" for your protected .handlebars files
 const protectedList = fs
-  .readdirSync(path.join(__dirname, "protected"))
-  .map((f) => f.replace(".html", ""));
+  .readdirSync(path.join(__dirname, "views", "protected"))
+  .map((f) => f.replace(".handlebars", ""));
 
 class contextBlock {
   pageTitle;
   contentList = [];
-  constructor(req, title, layout) {
+  constructor(req, title) {
     this.pageTitle = title;
-    if (layout) {
-      this.layout = layout;
-    }
+    // If user is logged in, use the "protected" layout
     if (req.session?.userId) {
-      this.loggedIn = true;
+      this.layout = "protected";
     }
   }
   rawify() {
@@ -74,7 +73,10 @@ class contextBlock {
   }
 }
 
+// ====================
 // Basic routes
+// ====================
+
 app.get("/:homePath(home|index|index.html)?", (req, res) => {
   if (req.session?.userId) {
     return res.redirect("/dashboard");
@@ -90,7 +92,21 @@ app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
 });
 
-// GET /api/current-user => to fetch user macros, etc.
+// universal GET for protected pages (Handlebars)
+app.get("/:protectedPage", requireLogin, (req, res, next) => {
+  let pageName = req.params.protectedPage;
+  if (!protectedList.includes(pageName)) {
+    return next();
+  }
+  // Renders from views/protected/<pageName>.handlebars
+  res
+    .status(200)
+    .render(path.join("protected", pageName), new contextBlock(req, pageName));
+});
+
+// ====================
+// CURRENT USER
+// ====================
 app.get("/api/current-user", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).lean();
@@ -113,17 +129,9 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
   }
 });
 
-// createplan.html
-app.get("/createplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "createplan.html"));
-});
-
-// finalizeplan.html
-app.get("/finalizeplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "finalizeplan.html"));
-});
-
+// ====================
 // TDEE (Mifflin–St Jeor)
+// ====================
 function calculateTDEE(user, goal, activity) {
   const weightKg = user.weight * 0.45359237;
 
@@ -151,7 +159,10 @@ function calculateTDEE(user, goal, activity) {
   return Math.round(tdee);
 }
 
-// POST /api/createplan => store daily cals/macros
+// ====================
+// Create Plan
+// ====================
+
 app.post("/api/createplan", requireLogin, async (req, res) => {
   try {
     const { goal, activity, planLength } = req.body;
@@ -176,7 +187,6 @@ app.post("/api/createplan", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/finalizeplan > store weeklyMealPlan arrays
 app.post("/api/finalizeplan", requireLogin, async (req, res) => {
   try {
     const { weeklyPlan } = req.body;
@@ -191,6 +201,224 @@ app.post("/api/finalizeplan", requireLogin, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+app.post("/api/resetplan", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.weeklyMealPlan.monday.breakfast = [];
+    user.weeklyMealPlan.monday.lunch = [];
+    user.weeklyMealPlan.monday.dinner = [];
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error resetting plan:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ====================
+// Plan Switching
+// ====================
+app.get("/api/plan", requireLogin, async (req, res) => {
+  try {
+    const day = req.query.day?.toLowerCase() || "monday";
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const mealPlanForDay = user.weeklyMealPlan?.[day] || null;
+    let hasMealPlan = false;
+    if (mealPlanForDay) {
+      const { breakfast, lunch, dinner } = mealPlanForDay;
+      hasMealPlan =
+        (breakfast && breakfast.length > 0) ||
+        (lunch && lunch.length > 0) ||
+        (dinner && dinner.length > 0);
+    }
+
+    const cartForDay = user.cart?.[day] || null;
+    let hasCart = false;
+    if (cartForDay) {
+      // If you want to do something with cart, do it here
+    }
+
+    const consumptionForDay = user.dailyConsumption?.[day] || {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+      water: 0,
+    };
+
+    return res.json({
+      hasMealPlan,
+      mealPlan: mealPlanForDay,
+      hasCart,
+      cart: cartForDay,
+      consumption: {
+        calories: consumptionForDay.calories || 0,
+        protein: consumptionForDay.protein || 0,
+        carbs: consumptionForDay.carbs || 0,
+        fat: consumptionForDay.fat || 0,
+        water: consumptionForDay.water || 0,
+      },
+      dailyCalorieGoal: user.dailyCalorieGoal,
+      macros: user.macros,
+      dailyWaterIntake: user.dailyWaterIntake,
+    });
+  } catch (err) {
+    console.error("Error in /api/plan route:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ====================
+// USDA Foods
+// ====================
+app.get("/api/foods", requireLogin, async (req, res) => {
+  try {
+    const searchTerm = req.query.search || "chicken";
+    const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
+    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
+      searchTerm
+    )}&pageSize=10&api_key=${apiKey}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res
+        .status(500)
+        .json({ error: `USDA request failed: ${response.status}` });
+    }
+    const data = await response.json();
+    const foods = data.foods || [];
+    const mapped = foods.map((f) => {
+      let protein = 0,
+        fat = 0,
+        carbs = 0;
+      if (f.foodNutrients) {
+        for (const n of f.foodNutrients) {
+          const name = n.nutrientName.toLowerCase();
+          if (name.includes("protein")) protein = n.value || 0;
+          else if (name.includes("fat")) fat = n.value || 0;
+          else if (name.includes("carbohydrate")) carbs = n.value || 0;
+        }
+      }
+      return {
+        name: f.description || "No name",
+        protein,
+        fat,
+        carbs,
+        imageUrl: "https://cdn-icons-png.flaticon.com/512/10366/10366416.png",
+      };
+    });
+    return res.json(mapped);
+  } catch (err) {
+    console.error("Error in /api/foods route:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ====================
+// RECIPES
+// ====================
+app.get("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    return res.json(user.recipes || []);
+  } catch (err) {
+    console.error("Error in GET /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ error: "Please provide both title and description" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.recipes.push({ title, description });
+    await user.save();
+
+    const newRecipe = user.recipes[user.recipes.length - 1];
+    return res.json(newRecipe);
+  } catch (err) {
+    console.error("Error in POST /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.delete("/api/recipes/:recipeId", requireLogin, async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.recipes = user.recipes.filter(
+      (recipe) => recipe._id.toString() !== recipeId
+    );
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in DELETE /api/recipes/:recipeId:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ====================
+// Leaderboard
+// ====================
+app.get("/api/leaderboard", requireLogin, async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 }).lean();
+
+    let rankedUsers = users.map((user, index) => ({
+      _id: user._id,
+      username: user.username,
+      points: user.points,
+      rank: index + 1,
+    }));
+
+    const top20 = rankedUsers.slice(0, 20);
+
+    // Find current user’s rank
+    const currentUserIndex = rankedUsers.findIndex(
+      (u) => u._id.toString() === req.session.userId
+    );
+    if (currentUserIndex === -1) {
+      return res.status(404).json({ error: "User not found in leaderboard" });
+    }
+    const currentUserRanked = rankedUsers[currentUserIndex];
+
+    return res.json({
+      top20,
+      currentUser: {
+        username: currentUserRanked.username,
+        points: currentUserRanked.points,
+        rank: currentUserRanked.rank,
+      },
+    });
+  } catch (err) {
+    console.error("Error in /api/leaderboard route:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ====================
+// Profile updates
+// ====================
 
 // POST /api/update-profile
 app.post("/api/update-profile", requireLogin, async (req, res) => {
@@ -249,223 +477,9 @@ app.post("/api/change-password", requireLogin, async (req, res) => {
   }
 });
 
-// Reset plan
-app.post("/api/resetplan", requireLogin, async (req, res) => {
-  try {
-    const user = await User.findById(req.session.userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    user.weeklyMealPlan.monday.breakfast = [];
-    user.weeklyMealPlan.monday.lunch = [];
-    user.weeklyMealPlan.monday.dinner = [];
-
-    await user.save();
-    return res.json({ success: true });
-  } catch (err) {
-    console.error("Error resetting plan:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// GET /api/plan => day switching
-app.get("/api/plan", requireLogin, async (req, res) => {
-  try {
-    const day = req.query.day?.toLowerCase() || "monday";
-    const user = await User.findById(req.session.userId).lean();
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    const mealPlanForDay = user.weeklyMealPlan?.[day] || null;
-    let hasMealPlan = false;
-    if (mealPlanForDay) {
-      const { breakfast, lunch, dinner } = mealPlanForDay;
-      hasMealPlan =
-        (breakfast && breakfast.length > 0) ||
-        (lunch && lunch.length > 0) ||
-        (dinner && dinner.length > 0);
-    }
-
-    const cartForDay = user.cart?.[day] || null;
-    let hasCart = false;
-    if (cartForDay) {
-    }
-
-    const consumptionForDay = user.dailyConsumption?.[day] || {
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
-      water: 0,
-    };
-
-    return res.json({
-      hasMealPlan,
-      mealPlan: mealPlanForDay,
-      hasCart,
-      cart: cartForDay,
-      consumption: {
-        calories: consumptionForDay.calories || 0,
-        protein: consumptionForDay.protein || 0,
-        carbs: consumptionForDay.carbs || 0,
-        fat: consumptionForDay.fat || 0,
-        water: consumptionForDay.water || 0,
-      },
-      dailyCalorieGoal: user.dailyCalorieGoal,
-      macros: user.macros,
-      dailyWaterIntake: user.dailyWaterIntake,
-    });
-  } catch (err) {
-    console.error("Error in /api/plan route:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// /api/foods => USDA approach
-app.get("/api/foods", requireLogin, async (req, res) => {
-  try {
-    const searchTerm = req.query.search || "chicken";
-    const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
-    const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
-      searchTerm
-    )}&pageSize=10&api_key=${apiKey}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      return res
-        .status(500)
-        .json({ error: `USDA request failed: ${response.status}` });
-    }
-    const data = await response.json();
-    const foods = data.foods || [];
-    const mapped = foods.map((f) => {
-      let protein = 0,
-        fat = 0,
-        carbs = 0;
-      if (f.foodNutrients) {
-        for (const n of f.foodNutrients) {
-          const name = n.nutrientName.toLowerCase();
-          if (name.includes("protein")) protein = n.value || 0;
-          else if (name.includes("fat")) fat = n.value || 0;
-          else if (name.includes("carbohydrate")) carbs = n.value || 0;
-        }
-      }
-      return {
-        name: f.description || "No name",
-        protein,
-        fat,
-        carbs,
-        imageUrl: "https://cdn-icons-png.flaticon.com/512/10366/10366416.png",
-      };
-    });
-    return res.json(mapped);
-  } catch (err) {
-    console.error("Error in /api/foods route:", err);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-
-// RECIPES
-
-app.get("/api/recipes", requireLogin, async (req, res) => {
-  try {
-    const user = await User.findById(req.session.userId).lean();
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    return res.json(user.recipes || []);
-  } catch (err) {
-    console.error("Error in GET /api/recipes:", err);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-
-app.post("/api/recipes", requireLogin, async (req, res) => {
-  try {
-    const { title, description } = req.body;
-    if (!title || !description) {
-      return res
-        .status(400)
-        .json({ error: "Please provide both title and description" });
-    }
-
-    const user = await User.findById(req.session.userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    user.recipes.push({ title, description });
-    await user.save();
-
-    const newRecipe = user.recipes[user.recipes.length - 1];
-    return res.json(newRecipe);
-  } catch (err) {
-    console.error("Error in POST /api/recipes:", err);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-
-app.delete("/api/recipes/:recipeId", requireLogin, async (req, res) => {
-  try {
-    const { recipeId } = req.params;
-    const user = await User.findById(req.session.userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    user.recipes = user.recipes.filter(
-      (recipe) => recipe._id.toString() !== recipeId
-    );
-    await user.save();
-
-    return res.json({ success: true });
-  } catch (err) {
-    console.error("Error in DELETE /api/recipes/:recipeId:", err);
-    return res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Leaderboard
-app.get("/api/leaderboard", requireLogin, async (req, res) => {
-  try {
-    const users = await User.find({}).sort({ points: -1 }).lean();
-
-    let rankedUsers = users.map((user, index) => ({
-      _id: user._id,
-      username: user.username,
-      points: user.points,
-      rank: index + 1,
-    }));
-
-    const top20 = rankedUsers.slice(0, 20);
-
-    // Find current user’s rank
-    const currentUserIndex = rankedUsers.findIndex(
-      (u) => u._id.toString() === req.session.userId
-    );
-    if (currentUserIndex === -1) {
-      return res.status(404).json({ error: "User not found in leaderboard" });
-    }
-    const currentUserRanked = rankedUsers[currentUserIndex];
-
-    return res.json({
-      top20,
-      currentUser: {
-        username: currentUserRanked.username,
-        points: currentUserRanked.points,
-        rank: currentUserRanked.rank,
-      },
-    });
-  } catch (err) {
-    console.error("Error in /api/leaderboard route:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// universal GET for protected pages
-app.get("/:protectedPage", requireLogin, (req, res, next) => {
-  let pageName = req.params.protectedPage;
-  if (!protectedList.includes(pageName)) {
-    return next();
-  }
-  res.sendFile(path.join(__dirname, "protected", `${pageName}.html`));
-});
-
-// POST /register
+// ====================
+// Registration/Login
+// ====================
 app.post("/register", async (req, res) => {
   try {
     const { email, username, password, age, height, weight, gender } = req.body;
@@ -491,7 +505,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// POST /login
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -507,7 +520,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// POST /logout
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) console.error("Session destruction error:", err);
@@ -516,9 +528,9 @@ app.post("/logout", (req, res) => {
   });
 });
 
-// DASHBOARD //
-
-//  Get the day name from the current date
+// ====================
+// Dashboard
+// ====================
 function getTodayName() {
   const dayNames = [
     "sunday",
@@ -533,7 +545,6 @@ function getTodayName() {
   return dayNames[dayIndex];
 }
 
-// GET /api/dashboard => returns day plan + dailyConsumption
 app.get("/api/dashboard", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).lean();
@@ -567,7 +578,6 @@ app.get("/api/dashboard", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/log-meal => mark a meal as completed & add macros
 app.post("/api/log-meal", requireLogin, async (req, res) => {
   try {
     const { meal } = req.body; // "breakfast", "lunch", or "dinner"
@@ -579,9 +589,7 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
 
     const day = getTodayName();
 
-    // get array of items in that meal
     const mealItems = user.weeklyMealPlan?.[day]?.[meal] || [];
-    // sum macros
     let totalCals = 0,
       totalProtein = 0,
       totalCarbs = 0,
@@ -594,13 +602,11 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
       totalFat += item.fat || 0;
     });
 
-    // add to dailyConsumption
     user.dailyConsumption[day].calories += totalCals;
     user.dailyConsumption[day].protein += totalProtein;
     user.dailyConsumption[day].carbs += totalCarbs;
     user.dailyConsumption[day].fat += totalFat;
 
-    // set mealStatus
     if (!user.dailyConsumption[day].mealStatus) {
       user.dailyConsumption[day].mealStatus = {};
     }
@@ -614,7 +620,6 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/log-water => add water in ounces
 app.post("/api/log-water", requireLogin, async (req, res) => {
   try {
     const { ounces } = req.body;
@@ -652,7 +657,6 @@ app.post("/api/log-water", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/finish-day => finalize the day
 app.post("/api/finish-day", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
@@ -668,8 +672,7 @@ app.post("/api/finish-day", requireLogin, async (req, res) => {
       }
     });
 
-    user.streak += 1; // INCREASE USER STREAK
-
+    user.streak += 1;
     if (user.dailyConsumption[day]) {
       user.dailyConsumption[day].dayFinished = true;
     }
@@ -682,12 +685,15 @@ app.post("/api/finish-day", requireLogin, async (req, res) => {
   }
 });
 
-// 404
+// ====================
+// 404 + Daily Reset
+// ====================
+
 app.use((req, res) => {
   res.status(404).render("404", new contextBlock(req, "Page Not Found"));
 });
 
-// Daily reset
+// Cron job for daily reset
 cron.schedule("0 0 * * *", async () => {
   console.log("Running daily reset job...");
 
