@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
 
   dailyWaterIntake: {
     type: Number,
-    default: 2000, // stored in ml (if you want)
+    default: 64,
   },
 
   // Points from achievements

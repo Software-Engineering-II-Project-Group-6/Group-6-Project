@@ -35,8 +35,10 @@ app.use(
   })
 );
 
+// Static files
 app.use(express.static(path.join(__dirname, "public")));
 
+// Simple login guard
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.redirect("/login");
@@ -44,6 +46,7 @@ function requireLogin(req, res, next) {
   next();
 }
 
+// Handlebars engine for things like home.handlebars, login.handlebars etc.
 app.engine(
   "handlebars",
   exhandle.engine({
@@ -52,20 +55,13 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-const protectedList = fs
-  .readdirSync(path.join(__dirname, "protected"))
-  .map((f) => f.replace(".html", ""));
-
 class contextBlock {
   pageTitle;
   contentList = [];
-  constructor(req, title, layout) {
+  constructor(req, title) {
     this.pageTitle = title;
-    if (layout) {
-      this.layout = layout;
-    }
     if (req.session?.userId) {
-      this.loggedIn = true;
+      this.layout = "protected";
     }
   }
   rawify() {
@@ -74,7 +70,11 @@ class contextBlock {
   }
 }
 
-// Basic routes
+// ===========================================
+// BASIC ROUTES (USING HANDLEBARS TEMPLATES)
+// ===========================================
+
+// If user is not logged in, show home.handlebars; else go to dashboard
 app.get("/:homePath(home|index|index.html)?", (req, res) => {
   if (req.session?.userId) {
     return res.redirect("/dashboard");
@@ -90,7 +90,34 @@ app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
 });
 
-// GET /api/current-user => to fetch user macros, etc.
+// ===========================================
+// UNIVERSAL ROUTE FOR .HTML FILES IN archived/protected
+// ===========================================
+
+app.get("/:protectedPage", requireLogin, (req, res, next) => {
+  const pageName = req.params.protectedPage;
+
+  // Path to archived/protected/<pageName>.html
+  const filePath = path.join(
+    __dirname,
+    "archived",
+    "protected",
+    `${pageName}.html`
+  );
+
+  // Check if the file exists
+  if (fs.existsSync(filePath)) {
+    // Serve that HTML
+    return res.sendFile(filePath);
+  } else {
+    // Otherwise, continue to next route or 404
+    return next();
+  }
+});
+
+// ===========================================
+// CURRENT USER API
+// ===========================================
 app.get("/api/current-user", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).lean();
@@ -113,45 +140,29 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
   }
 });
 
-// createplan.html
-app.get("/createplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "createplan.html"));
-});
-
-// finalizeplan.html
-app.get("/finalizeplan", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "protected", "finalizeplan.html"));
-});
-
-// TDEE (Mifflin–St Jeor)
+// TDEE function
 function calculateTDEE(user, goal, activity) {
   const weightKg = user.weight * 0.45359237;
-
-  // s offset
   const s = user.gender === "female" ? -161 : 5;
-
-  // BMR in metric
   let bmr = 10 * weightKg + 6.25 * user.height - 5 * user.age + s;
 
-  // activity factor
   let factor = 1.2;
   if (activity === "lightly") factor = 1.375;
   if (activity === "active") factor = 1.55;
   if (activity === "very") factor = 1.725;
 
   let tdee = bmr * factor;
-
-  // goal adjustments: add or lose
   if (goal === "add") {
     tdee += 300;
   } else if (goal === "lose") {
     tdee -= 300;
   }
-
   return Math.round(tdee);
 }
 
-// POST /api/createplan => store daily cals/macros
+// ===========================================
+// CREATE PLAN, FINALIZE PLAN, RESET PLAN
+// ===========================================
 app.post("/api/createplan", requireLogin, async (req, res) => {
   try {
     const { goal, activity, planLength } = req.body;
@@ -176,7 +187,6 @@ app.post("/api/createplan", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/finalizeplan > store weeklyMealPlan arrays
 app.post("/api/finalizeplan", requireLogin, async (req, res) => {
   try {
     const { weeklyPlan } = req.body;
@@ -192,7 +202,6 @@ app.post("/api/finalizeplan", requireLogin, async (req, res) => {
   }
 });
 
-// Reset plan
 app.post("/api/resetplan", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
@@ -210,7 +219,9 @@ app.post("/api/resetplan", requireLogin, async (req, res) => {
   }
 });
 
-// GET /api/plan => day switching
+// ===========================================
+// GET /api/plan => Day Switching
+// ===========================================
 app.get("/api/plan", requireLogin, async (req, res) => {
   try {
     const day = req.query.day?.toLowerCase() || "monday";
@@ -229,8 +240,6 @@ app.get("/api/plan", requireLogin, async (req, res) => {
 
     const cartForDay = user.cart?.[day] || null;
     let hasCart = false;
-    if (cartForDay) {
-    }
 
     const consumptionForDay = user.dailyConsumption?.[day] || {
       calories: 0,
@@ -262,7 +271,9 @@ app.get("/api/plan", requireLogin, async (req, res) => {
   }
 });
 
+// ===========================================
 // /api/foods => USDA approach
+// ===========================================
 app.get("/api/foods", requireLogin, async (req, res) => {
   try {
     const searchTerm = req.query.search || "chicken";
@@ -305,16 +316,162 @@ app.get("/api/foods", requireLogin, async (req, res) => {
   }
 });
 
-// universal GET for protected pages
-app.get("/:protectedPage", requireLogin, (req, res, next) => {
-  let pageName = req.params.protectedPage;
-  if (!protectedList.includes(pageName)) {
-    return next();
+// ===========================================
+// RECIPES
+// ===========================================
+app.get("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    return res.json(user.recipes || []);
+  } catch (err) {
+    console.error("Error in GET /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
   }
-  res.sendFile(path.join(__dirname, "protected", `${pageName}.html`));
 });
 
-// POST /register
+app.post("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ error: "Please provide both title and description" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.recipes.push({ title, description });
+    await user.save();
+
+    const newRecipe = user.recipes[user.recipes.length - 1];
+    return res.json(newRecipe);
+  } catch (err) {
+    console.error("Error in POST /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.delete("/api/recipes/:recipeId", requireLogin, async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.recipes = user.recipes.filter(
+      (recipe) => recipe._id.toString() !== recipeId
+    );
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in DELETE /api/recipes/:recipeId:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ===========================================
+// Leaderboard
+// ===========================================
+app.get("/api/leaderboard", requireLogin, async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 }).lean();
+
+    let rankedUsers = users.map((user, index) => ({
+      _id: user._id,
+      username: user.username,
+      points: user.points,
+      rank: index + 1,
+    }));
+
+    const top20 = rankedUsers.slice(0, 20);
+
+    const currentUserIndex = rankedUsers.findIndex(
+      (u) => u._id.toString() === req.session.userId
+    );
+    if (currentUserIndex === -1) {
+      return res.status(404).json({ error: "User not found in leaderboard" });
+    }
+    const currentUserRanked = rankedUsers[currentUserIndex];
+
+    return res.json({
+      top20,
+      currentUser: {
+        username: currentUserRanked.username,
+        points: currentUserRanked.points,
+        rank: currentUserRanked.rank,
+      },
+    });
+  } catch (err) {
+    console.error("Error in /api/leaderboard route:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ===========================================
+// Profile updates
+// ===========================================
+app.post("/api/update-profile", requireLogin, async (req, res) => {
+  try {
+    const { age, height, weight } = req.body;
+    if (!age || !height || !weight) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.age = Number(age);
+    user.height = Number(height);
+    user.weight = Number(weight);
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Error in /api/update-profile:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/change-password", requireLogin, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Old password is incorrect" });
+    }
+
+    // Hash & update new password
+    const hashedNew = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNew;
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Error in /api/change-password:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// ===========================================
+// Registration/Login
+// ===========================================
 app.post("/register", async (req, res) => {
   try {
     const { email, username, password, age, height, weight, gender } = req.body;
@@ -340,7 +497,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// POST /login
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -356,7 +512,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// POST /logout
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) console.error("Session destruction error:", err);
@@ -365,9 +520,9 @@ app.post("/logout", (req, res) => {
   });
 });
 
-// DASHBOARD //
-
-//  Get the day name from the current date
+// ===========================================
+// Dashboard logic
+// ===========================================
 function getTodayName() {
   const dayNames = [
     "sunday",
@@ -382,7 +537,6 @@ function getTodayName() {
   return dayNames[dayIndex];
 }
 
-// GET /api/dashboard => returns day plan + dailyConsumption
 app.get("/api/dashboard", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).lean();
@@ -394,7 +548,6 @@ app.get("/api/dashboard", requireLogin, async (req, res) => {
     const dayName = dayParam ? dayParam : getTodayName();
 
     const dailyWaterGoal = 64;
-
     const dayPlan = {
       breakfast: user.weeklyMealPlan?.[dayName]?.breakfast || [],
       lunch: user.weeklyMealPlan?.[dayName]?.lunch || [],
@@ -416,7 +569,6 @@ app.get("/api/dashboard", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/log-meal => mark a meal as completed & add macros
 app.post("/api/log-meal", requireLogin, async (req, res) => {
   try {
     const { meal } = req.body; // "breakfast", "lunch", or "dinner"
@@ -427,10 +579,7 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     const day = getTodayName();
-
-    // get array of items in that meal
     const mealItems = user.weeklyMealPlan?.[day]?.[meal] || [];
-    // sum macros
     let totalCals = 0,
       totalProtein = 0,
       totalCarbs = 0,
@@ -443,13 +592,11 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
       totalFat += item.fat || 0;
     });
 
-    // add to dailyConsumption
     user.dailyConsumption[day].calories += totalCals;
     user.dailyConsumption[day].protein += totalProtein;
     user.dailyConsumption[day].carbs += totalCarbs;
     user.dailyConsumption[day].fat += totalFat;
 
-    // set mealStatus
     if (!user.dailyConsumption[day].mealStatus) {
       user.dailyConsumption[day].mealStatus = {};
     }
@@ -463,7 +610,6 @@ app.post("/api/log-meal", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/log-water => add water in ounces
 app.post("/api/log-water", requireLogin, async (req, res) => {
   try {
     const { ounces } = req.body;
@@ -474,7 +620,6 @@ app.post("/api/log-water", requireLogin, async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found" });
 
     const day = getTodayName();
-
     user.dailyConsumption[day].water += ounces;
 
     if (!user.dailyConsumption[day].waterLogs) {
@@ -501,7 +646,6 @@ app.post("/api/log-water", requireLogin, async (req, res) => {
   }
 });
 
-// POST /api/finish-day => finalize the day
 app.post("/api/finish-day", requireLogin, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
@@ -517,8 +661,7 @@ app.post("/api/finish-day", requireLogin, async (req, res) => {
       }
     });
 
-    user.streak += 1; // INCREASE USER STREAK
-
+    user.streak += 1;
     if (user.dailyConsumption[day]) {
       user.dailyConsumption[day].dayFinished = true;
     }
@@ -531,12 +674,13 @@ app.post("/api/finish-day", requireLogin, async (req, res) => {
   }
 });
 
-// 404
+// ===========================================
+// 404 + Cron daily reset
+// ===========================================
 app.use((req, res) => {
   res.status(404).render("404", new contextBlock(req, "Page Not Found"));
 });
 
-// Daily reset
 cron.schedule("0 0 * * *", async () => {
   console.log("Running daily reset job...");
 
@@ -552,7 +696,6 @@ cron.schedule("0 0 * * *", async () => {
       "saturday",
     ];
     const currentDay = dayNames[dayIndex];
-
     const allUsers = await User.find({});
 
     for (const user of allUsers) {

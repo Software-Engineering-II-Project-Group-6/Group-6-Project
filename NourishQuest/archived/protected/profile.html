@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap"
+    />
+    <title>NourishQuest - Profile</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: Epilogue, 'Noto Sans', sans-serif"
+  >
+    <div class="relative flex min-h-screen flex-col overflow-x-hidden">
+      <!-- Header -->
+      <header
+        class="flex items-center justify-between border-b border-solid border-[#e8f3f2] px-10 py-3"
+      >
+        <div class="flex items-center gap-4 text-[#0e1b19]">
+          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">
+            <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+          </h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+          <div class="flex items-center gap-4">
+            <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+              >My Profile</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+              >My Plan</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+              >Foods</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+              >Leaderboards</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+              >Achievements</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+              >Dashboard</a
+            >
+            <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+              >Recipes</a
+            >
+          </div>
+
+          <!-- Log Out -->
+          <form action="/logout" method="POST">
+            <button
+              type="submit"
+              class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+            >
+              Log Out
+            </button>
+          </form>
+
+          <!-- Avatar -->
+          <div
+            class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+            style="
+              background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+            "
+          ></div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="flex flex-col max-w-[960px] flex-1">
+          <!-- Profile Section -->
+          <div class="flex p-4">
+            <div class="flex w-full flex-col gap-4 items-start">
+              <div class="flex gap-4 flex-col items-start">
+                <!-- Large Profile Picture -->
+                <div
+                  class="w-32 h-32 bg-center bg-no-repeat bg-cover rounded-full"
+                  style="
+                    background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+                  "
+                ></div>
+                <!-- Text Info -->
+                <div class="flex flex-col justify-center">
+                  <!-- Filled by JavaScript -->
+                  <p
+                    id="profileName"
+                    class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em]"
+                  ></p>
+                  <p id="profileEmail" class="text-[#4f968f] text-base"></p>
+                  <p id="profileStats" class="text-[#4f968f] text-base"></p>
+                </div>
+              </div>
+              <!-- Profile Action Buttons -->
+              <div class="flex w-full max-w-[480px] gap-3">
+                <button
+                  id="edit-profile-btn"
+                  class="flex flex-1 items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold tracking-[0.015em]"
+                >
+                  Edit Profile
+                </button>
+                <button
+                  id="change-password-btn"
+                  class="flex flex-1 items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold tracking-[0.015em]"
+                >
+                  Change Password
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weekly Nutrition Plan Section -->
+          <h2
+            class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+          >
+            My Weekly Nutrition Plan
+          </h2>
+          <div class="p-4">
+            <div class="flex items-stretch justify-between gap-4 rounded-xl">
+              <div class="flex flex-col gap-4 flex-[2_2_0px]">
+                <div class="flex flex-col gap-1">
+                  <p class="text-[#0e1b19] text-base font-bold leading-tight">
+                    Weekly Plan
+                  </p>
+                  <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                    View or delete your weekly nutrition plan
+                  </p>
+                </div>
+                <button
+                  onclick="window.location.href='/plan';"
+                  class="flex items-center justify-center rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit"
+                >
+                  View Plan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Registered Recipes Section -->
+          <h2
+            class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+          >
+            Registered Recipes
+          </h2>
+          <!-- Container for dynamic recipes -->
+          <div
+            id="profile-recipes-container"
+            class="p-4 flex flex-col gap-4"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div
+      id="edit-profile-modal"
+      class="fixed hidden top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-white p-6 rounded shadow max-w-md w-full mx-4">
+        <h2 class="text-xl font-bold mb-4">Edit Profile</h2>
+        <form id="edit-profile-form" class="flex flex-col gap-3">
+          <div>
+            <label for="editAge" class="block font-semibold mb-1">Age</label>
+            <input
+              type="number"
+              id="editAge"
+              name="age"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label for="editHeight" class="block font-semibold mb-1"
+              >Height (cms)</label
+            >
+            <input
+              type="number"
+              id="editHeight"
+              name="height"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label for="editWeight" class="block font-semibold mb-1"
+              >Weight (lbs)</label
+            >
+            <input
+              type="number"
+              id="editWeight"
+              name="weight"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <!-- Error message placeholder -->
+          <p id="editProfileError" class="text-red-500 text-sm hidden"></p>
+          <!-- Buttons -->
+          <div class="flex justify-end gap-3 mt-4">
+            <button
+              type="button"
+              id="edit-profile-cancel"
+              class="px-4 py-2 rounded bg-gray-300 font-semibold"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 rounded bg-[#1ce3cf] text-white font-semibold"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div
+      id="change-password-modal"
+      class="fixed hidden top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-white p-6 rounded shadow max-w-md w-full mx-4">
+        <h2 class="text-xl font-bold mb-4">Change Password</h2>
+        <form id="change-password-form" class="flex flex-col gap-3">
+          <div>
+            <label for="oldPassword" class="block font-semibold mb-1"
+              >Old Password</label
+            >
+            <input
+              type="password"
+              id="oldPassword"
+              name="oldPassword"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label for="newPassword" class="block font-semibold mb-1"
+              >New Password</label
+            >
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <div>
+            <label for="confirmNewPassword" class="block font-semibold mb-1"
+              >Confirm New Password</label
+            >
+            <input
+              type="password"
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              class="w-full rounded border border-gray-300 p-2"
+              required
+            />
+          </div>
+          <!-- Error message placeholder -->
+          <p id="changePasswordError" class="text-red-500 text-sm hidden"></p>
+          <!-- Buttons -->
+          <div class="flex justify-end gap-3 mt-4">
+            <button
+              type="button"
+              id="change-password-cancel"
+              class="px-4 py-2 rounded bg-gray-300 font-semibold"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 rounded bg-[#1ce3cf] text-white font-semibold"
+            >
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script for fetching user info, handling modals, etc. -->
+    <script>
+      // DOM elements
+      const editProfileBtn = document.getElementById("edit-profile-btn");
+      const editProfileModal = document.getElementById("edit-profile-modal");
+      const editProfileForm = document.getElementById("edit-profile-form");
+      const editProfileCancel = document.getElementById("edit-profile-cancel");
+      const editProfileError = document.getElementById("editProfileError");
+
+      const changePasswordBtn = document.getElementById("change-password-btn");
+      const changePasswordModal = document.getElementById(
+        "change-password-modal"
+      );
+      const changePasswordForm = document.getElementById(
+        "change-password-form"
+      );
+      const changePasswordCancel = document.getElementById(
+        "change-password-cancel"
+      );
+      const changePasswordError = document.getElementById(
+        "changePasswordError"
+      );
+
+      function openModal(modal) {
+        modal.classList.remove("hidden");
+      }
+      function closeModal(modal) {
+        modal.classList.add("hidden");
+      }
+
+      editProfileBtn.addEventListener("click", () => {
+        const age =
+          document
+            .getElementById("profileStats")
+            ?.textContent?.match(/Age:\s*(\d+)/)?.[1] || "";
+        const height =
+          document
+            .getElementById("profileStats")
+            ?.textContent?.match(/Height:\s*(\d+)/)?.[1] || "";
+        const weight =
+          document
+            .getElementById("profileStats")
+            ?.textContent?.match(/Weight:\s*(\d+)/)?.[1] || "";
+
+        document.getElementById("editAge").value = age;
+        document.getElementById("editHeight").value = height;
+        document.getElementById("editWeight").value = weight;
+        editProfileError.classList.add("hidden");
+        editProfileError.textContent = "";
+
+        openModal(editProfileModal);
+      });
+      editProfileCancel.addEventListener("click", () => {
+        closeModal(editProfileModal);
+      });
+
+      editProfileForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(editProfileForm);
+        const age = formData.get("age");
+        const height = formData.get("height");
+        const weight = formData.get("weight");
+
+        try {
+          const response = await fetch("/api/update-profile", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ age, height, weight }),
+          });
+
+          if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || "Failed to update profile");
+          }
+
+          // On success, hide modal and re-fetch user info
+          closeModal(editProfileModal);
+          fetchUserInfo();
+        } catch (error) {
+          editProfileError.textContent = error.message;
+          editProfileError.classList.remove("hidden");
+        }
+      });
+
+      // Change Password Modal
+      changePasswordBtn.addEventListener("click", () => {
+        changePasswordError.classList.add("hidden");
+        changePasswordError.textContent = "";
+        openModal(changePasswordModal);
+      });
+      changePasswordCancel.addEventListener("click", () => {
+        closeModal(changePasswordModal);
+      });
+
+      changePasswordForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(changePasswordForm);
+        const oldPassword = formData.get("oldPassword");
+        const newPassword = formData.get("newPassword");
+        const confirmNewPassword = formData.get("confirmNewPassword");
+
+        // Check if new passwords match client-side
+        if (newPassword !== confirmNewPassword) {
+          changePasswordError.textContent = "New password fields do not match.";
+          changePasswordError.classList.remove("hidden");
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/change-password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ oldPassword, newPassword }),
+          });
+
+          if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || "Failed to change password");
+          }
+
+          closeModal(changePasswordModal);
+          alert("Password updated successfully!");
+        } catch (error) {
+          changePasswordError.textContent = error.message;
+          changePasswordError.classList.remove("hidden");
+        }
+      });
+
+      async function fetchUserInfo() {
+        try {
+          const response = await fetch("/api/current-user");
+          if (!response.ok) {
+            console.warn("Could not fetch user data. Status:", response.status);
+            return;
+          }
+          const userData = await response.json();
+          const nameEl = document.getElementById("profileName");
+          if (nameEl && userData.username) {
+            nameEl.textContent = userData.username;
+          }
+
+          const emailEl = document.getElementById("profileEmail");
+          if (emailEl && userData.email) {
+            emailEl.textContent = userData.email;
+          }
+
+          const statsEl = document.getElementById("profileStats");
+          if (statsEl) {
+            const age = userData.age || "N/A";
+            const height = userData.height || "N/A";
+            const weight = userData.weight || "N/A";
+            statsEl.textContent = `Age: ${age}, Height: ${height} cms, Weight: ${weight} lbs`;
+          }
+        } catch (error) {
+          console.error("Error fetching current user:", error);
+        }
+      }
+
+      const profileRecipesContainer = document.getElementById(
+        "profile-recipes-container"
+      );
+
+      async function loadRecipes() {
+        try {
+          const res = await fetch("/api/recipes");
+          if (!res.ok) {
+            throw new Error("Failed to fetch recipes");
+          }
+          const recipes = await res.json();
+          renderRecipes(recipes);
+        } catch (error) {
+          console.error("Error loading recipes:", error);
+        }
+      }
+
+      function renderRecipes(recipes) {
+        profileRecipesContainer.innerHTML = "";
+
+        recipes.forEach((recipe) => {
+          const cardDiv = document.createElement("div");
+          cardDiv.className =
+            "flex items-center gap-4 bg-[#f8fbfb] px-4 py-2 min-h-[72px] justify-between";
+
+          const leftDiv = document.createElement("div");
+          leftDiv.className = "flex items-center gap-4";
+
+          const imgDiv = document.createElement("div");
+          imgDiv.className =
+            "w-14 h-14 bg-center bg-no-repeat bg-cover rounded-lg";
+          imgDiv.style.backgroundImage =
+            "url('https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg')";
+
+          const textDiv = document.createElement("div");
+          textDiv.className = "flex flex-col justify-center";
+
+          const titleP = document.createElement("p");
+          titleP.className =
+            "text-[#0e1b19] text-base font-medium line-clamp-1";
+          titleP.textContent = recipe.title;
+
+          const descP = document.createElement("p");
+          descP.className = "text-[#4f968f] text-sm line-clamp-2";
+
+          textDiv.appendChild(titleP);
+          textDiv.appendChild(descP);
+
+          leftDiv.appendChild(imgDiv);
+          leftDiv.appendChild(textDiv);
+
+          const rightDiv = document.createElement("div");
+          rightDiv.className = "shrink-0";
+
+          rightDiv.appendChild(deleteIconDiv);
+
+          cardDiv.appendChild(leftDiv);
+          cardDiv.appendChild(rightDiv);
+
+          profileRecipesContainer.appendChild(cardDiv);
+        });
+      }
+
+      async function removeRecipe(recipeId) {
+        try {
+          const res = await fetch(`/api/recipes/${recipeId}`, {
+            method: "DELETE",
+          });
+          if (!res.ok) {
+            throw new Error("Failed to remove recipe");
+          }
+          loadRecipes();
+        } catch (error) {
+          console.error("Error removing recipe:", error);
+        }
+      }
+
+      fetchUserInfo();
+      loadRecipes();
+    </script>
+  </body>
+</html>
