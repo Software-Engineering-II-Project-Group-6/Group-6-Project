@@ -309,7 +309,6 @@
         "changePasswordError"
       );
 
-      // Show/hide modals
       function openModal(modal) {
         modal.classList.remove("hidden");
       }
@@ -317,9 +316,7 @@
         modal.classList.add("hidden");
       }
 
-      // Edit Profile Modal
       editProfileBtn.addEventListener("click", () => {
-        // Optionally pre-fill the form with the current user's data
         const age =
           document
             .getElementById("profileStats")
@@ -353,7 +350,6 @@
         const weight = formData.get("weight");
 
         try {
-          // POST or PUT to your server, e.g. /api/update-profile
           const response = await fetch("/api/update-profile", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -410,7 +406,6 @@
             throw new Error(data.error || "Failed to change password");
           }
 
-          // Success
           closeModal(changePasswordModal);
           alert("Password updated successfully!");
         } catch (error) {
@@ -419,7 +414,6 @@
         }
       });
 
-      // 1. Fetch user info
       async function fetchUserInfo() {
         try {
           const response = await fetch("/api/current-user");
@@ -450,7 +444,6 @@
         }
       }
 
-      // 2. Load recipes
       const profileRecipesContainer = document.getElementById(
         "profile-recipes-container"
       );
@@ -495,7 +488,6 @@
 
           const descP = document.createElement("p");
           descP.className = "text-[#4f968f] text-sm line-clamp-2";
-          descP.textContent = recipe.description;
 
           textDiv.appendChild(titleP);
           textDiv.appendChild(descP);
@@ -505,28 +497,6 @@
 
           const rightDiv = document.createElement("div");
           rightDiv.className = "shrink-0";
-
-          // Add a remove icon or button if you want
-          const deleteIconDiv = document.createElement("div");
-          deleteIconDiv.className =
-            "flex w-7 h-7 items-center justify-center text-[#0e1b19] cursor-pointer";
-          deleteIconDiv.innerHTML = `
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24px"
-              height="24px"
-              fill="currentColor"
-              viewBox="0 0 256 256"
-            >
-              <path
-                d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"
-              ></path>
-            </svg>
-          `;
-
-          deleteIconDiv.addEventListener("click", () => {
-            removeRecipe(recipe._id);
-          });
 
           rightDiv.appendChild(deleteIconDiv);
 
@@ -551,7 +521,6 @@
         }
       }
 
-      // Initialize
       fetchUserInfo();
       loadRecipes();
     </script>
