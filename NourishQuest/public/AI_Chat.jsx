@@ -5,32 +5,14 @@ import NutritionAIChat from '../protected/components/NutritionAIChat';
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('ai-chat-container');
-
+  
   if (container) {
+    // Get userId directly from the DOM element
+    const userId = container.dataset.userId;
+    
     const root = createRoot(container);
-    // Fetch user data using promises
-    fetch('/api/current-user')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        console.warn('User not authenticated or API error, chat may not function properly');
-        return null;
-      })
-      .then(userData => {
-        if (userData) {
-          // Set userId globally for the chat component to use
-          window.userId = userData._id || userData.userId;
-          console.log('User authenticated, initializing chat component');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching user data:', error);
-      })
-      .finally(() => {
-        // Render the component
-        root.render(<NutritionAIChat />);
-      });
+    // Pass it as a prop
+    root.render(<NutritionAIChat userId={userId} />);
   } else {
     console.warn('AI Chat container not found');
   }
