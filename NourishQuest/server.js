@@ -192,6 +192,63 @@ app.post("/api/finalizeplan", requireLogin, async (req, res) => {
   }
 });
 
+// POST /api/update-profile
+app.post("/api/update-profile", requireLogin, async (req, res) => {
+  try {
+    const { age, height, weight } = req.body;
+    if (!age || !height || !weight) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user's profile fields
+    user.age = Number(age);
+    user.height = Number(height);
+    user.weight = Number(weight);
+
+    await user.save();
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Error in /api/update-profile:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /api/change-password
+app.post("/api/change-password", requireLogin, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Old password is incorrect" });
+    }
+
+    // Hash & update new password
+    const hashedNew = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNew;
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error("Error in /api/change-password:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Reset plan
 app.post("/api/resetplan", requireLogin, async (req, res) => {
   try {
@@ -302,6 +359,100 @@ app.get("/api/foods", requireLogin, async (req, res) => {
   } catch (err) {
     console.error("Error in /api/foods route:", err);
     return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// RECIPES
+
+app.get("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId).lean();
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    return res.json(user.recipes || []);
+  } catch (err) {
+    console.error("Error in GET /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/api/recipes", requireLogin, async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    if (!title || !description) {
+      return res
+        .status(400)
+        .json({ error: "Please provide both title and description" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.recipes.push({ title, description });
+    await user.save();
+
+    const newRecipe = user.recipes[user.recipes.length - 1];
+    return res.json(newRecipe);
+  } catch (err) {
+    console.error("Error in POST /api/recipes:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.delete("/api/recipes/:recipeId", requireLogin, async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.recipes = user.recipes.filter(
+      (recipe) => recipe._id.toString() !== recipeId
+    );
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error in DELETE /api/recipes/:recipeId:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Leaderboard
+app.get("/api/leaderboard", requireLogin, async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ points: -1 }).lean();
+
+    let rankedUsers = users.map((user, index) => ({
+      _id: user._id,
+      username: user.username,
+      points: user.points,
+      rank: index + 1,
+    }));
+
+    const top20 = rankedUsers.slice(0, 20);
+
+    // Find current user’s rank
+    const currentUserIndex = rankedUsers.findIndex(
+      (u) => u._id.toString() === req.session.userId
+    );
+    if (currentUserIndex === -1) {
+      return res.status(404).json({ error: "User not found in leaderboard" });
+    }
+    const currentUserRanked = rankedUsers[currentUserIndex];
+
+    return res.json({
+      top20,
+      currentUser: {
+        username: currentUserRanked.username,
+        points: currentUserRanked.points,
+        rank: currentUserRanked.rank,
+      },
+    });
+  } catch (err) {
+    console.error("Error in /api/leaderboard route:", err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

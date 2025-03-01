@@ -88,76 +88,13 @@
               </p>
             </div>
 
-            <!-- Recipe Card 1 -->
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
-            >
-              <div class="flex items-center gap-4">
-                <div
-                  class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                  style="
-                    background-image: url('https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg');
-                  "
-                ></div>
-                <div class="flex flex-col justify-center">
-                  <p
-                    class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
-                  >
-                    Test Recipe 1
-                  </p>
-                  <p
-                    class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
-                  >
-                    Serves 4
-                  </p>
-                </div>
-              </div>
-              <div class="shrink-0">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit"
-                >
-                  <span class="truncate">Remove</span>
-                </button>
-              </div>
-            </div>
+            <div id="recipes-container"></div>
 
-            <!-- Recipe Card 2 -->
-            <div
-              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between mt-4"
-            >
-              <div class="flex items-center gap-4">
-                <div
-                  class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                  style="
-                    background-image: url('https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg');
-                  "
-                ></div>
-                <div class="flex flex-col justify-center">
-                  <p
-                    class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
-                  >
-                    Test Recipe 2
-                  </p>
-                  <p
-                    class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
-                  >
-                    Serves 2
-                  </p>
-                </div>
-              </div>
-              <div class="shrink-0">
-                <button
-                  class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit"
-                >
-                  <span class="truncate">Remove</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Add New Recipe Button -->
+            <!-- Add New Recipe Button & Modal/Form -->
             <div class="flex px-4 py-3 justify-start">
               <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] gap-2 pl-4 text-sm font-bold leading-normal tracking-[0.015em]"
+                id="show-add-recipe-btn"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] gap-2 text-sm font-bold leading-normal tracking-[0.015em]"
               >
                 <div
                   class="text-[#0e1b19]"
@@ -180,9 +117,224 @@
                 <span class="truncate">Add a New Recipe</span>
               </button>
             </div>
+
+            <!-- Pop up form for adding recipes -->
+            <div id="add-recipe-form" class="hidden px-4">
+              <form
+                id="new-recipe-form"
+                class="flex flex-col gap-2 bg-white p-4 rounded-md shadow"
+                style="max-width: 400px"
+              >
+                <label for="title" class="font-semibold">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  id="title"
+                  class="rounded border-gray-300"
+                  required
+                />
+
+                <label for="description" class="font-semibold"
+                  >Description</label
+                >
+                <textarea
+                  name="description"
+                  id="description"
+                  rows="2"
+                  class="rounded border-gray-300"
+                  required
+                ></textarea>
+
+                <button
+                  type="submit"
+                  class="flex items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold leading-normal whitespace-nowrap"
+                >
+                  Save Recipe
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Recipe Modal (default: hidden) -->
+    <div
+      id="recipe-modal"
+      class="fixed hidden top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div
+        class="bg-white p-4 rounded shadow max-w-xl w-full mx-4 max-h-screen overflow-y-auto"
+      >
+        <h3 id="modal-title" class="text-xl font-bold mb-2">Recipe Title</h3>
+        <p id="modal-description" class="mb-4 break-words whitespace-pre-wrap">
+          Full description here
+        </p>
+        <button
+          id="modal-close-btn"
+          class="inline-block px-4 py-2 bg-gray-300 rounded font-semibold whitespace-nowrap"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Inline Script to handle fetching, adding, removing, and showing details -->
+    <script>
+      const recipesContainer = document.getElementById("recipes-container");
+      const addRecipeFormContainer = document.getElementById("add-recipe-form");
+      const showAddRecipeBtn = document.getElementById("show-add-recipe-btn");
+      const newRecipeForm = document.getElementById("new-recipe-form");
+
+      // Modal elements
+      const recipeModal = document.getElementById("recipe-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalDescription = document.getElementById("modal-description");
+      const modalCloseBtn = document.getElementById("modal-close-btn");
+
+      // Close modal on button click
+      modalCloseBtn.addEventListener("click", () => {
+        recipeModal.classList.add("hidden");
+      });
+
+      // Utility: Show full recipe in a modal
+      function showRecipeModal(title, description) {
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        recipeModal.classList.remove("hidden");
+      }
+
+      // Toggle the hidden add-recipe-form
+      showAddRecipeBtn.addEventListener("click", () => {
+        addRecipeFormContainer.classList.toggle("hidden");
+      });
+
+      // Utility: Truncate to X characters
+      function truncateDescription(str, maxLength = 50) {
+        // If under length, no truncation
+        if (str.length <= maxLength) return str;
+        // Otherwise slice and add ...
+        return str.slice(0, maxLength) + "...";
+      }
+
+      // Fetch and display recipes on page load
+      async function loadRecipes() {
+        try {
+          const res = await fetch("/api/recipes");
+          if (!res.ok) {
+            throw new Error("Failed to fetch recipes");
+          }
+          const recipes = await res.json();
+          renderRecipes(recipes);
+        } catch (error) {
+          console.error("Error loading recipes:", error);
+        }
+      }
+
+      function renderRecipes(recipes) {
+        // Clear container
+        recipesContainer.innerHTML = "";
+
+        recipes.forEach((recipe) => {
+          const cardDiv = document.createElement("div");
+          cardDiv.className =
+            "flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between mt-4";
+
+          const leftDiv = document.createElement("div");
+          leftDiv.className = "flex items-center gap-4 cursor-pointer";
+          leftDiv.addEventListener("click", () => {
+            showRecipeModal(recipe.title, recipe.description);
+          });
+
+          const imgDiv = document.createElement("div");
+          imgDiv.className =
+            "bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14";
+          imgDiv.style.backgroundImage =
+            "url('https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg')";
+
+          const textDiv = document.createElement("div");
+          textDiv.className = "flex flex-col justify-center";
+
+          const titleP = document.createElement("p");
+          titleP.className =
+            "text-[#0e1b19] text-base font-medium leading-normal line-clamp-1";
+          titleP.textContent = recipe.title;
+
+          const descP = document.createElement("p");
+          descP.className =
+            "text-[#4f968f] text-sm font-normal leading-normal line-clamp-2";
+          descP.textContent = truncateDescription(recipe.description, 50);
+
+          textDiv.appendChild(titleP);
+          textDiv.appendChild(descP);
+
+          leftDiv.appendChild(imgDiv);
+          leftDiv.appendChild(textDiv);
+
+          const rightDiv = document.createElement("div");
+          rightDiv.className = "shrink-0";
+
+          const removeBtn = document.createElement("button");
+          removeBtn.className =
+            "flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal w-fit";
+          removeBtn.textContent = "Remove";
+
+          removeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            removeRecipe(recipe._id);
+          });
+
+          rightDiv.appendChild(removeBtn);
+          cardDiv.appendChild(leftDiv);
+          cardDiv.appendChild(rightDiv);
+
+          recipesContainer.appendChild(cardDiv);
+        });
+      }
+
+      async function removeRecipe(recipeId) {
+        try {
+          const res = await fetch(`/api/recipes/${recipeId}`, {
+            method: "DELETE",
+          });
+          if (!res.ok) {
+            throw new Error("Failed to remove recipe");
+          }
+          // Reload recipes
+          loadRecipes();
+        } catch (error) {
+          console.error("Error removing recipe:", error);
+        }
+      }
+
+      newRecipeForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(newRecipeForm);
+        const title = formData.get("title");
+        const description = formData.get("description");
+
+        try {
+          const res = await fetch("/api/recipes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, description }),
+          });
+          if (!res.ok) {
+            throw new Error("Failed to add recipe");
+          }
+
+          newRecipeForm.reset();
+          addRecipeFormContainer.classList.add("hidden");
+
+          loadRecipes();
+        } catch (error) {
+          console.error("Error adding recipe:", error);
+        }
+      });
+
+      loadRecipes();
+    </script>
   </body>
 </html>
