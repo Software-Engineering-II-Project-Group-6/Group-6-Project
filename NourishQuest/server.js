@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const fs = require('fs'); // for protected pages list
 const http = require('http');
 const { setupWebSocket } = require('./public/Socket_Service');
-const Redis = require('ioredis');
+const Redis = require('ioredis'); 
 
 //Initialize Redis Client
 const redis = process.env.REDIS_URL 
@@ -224,6 +224,12 @@ app.post("/logout", (req, res) => {
   });
 });
 
+
+// AI routes
+const aiRoutes = require('./routes/AI_Routes.js');
+app.use('/api/ai', aiRoutes);
+
+
 // routing for 404 error page
 app.use((req, res) => {res.status(404).render('404', new contextBlock(req,'Page Not Found'))});
 
@@ -241,8 +247,6 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`WebSocket server running on ws://localhost:${PORT}`);
   });
 }
-// AI routes
-const aiRoutes = require('./routes/AI_Routes');
-app.use('/api/ai', aiRoutes);
+
 
 module.exports = { app, server, dbConnection };
