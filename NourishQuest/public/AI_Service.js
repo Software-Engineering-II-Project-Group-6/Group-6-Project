@@ -106,7 +106,7 @@ For meal plans, suggest options that meet their calorie and macro targets.`;
   // Format the output differently based on model type
   return {
     ollama: {
-      model: "nutrition-assistant",
+      model: "llama2",
       prompt: `${systemPrompt}\n\n${historyText}\nUser: ${message}\nAssistant:`,
       stream: false
     },
@@ -129,11 +129,19 @@ For meal plans, suggest options that meet their calorie and macro targets.`;
 // Query Ollama model (self-hosted LLaMA)
 const queryOllama = async (promptData) => {
   try {
+    console.log('Sending request to Ollama:', OLLAMA_ENDPOINT);
+    console.log('Prompt data:', JSON.stringify(promptData).substring(0, 200) + '...');
+    
     const response = await axios.post(OLLAMA_ENDPOINT, promptData);
+    console.log('Ollama response received');
     return response.data.response;
   } catch (error) {
-    console.error('Ollama API error:', error);
-    throw new Error('Failed to get response from Ollama');
+    console.error('Ollama API error:', error.message);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    }
+    throw new Error('Failed to get response from Ollama: ' + error.message);
   }
 };
 
@@ -150,6 +158,27 @@ const queryOpenAI = async (promptData) => {
   } catch (error) {
     console.error('OpenAI API error:', error);
     throw new Error('Failed to get response from OpenAI');
+  }
+};
+
+// To avoid rate limit issue
+const queryOpenAIWithRetry = async (promptData, maxRetries = 3, initialDelay = 1000) => {
+  let retries = 0;
+  let delay = initialDelay;
+  
+  while (retries < maxRetries) {
+    try {
+      return await queryOpenAI(promptData);
+    } catch (error) {
+      if (error.response && error.response.status === 429 && retries < maxRetries - 1) {
+        console.log(`Rate limited, retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        retries++;
+        delay *= 2; // Exponential backoff
+      } else {
+        throw error;
+      }
+    }
   }
 };
 
@@ -182,7 +211,7 @@ const processMessage = async (userId, message) => {
       
       // Fall back to OpenAI if Ollama fails
       if (OPENAI_API_KEY) {
-        const openaiResponse = await queryOpenAI(prompts.openai);
+        const openaiResponse = await queryOpenAIWithRetry(prompts.openai);
         
         // Save AI response to history
         await saveConversationHistory(userId, openaiResponse, true);
