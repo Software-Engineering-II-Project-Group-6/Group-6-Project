@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 const { processMessage, getUserContext } = require('../public/AI_Service');
+
+// Define the endpoint
+const OLLAMA_ENDPOINT = process.env.OLLAMA_ENDPOINT || 'http://localhost:11434/api/generate';
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
@@ -30,11 +34,14 @@ router.post('/message', requireAuth, async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
     
+    console.log('Processing message:', message);
     const response = await processMessage(req.session.userId, message);
+    console.log('Response received:', response);
     res.json(response);
   } catch (error) {
-    console.error('Error processing message:', error);
-    res.status(500).json({ error: 'Failed to process message' });
+    console.error('Detailed error processing message:', error.message);
+    console.error('Error stack:', error.stack);
+    res.status(500).json({ error: 'Failed to process message: ' + error.message });
   }
 });
 
@@ -57,14 +64,18 @@ router.get('/status', requireAuth, async (req, res) => {
 // Helper to check Ollama status
 const checkOllamaStatus = async () => {
   try {
-    const axios = require('axios');
-    const OLLAMA_ENDPOINT = process.env.OLLAMA_ENDPOINT || 'http://localhost:11434/api/models';
-    
-    await axios.get(OLLAMA_ENDPOINT);
-    return true;
+    // Simple check to see if Ollama is responding
+    const response = await axios.get('http://localhost:11434/api/version');
+    return response.status === 200;
   } catch (error) {
+    console.error('Ollama status check error:', error.message);
     return false;
   }
 };
+
+// Test endpoint
+router.get('/test', (req, res) => {
+  res.json({ status: 'ok', message: 'AI API is working' });
+});
 
 module.exports = router;
