@@ -46,7 +46,7 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// Handlebars engine for things like home.handlebars, login.handlebars etc.
+// Handlebars engine
 app.engine(
   "handlebars",
   exhandle.engine({
@@ -95,20 +95,20 @@ app.get("/login", (req, res) => {
 // ===========================================
 
 app.get("/:protectedPage", requireLogin, (req, res, next) => {
-  const pageName = req.params.protectedPage;
+  const pageName = req.params.protectedPage.toLowerCase();
 
   // Path to archived/protected/<pageName>.html
   const filePath = path.join(
     __dirname,
-    "archived",
+    "views",
     "protected",
-    `${pageName}.html`
+    `${pageName}.handlebars`
   );
 
   // Check if the file exists
   if (fs.existsSync(filePath)) {
     // Serve that HTML
-    return res.sendFile(filePath);
+    return res.status(200).render(path.join("protected",pageName), new contextBlock(req, pageName));
   } else {
     // Otherwise, continue to next route or 404
     return next();

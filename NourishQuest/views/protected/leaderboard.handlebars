@@ -12,64 +12,124 @@
 >
     Top 20
 </h2>
+<!-- Container for top 20 -->
+<div id="top-20-container" class="flex flex-col gap-2"></div>
 
-<!-- Example user rank card -->
-<div
-    class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
->
-    <div class="flex items-center gap-4">
-    <div
-        class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
-    >
-        <!-- Trophy Icon -->
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24px"
-        height="24px"
-        fill="currentColor"
-        viewBox="0 0 256 256"
-        >
-        <path
-            d="M232,64H208V56a16,16,0,0,0-16-16H64A16,16,0,0,0,48,56v8H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-28.49,64.64-63.51,64.9H128a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"
-        ></path>
-        </svg>
-    </div>
-    <div class="flex flex-col justify-center">
-        <p
-        class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
-        >
-        User 1
-        </p>
-        <p
-        class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
-        >
-        1,234 pts
-        </p>
-    </div>
-    </div>
-    <div class="shrink-0">
-    <p class="text-[#0e1b19] text-base font-normal leading-normal">
-        1
-    </p>
-    </div>
-</div>
-
-<!-- We need to populate till the 20th place! -->
-
-<!-- User Rank -->
+<!-- Current User Title -->
 <h2
+    id="user-rank-title"
     class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
->
-    92nd Place
-</h2>
-<div
-    class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
->
-    <div class="flex items-center gap-4">
-    <div
-        class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
-    >
-        <!-- HandHeart Icon -->
+></h2>
+<div id="current-user-container" class="flex flex-col gap-2"></div>
+
+
+<!-- Inline Script -->
+<script>
+    const top20Container = document.getElementById("top-20-container");
+    const currentUserContainer = document.getElementById(
+    "current-user-container"
+    );
+    const userRankTitle = document.getElementById("user-rank-title");
+
+    // On page load
+    async function loadLeaderboard() {
+    try {
+        const res = await fetch("/api/leaderboard");
+        if (!res.ok) {
+        throw new Error("Failed to fetch leaderboard");
+        }
+        const data = await res.json();
+        renderTop20(data.top20);
+        renderCurrentUser(data.currentUser);
+    } catch (error) {
+        console.error("Error loading leaderboard:", error);
+    }
+    }
+
+    function renderTop20(users) {
+    top20Container.innerHTML = "";
+
+    // Build a card for each user in the top 20
+    users.forEach((user) => {
+        const cardDiv = document.createElement("div");
+        cardDiv.className =
+        "flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between";
+
+        const leftDiv = document.createElement("div");
+        leftDiv.className = "flex items-center gap-4";
+
+        const iconDiv = document.createElement("div");
+        iconDiv.className =
+        "text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12";
+
+        iconDiv.innerHTML = `
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+        >
+            <path
+            d="M232,64H208V56a16,16,0,0,0-16-16H64A16,16,0,0,0,48,56v8H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-28.49,64.64-63.51,64.9H128a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"
+            ></path>
+        </svg>
+        `;
+
+        const userInfoDiv = document.createElement("div");
+        userInfoDiv.className = "flex flex-col justify-center";
+
+        const userNameP = document.createElement("p");
+        userNameP.className =
+        "text-[#0e1b19] text-base font-medium leading-normal line-clamp-1";
+        userNameP.textContent = user.username;
+
+        const userPointsP = document.createElement("p");
+        userPointsP.className =
+        "text-[#4f968f] text-sm font-normal leading-normal line-clamp-2";
+        userPointsP.textContent = `${user.points} pts`;
+
+        userInfoDiv.appendChild(userNameP);
+        userInfoDiv.appendChild(userPointsP);
+
+        leftDiv.appendChild(iconDiv);
+        leftDiv.appendChild(userInfoDiv);
+
+        const rightDiv = document.createElement("div");
+        rightDiv.className = "shrink-0";
+
+        const rankP = document.createElement("p");
+        rankP.className =
+        "text-[#0e1b19] text-base font-normal leading-normal";
+        rankP.textContent = user.rank;
+
+        rightDiv.appendChild(rankP);
+
+        cardDiv.appendChild(leftDiv);
+        cardDiv.appendChild(rightDiv);
+
+        top20Container.appendChild(cardDiv);
+    });
+    }
+
+    function renderCurrentUser(user) {
+    userRankTitle.textContent = `Your Place: ${user.rank}`;
+
+    currentUserContainer.innerHTML = "";
+
+    const cardDiv = document.createElement("div");
+    cardDiv.className =
+        "flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between";
+
+    // Left side
+    const leftDiv = document.createElement("div");
+    leftDiv.className = "flex items-center gap-4";
+
+    const iconDiv = document.createElement("div");
+    iconDiv.className =
+        "text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12";
+
+    iconDiv.innerHTML = `
         <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24px"
@@ -81,24 +141,42 @@
             d="M230.33,141.06a24.34,24.34,0,0,0-18.61-4.77C230.5,117.33,240,98.48,240,80c0-26.47-21.29-48-47.46-48A47.58,47.58,0,0,0,156,48.75,47.58,47.58,0,0,0,119.46,32C93.29,32,72,53.53,72,80c0,11,3.24,21.69,10.06,33a31.87,31.87,0,0,0-14.75,8.4L44.69,144H16A16,16,0,0,0,0,160v40a16,16,0,0,0,16,16H120a7.93,7.93,0,0,0,1.94-.24l64-16a6.94,6.94,0,0,0,1.19-.4L226,182.82l.44-.2a24.6,24.6,0,0,0,3.93-41.56ZM119.46,48A31.15,31.15,0,0,1,148.6,67a8,8,0,0,0,14.8,0,31.15,31.15,0,0,1,29.14-19C209.59,48,224,62.65,224,80c0,19.51-15.79,41.58-45.66,63.9l-11.09,2.55A28,28,0,0,0,140,112H100.68C92.05,100.36,88,90.12,88,80,88,62.65,102.41,48,119.46,48ZM16,160H40v40H16Zm203.43,8.21-38,16.18L119,200H56V155.31l22.63-22.62A15.86,15.86,0,0,1,89.94,128H140a12,12,0,0,1,0,24H112a8,8,0,0,0,0,16h32a8.32,8.32,0,0,0,1.79-.2l67-15.41.31-.08a8.6,8.6,0,0,1,6.3,15.9Z"
         ></path>
         </svg>
-    </div>
-    <div class="flex flex-col justify-center">
-        <p
-        class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
-        >
-        You
-        </p>
-        <p
-        class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
-        >
-        228 pts
-        </p>
-    </div>
-    </div>
-    <div class="shrink-0">
-    <p class="text-[#0e1b19] text-base font-normal leading-normal">
-        92
-    </p>
-    </div>
-</div>
-<!-- End Leaderboard -->
+    `;
+
+    const userInfoDiv = document.createElement("div");
+    userInfoDiv.className = "flex flex-col justify-center";
+
+    const userNameP = document.createElement("p");
+    userNameP.className =
+        "text-[#0e1b19] text-base font-medium leading-normal line-clamp-1";
+    userNameP.textContent = user.username;
+
+    const userPointsP = document.createElement("p");
+    userPointsP.className =
+        "text-[#4f968f] text-sm font-normal leading-normal line-clamp-2";
+    userPointsP.textContent = `${user.points} pts`;
+
+    userInfoDiv.appendChild(userNameP);
+    userInfoDiv.appendChild(userPointsP);
+
+    leftDiv.appendChild(iconDiv);
+    leftDiv.appendChild(userInfoDiv);
+
+    // Rank
+    const rightDiv = document.createElement("div");
+    rightDiv.className = "shrink-0";
+
+    const rankP = document.createElement("p");
+    rankP.className = "text-[#0e1b19] text-base font-normal leading-normal";
+    rankP.textContent = user.rank;
+
+    rightDiv.appendChild(rankP);
+
+    cardDiv.appendChild(leftDiv);
+    cardDiv.appendChild(rightDiv);
+
+    currentUserContainer.appendChild(cardDiv);
+    }
+
+    loadLeaderboard();
+</script>
