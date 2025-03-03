@@ -13,7 +13,7 @@ The source code for NourishQuest is hosted on GitHub. Follow these steps to obta
 1. **Clone the repository**
    ```sh
    git clone git@github.com:Software-Engineering-II-Project-Group-6/Group-6-Project.git
-   cd NourishQuest
+   cd Group-6-Project/NourishQuest
    ```
 
 2. **Ensure you have Node.js and npm installed**
@@ -32,10 +32,13 @@ The repository is structured as follows:
 
 ```sh
 /Project
+/Project
 │── /NourishQuest            # Contains all source code
 │   │── /models             # Database models for Mongoose
 │   │── /protected          # Protected files and pages
+│   │   │── /components     # React components including NutritionAIChat
 │   │── /public             # Public files and pages
+│   │   │── /dist           # Compiled JavaScript bundles
 │   │── /routes             # Backend API routes
 │   │── /.env               # Environment variables file
 │   │── /.gitignore         # Git ignore file
@@ -43,6 +46,7 @@ The repository is structured as follows:
 │   │── /package.json       # Project dependencies and scripts
 │   │── /server.js          # Main server file
 │   │── /tests              # All test files
+│   │── /webpack.chat.config.js # Webpack config for chat component
 │── /reports               # Weekly reports
 │── /README.md             # Project overview and user manual
 │── /project-proposal.md   # Project proposal document
@@ -59,19 +63,127 @@ To build and run the project locally, follow these steps:
 
 1. **Install required dependencies**
    ```sh
-   npm install dotenv  
-   npm install body-parser  
-   npm install express  
-   npm install bcrypt express-session  
-   npm install mongodb  
-   npm install mongoose 
+   npm install dotenv
+   npm install body-parser
+   npm install express
+   npm install bcrypt express-session
+   npm install mongodb
+   npm install mongoose
+   npm install node-cron
+   npm install ioredis
+   npm install axios
+   npm install react react-dom socket.io-client lucide-react
+   npm install --save-dev webpack webpack-cli @babel/core @babel/preset-env @babel/preset-react babel-loader
    ```
 
-2. **Start the development server**
+2. **Setting Up Redis Server**
+   Redis is used for caching user contexts and storing conversation history.
+   **Linux/WSL Setup**
+   ```sh
+   # Update package lists
+   sudo apt update
+   
+   # Install Redis
+   sudo apt install redis-server
+   
+   # Configure Redis to run on startup
+   sudo systemctl enable redis-server
+   
+   # Start Redis server
+   sudo service redis-server start
+   
+   # Verify Redis is running
+   redis-cli ping
+   # Should return "PONG"
+   ```
+   **Windows Setup**
+   Redis doesn't natively support Windows, so use one of these options:
+   Option A: Redis with WSL2 (Recommended)
+   ```sh
+   # Enable WSL2 (Run in PowerShell as Administrator)
+   wsl --install
+   
+   # After restart, install Ubuntu from Microsoft Store
+   # Open Ubuntu terminal and install Redis:
+   sudo apt update
+   sudo apt install redis-server
+      
+   # Start Redis
+   sudo service redis-server start
+      
+   # Verify Redis is running
+   redis-cli ping
+   # Should return "PONG"
+   ```
+   
+   Option B: Redis using Docker
+   ```sh
+   # Install Docker Desktop first
+   # Then run:
+   docker run --name redis -p 6379:6379 -d redis
+   
+   # Verify Redis is running
+   docker exec -it redis redis-cli ping
+   # Should return "PONG"
+   ```
+   
+   Option C: Redis Labs Free Cloud Service
+   1. Sign up at https://redis.com/try-free/
+   2. Create a free database
+   3. Note your endpoint and password
+   4. Update your .env file with the Redis URL
+
+3. **Setting Up Ollama (Local LLM)**
+   Ollama provides local large language model inference.
+   **Linux Setup**
+   ```sh
+   # Install Ollama
+   curl -fsSL https://ollama.com/install.sh | sh
+   
+   # Start Ollama
+   ollama serve
+   
+   # Pull a smaller model 
+   ollama pull tinyllama
+   you can use a differnet model if you'd like but you'll need to update public/AI_service.js
+   look for const createPromptWithContext = (message, context, history) function and change the ollama model in the return statement.
+   
+   # Verify installation
+   ollama list
+   ```
+   
+   **Windows Setup**
+   ```sh
+   # Download and install Ollama from
+   # https://ollama.com/download/windows
+   
+   # After installation, open Command Prompt and pull a model:
+   ollama pull tinyllama
+   you can use a differnet model if you'd like but you'll need to update public/AI_service.js
+   look for const createPromptWithContext = (message, context, history) function and change the ollama model in the return statement.
+   
+   # Verify installation
+   ollama list
+   ```
+4. **Setting up OpenAI Fallback (Optional)**
+   If Ollama fails, the system can fall back to OpenAI:
+   
+   Create an account at OpenAI Platform
+   Create a new API key
+   Add the key to your .env file:
+   OPENAI_API_KEY="your_api_key_here"
+
+5. **Build AI chat component**
+   ```sh
+   npm run build-chat
+   ```
+   
+6. **Start the development server**
    ```sh
    node server.js
    ```
    The application will be available at `http://localhost:3000/` by default.
+   
 
 ---
 
