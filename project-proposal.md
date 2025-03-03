@@ -46,10 +46,10 @@ The riskiest part is depending on APIs for our products because depending on the
 
 ## Implementations
 ### Major Features to Implement
-1. Account creation with specialized goals
+1. Account and plan creation with specialized goals
 2. Product List and creating a personal nutrition list based on preferences
-3. Filtering system based on allergies
-4. Achievements 
+3. Food filtering system and recipes
+4. Achievements
 
 ### Stretch Goals
 1. Nutrition themed games
@@ -64,9 +64,8 @@ The riskiest part is depending on APIs for our products because depending on the
 3. **Preconditions:** Allergen is included in our list of available allergens, the user already has a registered account and is logged in, the user profile contains necessary baseline data (e.g., age, weight, dietary preferences) 
 4. **Postconditions:** The new customized nutrition plan is successfully created and saved to the user’s account and the user can view and track this plan moving forward.
 5. **List of steps:**
-- The user navigates to the “Nutrition Plans” section and selects “Create New Plan.” 
+- The user navigates to the “My Plan” section and selects “Create New Plan.” 
 - The system prompts the user to input or confirm their dietary goals (weight loss, muscle gain, maintenance, etc.).
-- The user selects dietary preferences (vegetarian, gluten-free, etc.) and sets any allergy restrictions.
 - The system retrieves product information from the external nutrition API and filters them based on the user’s inputs.
 - The user selects preferred products or requests an AI-generated (stretch goal) list of suggestions.
 - The system calculates daily calorie/macro distribution and displays a proposed plan.
@@ -159,26 +158,6 @@ The riskiest part is depending on APIs for our products because depending on the
 - **Insufficient User Data:** If user profile data (e.g., weight, dietary preferences) is incomplete, the system prompts the user to fill in missing information before proceeding.
 - **Insufficient Options:** If the user profile is set in such a way that the system cannot find recipes that would match the plan. Alert user an allow user to potentially quarry Ai (strech goal)
 
-### Use Case 6 (by Alina)
-1. **Actors:** User who is tired of regular apps that focus on strict structures and lack the flexibility to adapt to individual needs and preferences.
-2. **Triggers:** The user has created a Personal Planner and is now looking for the integration of Achievements & Quests.
-3. **Preconditions:** The user has a valid account and has entered all necessary information and successfully completed their Personal Planner setup.
-4. **Postconditions:** A personalized list of Achievements & Quests for the week is successfully completed and displayed to the user.
-5. **List of steps (success scenario):** 
-- The user completes their Personal Planner. 
-- Information from the Personal Planner is processed, and the data is passed along for the creation of Achievements & Quests. 
-- Achievements & Quests for each day of the upcoming week are created, taking the user’s goals, dietary requirements, and calorie/water tracking into account.
-- A list of Achievements & Quests for the week is displayed to the user to motivate them and provide a fun structure for their week.
-- For each day, the user successfully completes challenges, followed by rewards and interactive goal tracking in the app.
-- Once the week has passed and all challenges are completed, the user receives a summary of their achievements, including an in-depth description of how these contributed to their goals. 
-6. **Extensions/Variations:** 
-- The user can edit their goals or preferences within the Personal Planner, which leads to corresponding updates in the Achievements & Quests for the week.
-- The user’s progress over the week may vary, meaning they might not complete all the proposed activities and challenges. 
-7. **Exceptions:** 
-- **Personal Planner failure:** The Personal Planner is not developed successfully or fails to consider certain preferences, allergies, or goals of the user, leading to a misleading Achievements & Quests plan.
-- **Server issues:** Server failure prevents the user from proceeding with their weekly plan for Achievements & Quests.
-- **Visualization & data set issues:** If visualization, summarization, or information retrieval features fail, the user does not receive a high-quality, complete summary report of the Achievements & Quests for the week.
-
 ## Non-Functional Requirements
 - Due to the nutritional, health-related nature of our product, we should comply with HIPAA, using the resources and tools provided by the Department of Health and Human Services [here](https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/index.html) 
 - This website is intended to be public-facing, and have profiles which store user data, so the tools used must be scalable and provide ample security 
@@ -199,17 +178,17 @@ Node.js, MongoDB, HTML, JavaScript
 - **Gracie:** back-end development, server creation, tester, github management
   - Our product will require a webserver with significant back-end logic and functionality, and as per our External Requirements will need a repository of our source code with instructions and other organizational development artifacts
   - With her experience with creating webservers, doing bug testing, and working with github, she is fully capable of filling these roles 
-- **Yigit:** Back-end development, Database Creator and Handler, Tester, Mongoose Schema Designer
+- **Yigit:** Front-end Development, Back-end development, Database Creator and Handler, Tester, Mongoose Schema Designer
   - Our product will use MondoDB as its database for everything, users, products etc. I will be responsible for back-end development as well as mongoose schema design for easier use of MondoDB via NodeJS.
   - Have experience in Discord bot programming with databases. It will not be any different for web applications so I am confident I can fulfill these roles  
 - **Liam:** Front-end Development, Tester
   - Our product requires a user interface (UI) that is visually appealing, user-friendly, and integrates seamlessly with the back end. I will be tasked with ensuring the application delivers a functional and engaging experience for users.
   - With experience in HTML, JavaScript, and UI/UX design, Liam is well-suited for this role. They will address any potential weaknesses identified during testing to ensure the application is robust and easy to use.
-- **Benjamin:** Front-end Development, Tester 
+- **Benjamin:** Tester 
   - Our project requires that we create a seamless and sleek UI that will allow people who use out product to do so very easily as there are many barriers to eating and living in a healthy way it is a core value for our project to need as little work on their end as possible. Therefore UI/UX is very important.
   - With experience in HTML, CSS and JavaScript Benjamin is positioned to emphasize their skills in perfecting the UI.
   - Testing is also a barrier to the project being completed so many group members are planning to test section of the project created by other teams.
-- **Henry James** Back-end Developer, AI Integration, tester
+- **Henry James** Back-end Developer, AI Integration, Tester
   - Our product will requiure effortless navigation and exploration of all the features we offer. Each feature must be implemented flawlessly to ensure every user has a convinient and engaging experience. Through the use of well structured implementation and rigorous unit tests I will ensure all features including front-end UI features, achievements, food loading, and potentially AI API calls will work flawlessly
   - With my experience with Node.js, Javascript, and AI chatbot implementations I am confident I can fulfill my role.
 ### Schedule
