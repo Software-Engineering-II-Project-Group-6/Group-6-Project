@@ -45,34 +45,35 @@
 <div class="px-4 py-3 flex flex-wrap gap-4">
     <button
     class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
-    data-filter="all"
+    data-filter=""
     >
     All
     </button>
     <button
     class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
-    data-filter="vegetarian"
+    data-filter="-meat -foodCategory:(beef poultry pork)"
     >
     Vegetarian
     </button>
     <button
     class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
-    data-filter="vegan"
+    data-filter="-(meat milk eggs cheese dairy) -foodCategory:(dairy beef poultry pork)"
     >
     Vegan
     </button>
     <button
     class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
-    data-filter="glutenfree"
+    data-filter="-(bread gluten wheat) -foodCategory:(bread gluten wheat)"
     >
     Gluten Free
     </button>
-    <button
+    {{!-- LOW CARB BUTTON REMOVED UNTIL BACK END FILTER IMPLEMENTED --}}
+    {{!-- <button
     class="bg-[#e8f3f2] text-[#0e1b19] px-3 py-1 rounded-lg font-medium"
     data-filter="lowcarb"
     >
     Low Carb
-    </button>
+    </button> --}}
 </div>
 
 <h3
@@ -124,7 +125,7 @@
     // Filter buttons
     filterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-        const query = searchInput.value.trim() || "chicken";
+        const query = `${searchInput.value.trim()} ${btn.dataset.filter}` || "chicken";
         const pageSize = pageSizeSelect.value;
         const filterValue = btn.getAttribute("data-filter");
         fetchFoods(query, filterValue, pageSize);
