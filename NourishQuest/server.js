@@ -288,8 +288,6 @@ app.get("/api/foods", requireLogin, async (req, res) => {
         .json({ error: `USDA request failed: ${response.status}` });
     }
     const data = await response.json();
-    console.log(data)
-    console.log(url)
     const foods = data.foods || [];
     const mapped = foods.map((f) => {
       let protein = 0,
