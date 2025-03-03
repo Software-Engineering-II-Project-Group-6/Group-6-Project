@@ -11,36 +11,26 @@ This user manual can also be read in an easily-navigatable form on our [Wiki](ht
 The website will be hosted on a server in the future. For now, users who want to try the application must run it on their local machine. To check out the website and create an account, follow these steps:
 
 ### 1. Prerequisites
-
 Ensure you have **Node.js** installed on your local machine. If not, download and install it from [Node.js official website](https://nodejs.org/).
 
 ### 2. Cloning the Repository
-
 - Fork and clone the repository from GitHub.
 - Open a terminal and navigate to the project directory.
 
 ### 3. Installing Dependencies
-
-Run the following commands to install the necessary dependencies:
+Run the following command to install the necessary dependencies via the included package file:
 
 ```sh
-npm install dotenv
-npm install body-parser
-npm install express
-npm install bcrypt express-session
-npm install mongodb
-npm install mongoose
-npm install node-cron
+npm i
 ```
 
 These dependencies are essential for the website to function correctly. Missing any of them will prevent the application from running.
 
 ### 4. Running the Server
-
 Start the server by executing:
 
 ```sh
-node server.js
+npm run start
 ```
 
 The default port is set to **3000**, so the terminal will provide a local address (e.g., `http://localhost:3000/`) where the website can be accessed.
