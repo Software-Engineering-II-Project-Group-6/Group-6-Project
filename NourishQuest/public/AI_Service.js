@@ -106,7 +106,7 @@ For meal plans, suggest options that meet their calorie and macro targets.`;
   // Format the output differently based on model type
   return {
     ollama: {
-      model: "llama2",
+      model: "tinyllama",
       prompt: `${systemPrompt}\n\n${historyText}\nUser: ${message}\nAssistant:`,
       stream: false
     },
