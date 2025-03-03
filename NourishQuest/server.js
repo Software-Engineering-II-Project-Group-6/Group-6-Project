@@ -8,6 +8,9 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const cron = require("node-cron");
+const http = require('http');
+const { setupWebSocket } = require('./public/Socket_Service');
+const Redis = require('ioredis');
 
 const User = require("./models/User");
 
@@ -89,6 +92,9 @@ app.get("/register", (req, res) => {
 app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
 });
+
+const aiRoutes = require('./routes/AI_Routes.js');
+app.use('/api/ai', aiRoutes);
 
 // ===========================================
 // UNIVERSAL ROUTE FOR .HTML FILES IN archived/protected
@@ -727,10 +733,14 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
-let server;
+const server = http.createServer(app);
+
+setupWebSocket(server);
+
 if (process.env.NODE_ENV !== "test") {
   server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`WebSocket server running on ws://localhost:${PORT}`);
   });
 }
 
