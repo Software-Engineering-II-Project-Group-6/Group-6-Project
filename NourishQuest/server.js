@@ -280,7 +280,7 @@ app.get("/api/foods", requireLogin, async (req, res) => {
     const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
     const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
       searchTerm
-    )}&pageSize=10&api_key=${apiKey}`;
+    )}&dataType=${encodeURIComponent("Foundation")}&pageSize=10&api_key=${apiKey}`;
     const response = await fetch(url);
     if (!response.ok) {
       return res
