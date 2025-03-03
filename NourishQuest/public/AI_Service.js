@@ -106,7 +106,7 @@ For meal plans, suggest options that meet their calorie and macro targets.`;
   // Format the output differently based on model type
   return {
     ollama: {
-      model: "llama2",
+      model: "tinyllama",
       prompt: `${systemPrompt}\n\n${historyText}\nUser: ${message}\nAssistant:`,
       stream: false
     },
@@ -129,8 +129,6 @@ For meal plans, suggest options that meet their calorie and macro targets.`;
 // Query Ollama model (self-hosted LLaMA)
 const queryOllama = async (promptData) => {
   try {
-    console.log('Sending request to Ollama:', OLLAMA_ENDPOINT);
-    console.log('Prompt data:', JSON.stringify(promptData).substring(0, 200) + '...');
     
     const response = await axios.post(OLLAMA_ENDPOINT, promptData);
     console.log('Ollama response received');
