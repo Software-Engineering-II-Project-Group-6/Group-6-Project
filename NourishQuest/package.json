@@ -19,8 +19,9 @@
     "express-handlebars": "^8.0.1",
     "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
-    "mongodb": "^6.12.0",
-    "mongoose": "^8.9.5"
+    "mongodb": "^6.13.1",
+    "mongoose": "^8.10.1",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "jest": "^29.7.0",

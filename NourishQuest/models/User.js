@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -11,7 +12,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  // Hashed password (bcrypt, etc.)
+
+  // Hashed password
   password: {
     type: String,
     required: true,
@@ -67,7 +69,7 @@ const userSchema = new mongoose.Schema({
 
   dailyWaterIntake: {
     type: Number,
-    default: 2000, //in ml
+    default: 64,
   },
 
   // Points from achievements
@@ -79,7 +81,9 @@ const userSchema = new mongoose.Schema({
   // List of achievements unlocked
   achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
 
-  // Cart
+  // ---------------------------
+  // CART
+  // ---------------------------
   cart: {
     monday: {
       breakfast: {
@@ -286,213 +290,361 @@ const userSchema = new mongoose.Schema({
     },
   },
 
-  // Weekly Meal Plan
+  // ---------------------------
+  // WEEKLY MEAL PLAN (arrays)
+  // ---------------------------
   weeklyMealPlan: {
     monday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
           calorie: { type: Number, default: 0 },
           protein: { type: Number, default: 0 },
           carb: { type: Number, default: 0 },
           fat: { type: Number, default: 0 },
         },
+      ],
+    },
+    tuesday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+    wednesday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+    thursday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+    friday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+    saturday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+    sunday: {
+      breakfast: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      lunch: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+      dinner: [
+        {
+          name: { type: String, default: "" },
+          calorie: { type: Number, default: 0 },
+          protein: { type: Number, default: 0 },
+          carb: { type: Number, default: 0 },
+          fat: { type: Number, default: 0 },
+        },
+      ],
+    },
+  },
+
+  // ---------------------------
+  // DAILY CONSUMPTION
+  // ---------------------------
+  dailyConsumption: {
+    monday: {
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String }, // "8:00 AM"
+          ounces: { type: Number }, // e.g. 8 or 16
+        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     tuesday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     wednesday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     thursday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     friday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     saturday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
     sunday: {
-      breakfast: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
+      calories: { type: Number, default: 0 },
+      protein: { type: Number, default: 0 },
+      carbs: { type: Number, default: 0 },
+      fat: { type: Number, default: 0 },
+      water: { type: Number, default: 0 },
+      dayFinished: { type: Boolean, default: false },
+      waterLogs: [
+        {
+          time: { type: String },
+          ounces: { type: Number },
         },
-      },
-      lunch: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
-      },
-      dinner: {
-        name: { type: String, default: "" },
-        nutrition: {
-          calorie: { type: Number, default: 0 },
-          protein: { type: Number, default: 0 },
-          carb: { type: Number, default: 0 },
-          fat: { type: Number, default: 0 },
-        },
+      ],
+      mealStatus: {
+        breakfast: { type: String, default: "notcompleted" },
+        lunch: { type: String, default: "notcompleted" },
+        dinner: { type: String, default: "notcompleted" },
       },
     },
   },
 
+  // Streak
+  streak: {
+    type: Number,
+    default: 0,
+  },
+
+  // Potential recipes array
   recipes: [
     {
       title: { type: String, required: true },

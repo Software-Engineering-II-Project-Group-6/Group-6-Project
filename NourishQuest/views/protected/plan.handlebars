@@ -1,0 +1,451 @@
+
+<div class="flex flex-wrap justify-between gap-3 p-4">
+    <div class="flex min-w-72 flex-col gap-3">
+    <p
+        class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
+    >
+        My Plan
+    </p>
+    <p
+        id="planDate"
+        class="text-[#4f968f] text-sm font-normal leading-normal"
+    >
+        Print date here
+    </p>
+    </div>
+</div>
+
+<!-- Days Navigation -->
+<div class="pb-3">
+    <div class="flex border-b border-[#d0e6e4] px-4 gap-8">
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="monday"
+        href="#"
+    >
+        Mon
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="tuesday"
+        href="#"
+    >
+        Tue
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="wednesday"
+        href="#"
+    >
+        Wed
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="thursday"
+        href="#"
+    >
+        Thu
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="friday"
+        href="#"
+    >
+        Fri
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="saturday"
+        href="#"
+    >
+        Sat
+    </a>
+    <a
+        class="js-day-link flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#4f968f] pb-3.25 pt-4"
+        data-day="sunday"
+        href="#"
+    >
+        Sun
+    </a>
+    </div>
+</div>
+
+<h3
+    class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4"
+>
+    Your menu today
+</h3>
+
+<!-- No Plan Message -->
+<p id="noPlanMsg" class="px-4 py-2 text-red-500"></p>
+
+<!-- Breakfast -->
+<div
+    class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+>
+    <div
+    class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+    style="
+        background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+    "
+    ></div>
+    <div class="flex flex-col justify-center">
+    <p
+        id="breakfastTitle"
+        class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+    >
+        Breakfast
+    </p>
+    <p
+        id="breakfastDesc"
+        class="text-[#4f968f] text-sm font-normal leading-normal"
+    >
+        Print menu here
+    </p>
+    </div>
+</div>
+
+<!-- Lunch -->
+<div
+    class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+>
+    <div
+    class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+    style="
+        background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+    "
+    ></div>
+    <div class="flex flex-col justify-center">
+    <p
+        id="lunchTitle"
+        class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+    >
+        Lunch
+    </p>
+    <p
+        id="lunchDesc"
+        class="text-[#4f968f] text-sm font-normal leading-normal"
+    >
+        Print menu here
+    </p>
+    </div>
+</div>
+
+<!-- Dinner -->
+<div
+    class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2"
+>
+    <div
+    class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+    style="
+        background-image: url('https://cdn-icons-png.flaticon.com/512/10366/10366416.png');
+    "
+    ></div>
+    <div class="flex flex-col justify-center">
+    <p
+        id="dinnerTitle"
+        class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+    >
+        Dinner
+    </p>
+    <p
+        id="dinnerDesc"
+        class="text-[#4f968f] text-sm font-normal leading-normal"
+    >
+        Print menu here
+    </p>
+    </div>
+</div>
+
+<!-- Progress Bars: Calories, Protein, Carbs, Fat, Water -->
+<div class="flex flex-col gap-3 p-4">
+    <div class="flex gap-6 justify-between">
+    <p class="text-[#0e1b19] text-base font-medium leading-normal">
+        Calories
+    </p>
+    <p
+        id="calories-consumed"
+        class="text-[#0e1b19] text-sm font-normal leading-normal"
+    >
+        0/0
+    </p>
+    </div>
+    <div class="rounded bg-[#d0e6e4]">
+    <div
+        id="calories-bar"
+        class="h-2 rounded bg-[#1ce3cf]"
+        style="width: 0%"
+    ></div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-3 p-4">
+    <div class="flex gap-6 justify-between">
+    <p class="text-[#0e1b19] text-base font-medium leading-normal">
+        Protein
+    </p>
+    <p
+        id="protein-consumed"
+        class="text-[#0e1b19] text-sm font-normal leading-normal"
+    >
+        0/0
+    </p>
+    </div>
+    <div class="rounded bg-[#d0e6e4]">
+    <div
+        id="protein-bar"
+        class="h-2 rounded bg-[#1ce3cf]"
+        style="width: 0%"
+    ></div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-3 p-4">
+    <div class="flex gap-6 justify-between">
+    <p class="text-[#0e1b19] text-base font-medium leading-normal">
+        Carbohydrates
+    </p>
+    <p
+        id="carbohydrates-consumed"
+        class="text-[#0e1b19] text-sm font-normal leading-normal"
+    >
+        0/0
+    </p>
+    </div>
+    <div class="rounded bg-[#d0e6e4]">
+    <div
+        id="carbohydrates-bar"
+        class="h-2 rounded bg-[#1ce3cf]"
+        style="width: 0%"
+    ></div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-3 p-4">
+    <div class="flex gap-6 justify-between">
+    <p class="text-[#0e1b19] text-base font-medium leading-normal">
+        Fat
+    </p>
+    <p
+        id="fat-consumed"
+        class="text-[#0e1b19] text-sm font-normal leading-normal"
+    >
+        0/0
+    </p>
+    </div>
+    <div class="rounded bg-[#d0e6e4]">
+    <div
+        id="fat-bar"
+        class="h-2 rounded bg-[#1ce3cf]"
+        style="width: 0%"
+    ></div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-3 p-4">
+    <div class="flex gap-6 justify-between">
+    <p class="text-[#0e1b19] text-base font-medium leading-normal">
+        Water
+    </p>
+    <p
+        id="water-consumed"
+        class="text-[#0e1b19] text-sm font-normal leading-normal"
+    >
+        0/0
+    </p>
+    </div>
+    <div class="rounded bg-[#d0e6e4]">
+    <div
+        id="water-bar"
+        class="h-2 rounded bg-[#1ce3cf]"
+        style="width: 0%"
+    ></div>
+    </div>
+</div>
+
+<div class="flex px-4 py-3">
+    <div class="flex px-4 py-3 gap-3">
+    <!-- Reset the Plan -->
+    <button
+        onclick="resetPlan()"
+        class="flex items-center justify-center rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold leading-normal whitespace-nowrap"
+    >
+        Reset the Plan
+    </button>
+
+    <!-- Create a New Plan -->
+    <button
+        onclick="window.location.href='/createplan';"
+        class="flex items-center justify-center rounded-full h-10 px-4 bg-[#1ce3cf] text-[#0e1b19] text-sm font-bold leading-normal whitespace-nowrap"
+    >
+        Create a New Plan
+    </button>
+    </div>
+</div>
+
+
+<!-- Script to fetch user data and plan data -->
+<script>
+    (async () => {
+    try {
+        const response = await fetch("/api/current-user");
+        if (!response.ok) {
+        console.warn("Could not fetch user data. Status:", response.status);
+        return;
+        }
+        const userData = await response.json();
+    } catch (err) {
+        console.error("Error fetching current user:", err);
+    }
+    })();
+
+    let activeDayLink;
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const dateElem = document.getElementById("planDate");
+    const now = new Date();
+    dateElem.textContent = now.toDateString();
+
+    const dayNames = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+    ];
+    const todayIndex = new Date().getDay();
+    const todayName = dayNames[todayIndex];
+
+    const dayLinks = document.querySelectorAll(".js-day-link");
+    let found = false;
+
+    dayLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const day = link.getAttribute("data-day");
+        fetchPlan(day);
+        setDayActive(link);
+        });
+
+        if (link.getAttribute("data-day") === todayName) {
+        found = link;
+        }
+    });
+
+    if (found) {
+        fetchPlan(todayName);
+        setDayActive(found);
+    }
+    });
+
+    async function fetchPlan(dayName) {
+    try {
+        const resp = await fetch(`/api/plan?day=${dayName}`);
+        if (!resp.ok) {
+        console.warn("Plan fetch failed:", resp.status);
+        return;
+        }
+        const data = await resp.json();
+        renderPlan(data, dayName);
+    } catch (err) {
+        console.error("Error fetching plan:", err);
+    }
+    }
+
+    function renderPlan(data, dayName) {
+    const {
+        hasMealPlan,
+        mealPlan,
+        hasCart,
+        cart,
+        consumption,
+        dailyCalorieGoal,
+        macros,
+        dailyWaterIntake,
+    } = data;
+
+    let breakfastNames = "No breakfast yet";
+    let lunchNames = "No lunch yet";
+    let dinnerNames = "No dinner yet";
+
+    if (mealPlan && mealPlan.breakfast && mealPlan.breakfast.length > 0) {
+        breakfastNames = mealPlan.breakfast.map((i) => i.name).join(", ");
+    }
+    if (mealPlan && mealPlan.lunch && mealPlan.lunch.length > 0) {
+        lunchNames = mealPlan.lunch.map((i) => i.name).join(", ");
+    }
+    if (mealPlan && mealPlan.dinner && mealPlan.dinner.length > 0) {
+        dinnerNames = mealPlan.dinner.map((i) => i.name).join(", ");
+    }
+
+    document.getElementById("breakfastDesc").textContent = breakfastNames;
+    document.getElementById("lunchDesc").textContent = lunchNames;
+    document.getElementById("dinnerDesc").textContent = dinnerNames;
+
+    if (!hasMealPlan && !hasCart) {
+        document.getElementById("noPlanMsg").textContent =
+        "No plan or cart for " + dayName;
+    } else {
+        document.getElementById("noPlanMsg").textContent = "";
+    }
+
+    const calConsumed = consumption.calories || 0;
+    const protConsumed = consumption.protein || 0;
+    const carbConsumed = consumption.carbs || 0;
+    const fatConsumed = consumption.fat || 0;
+    const waterConsumed = consumption.water || 0;
+
+    updateProgress("calories", calConsumed, dailyCalorieGoal || 2000);
+    updateProgress("protein", protConsumed, macros?.protein || 50);
+    updateProgress("carbohydrates", carbConsumed, macros?.carbs || 300);
+    updateProgress("fat", fatConsumed, macros?.fat || 70);
+    updateProgress("water", waterConsumed, dailyWaterIntake || 2000);
+    }
+
+    function updateProgress(key, consumed, goal) {
+    const consumedLabel = document.getElementById(`${key}-consumed`);
+    const bar = document.getElementById(`${key}-bar`);
+    if (!consumedLabel || !bar) return;
+    consumedLabel.textContent = `${consumed}/${goal}`;
+    let percent = goal > 0 ? (consumed / goal) * 100 : 0;
+    if (percent > 100) percent = 100;
+    bar.style.width = percent + "%";
+    }
+
+    function setDayActive(link) {
+    if (activeDayLink) {
+        activeDayLink.classList.remove(
+        "border-b-[#1ce3cf]",
+        "text-[#0e1b19]"
+        );
+        activeDayLink.classList.add("border-b-transparent", "text-[#4f968f]");
+    }
+    activeDayLink = link;
+    link.classList.remove("border-b-transparent", "text-[#4f968f]");
+    link.classList.add("border-b-[#1ce3cf]", "text-[#0e1b19]");
+    }
+
+    async function resetPlan() {
+    const proceed = confirm(
+        "Are you sure you want to reset your plan? This action cannot be undone."
+    );
+    if (!proceed) return;
+
+    try {
+        const resp = await fetch("/api/resetplan", {
+        method: "POST",
+        });
+        if (!resp.ok) {
+        alert("Unable to reset plan. Server responded with " + resp.status);
+        return;
+        }
+        alert("Plan has been reset!");
+        location.reload();
+    } catch (error) {
+        console.error("Error resetting plan:", error);
+        alert("Error resetting plan. Check console for details.");
+    }
+    }
+</script>

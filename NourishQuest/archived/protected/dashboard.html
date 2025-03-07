@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Epilogue:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
+    />
+    <title>NourishQuest - Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body
+    class="bg-[#f8fbfb]"
+    style="font-family: 'Epilogue', 'Noto Sans', sans-serif"
+  >
+    <div
+      class="relative flex size-full min-h-screen flex-col bg-[#f8fbfb] overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <!-- Upper Right Menu -->
+        <header
+          class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e8f3f2] px-10 py-3"
+        >
+          <div class="flex items-center gap-4 text-[#0e1b19]">
+            <h2
+              class="text-[#0e1b19] text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+              <a href="/" class="text-[#0e1b19]">NourishQuest</a>
+            </h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-4">
+              <a class="text-[#0e1b19] text-sm font-medium" href="/profile"
+                >My Profile</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/plan"
+                >My Plan</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/foods"
+                >Foods</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/leaderboard"
+                >Leaderboards</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/achievements"
+                >Achievements</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/dashboard"
+                >Dashboard</a
+              >
+              <a class="text-[#0e1b19] text-sm font-medium" href="/recipes"
+                >Recipes</a
+              >
+            </div>
+            <!-- Log Out -->
+            <form action="/logout" method="POST">
+              <button
+                type="submit"
+                class="rounded-full h-10 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-bold"
+              >
+                Log Out
+              </button>
+            </form>
+
+            <div
+              class="w-10 h-10 bg-center bg-no-repeat bg-cover rounded-full"
+              style="
+                background-image: url('https://www.refugee-action.org.uk/wp-content/uploads/2016/10/anonymous-user.png');
+              "
+            ></div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+          <div
+            class="layout-content-container flex flex-col max-w-[960px] flex-1"
+          >
+            <!-- Greeting -->
+            <div class="flex flex-wrap justify-between gap-3 p-4">
+              <div class="flex min-w-72 flex-col gap-3">
+                <p
+                  id="greeting"
+                  class="text-[#0e1b19] tracking-light text-[32px] font-bold leading-tight"
+                >
+                  Hello!
+                </p>
+                <p class="text-[#4f968f] text-sm font-normal leading-normal">
+                  Have a very healthy day!
+                </p>
+              </div>
+            </div>
+
+            <!-- Meal: Breakfast -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Breakfast
+            </h2>
+            <div
+              id="breakfastRow"
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
+            >
+              <div class="flex items-center gap-4">
+                <!-- Status Icon & Label -->
+                <div
+                  id="breakfastIcon"
+                  class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+                >
+                  ?
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="breakfastLabel"
+                    class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                  >
+                    Loading...
+                  </p>
+                  <p
+                    id="breakfastMenu"
+                    class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                  >
+                    ...
+                  </p>
+                </div>
+              </div>
+              <div>
+                <button
+                  id="breakfastLogBtn"
+                  class="hidden bg-[#e8f3f2] text-[#0e1b19] rounded-full px-3 py-1 text-sm font-medium"
+                >
+                  Log / Complete
+                </button>
+              </div>
+            </div>
+
+            <!-- Meal: Lunch -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Lunch
+            </h2>
+            <div
+              id="lunchRow"
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  id="lunchIcon"
+                  class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+                >
+                  ?
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="lunchLabel"
+                    class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                  >
+                    Loading...
+                  </p>
+                  <p
+                    id="lunchMenu"
+                    class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                  >
+                    ...
+                  </p>
+                </div>
+              </div>
+              <div>
+                <button
+                  id="lunchLogBtn"
+                  class="hidden bg-[#e8f3f2] text-[#0e1b19] rounded-full px-3 py-1 text-sm font-medium"
+                >
+                  Log / Complete
+                </button>
+              </div>
+            </div>
+
+            <!-- Meal: Dinner -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Dinner
+            </h2>
+            <div
+              id="dinnerRow"
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-[72px] py-2 justify-between"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  id="dinnerIcon"
+                  class="text-[#0e1b19] flex items-center justify-center rounded-lg bg-[#e8f3f2] shrink-0 size-12"
+                >
+                  ?
+                </div>
+                <div class="flex flex-col justify-center">
+                  <p
+                    id="dinnerLabel"
+                    class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1"
+                  >
+                    Loading...
+                  </p>
+                  <p
+                    id="dinnerMenu"
+                    class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2"
+                  >
+                    ...
+                  </p>
+                </div>
+              </div>
+              <div>
+                <button
+                  id="dinnerLogBtn"
+                  class="hidden bg-[#e8f3f2] text-[#0e1b19] rounded-full px-3 py-1 text-sm font-medium"
+                >
+                  Log / Complete
+                </button>
+              </div>
+            </div>
+
+            <!-- Hydration -->
+            <h2
+              class="text-[#0e1b19] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5"
+            >
+              Hydration
+            </h2>
+            <!-- Log water row: 1 glass, 1 bottle -->
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-14 justify-between"
+            >
+              <p
+                class="text-[#0e1b19] text-base font-normal leading-normal flex-1 truncate"
+              >
+                1 glass of water (8 fl oz)
+              </p>
+              <div class="shrink-0">
+                <button
+                  class="flex items-center justify-center rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal"
+                  onclick="logWater(8)"
+                >
+                  Log
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-4 bg-[#f8fbfb] px-4 min-h-14 justify-between"
+            >
+              <p
+                class="text-[#0e1b19] text-base font-normal leading-normal flex-1 truncate"
+              >
+                1 bottle of water (16 fl oz)
+              </p>
+              <div class="shrink-0">
+                <button
+                  class="flex items-center justify-center rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal"
+                  onclick="logWater(16)"
+                >
+                  Log
+                </button>
+              </div>
+            </div>
+
+            <!-- Water Progress Bar -->
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex gap-6 justify-between">
+                <p class="text-[#0e1b19] text-base font-medium leading-normal">
+                  Daily Water Progress
+                </p>
+                <p
+                  id="waterProgressLabel"
+                  class="text-[#4f968f] text-sm font-normal leading-normal"
+                >
+                  <!-- 24 / 64 fl oz -->
+                </p>
+              </div>
+              <div class="rounded bg-[#d0e6e4]">
+                <div
+                  id="waterProgressBar"
+                  class="h-2 rounded bg-[#1ce3cf]"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Hydration Log Timeline -->
+            <div
+              id="waterLogTimeline"
+              class="grid grid-cols-[40px_1fr] gap-x-2 px-4"
+            ></div>
+
+            <!-- Finish for Today Button -->
+            <div class="flex px-4 py-3 justify-end">
+              <button
+                id="finishDayBtn"
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center ..."
+                onclick="finishDay()"
+              >
+                <span class="truncate">Finish for today</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const dayNames = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+      ];
+      const currentDayIndex = new Date().getDay();
+      const currentDayName = dayNames[currentDayIndex];
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const userResp = await fetch("/api/current-user");
+          if (!userResp.ok) {
+            console.warn("Could not fetch user data. Status:", userResp.status);
+            return;
+          }
+          const user = await userResp.json();
+
+          const greetingEl = document.getElementById("greeting");
+          if (greetingEl && user.username) {
+            greetingEl.textContent = `Hello, ${user.username}!`;
+          }
+
+          const todayIndex = new Date().getDay();
+          const todayName = dayNames[todayIndex];
+
+          const dashResp = await fetch(`/api/dashboard?day=${todayName}`);
+          if (!dashResp.ok) {
+            console.warn("Dashboard fetch failed:", dashResp.status);
+            return;
+          }
+          const dashData = await dashResp.json();
+          renderDashboard(dashData);
+        } catch (err) {
+          console.error("Error loading dashboard:", err);
+        }
+      });
+
+      function renderDashboard(data) {
+        const { dayPlan, dailyConsumption, dailyWaterGoal } = data;
+
+        // existing meal + water UI calls
+        renderMealRow(
+          "breakfast",
+          dayPlan?.breakfast,
+          dailyConsumption?.mealStatus?.breakfast
+        );
+        renderMealRow(
+          "lunch",
+          dayPlan?.lunch,
+          dailyConsumption?.mealStatus?.lunch
+        );
+        renderMealRow(
+          "dinner",
+          dayPlan?.dinner,
+          dailyConsumption?.mealStatus?.dinner
+        );
+        updateWaterBar(dailyConsumption?.water || 0, dailyWaterGoal || 64);
+        renderWaterTimeline(dailyConsumption?.waterLogs || []);
+
+        // If day is finished, hide finish button
+        if (dailyConsumption.dayFinished) {
+          const finishBtn = document.getElementById("finishDayBtn");
+          if (finishBtn) {
+            finishBtn.style.display = "none";
+          }
+        }
+      }
+
+      function renderMealRow(meal, planItems, status) {
+        const labelEl = document.getElementById(meal + "Label");
+        const menuEl = document.getElementById(meal + "Menu");
+        const iconEl = document.getElementById(meal + "Icon");
+        const logBtn = document.getElementById(meal + "LogBtn");
+
+        if (!planItems || planItems.length === 0) {
+          labelEl.textContent = "No Plan";
+          menuEl.textContent = "";
+          iconEl.textContent = "X";
+          iconEl.classList.remove("bg-[#e8f3f2]");
+          iconEl.classList.add("bg-red-300");
+          logBtn.classList.add("hidden");
+          return;
+        }
+
+        const mealNames = planItems.map((item) => item.name).join(", ");
+        labelEl.textContent =
+          status === "completed" ? "Completed" : "Not completed";
+        menuEl.textContent = mealNames;
+
+        if (status === "completed") {
+          iconEl.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              fill="currentColor" viewBox="0 0 256 256">
+              <path
+                d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,
+                0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,
+                11.32,11.32Z">
+              </path>
+            </svg>
+          `;
+          iconEl.classList.remove("bg-[#e8f3f2]");
+          iconEl.classList.add("bg-green-300");
+          logBtn.classList.add("hidden");
+        } else {
+          iconEl.textContent = "?";
+          iconEl.classList.remove("bg-green-300");
+          iconEl.classList.add("bg-[#e8f3f2]");
+          logBtn.classList.remove("hidden");
+          logBtn.onclick = () => {
+            completeMeal(meal);
+          };
+        }
+      }
+
+      async function completeMeal(meal) {
+        try {
+          const resp = await fetch(`/api/log-meal`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ meal }),
+          });
+          if (!resp.ok) {
+            alert("Error logging meal. " + resp.status);
+            return;
+          }
+          location.reload();
+        } catch (err) {
+          console.error("Error logging meal:", err);
+          alert("Error logging meal. See console.");
+        }
+      }
+
+      function updateWaterBar(consumed, goal) {
+        const percent = Math.min(100, (consumed / goal) * 100).toFixed(1);
+        const bar = document.getElementById("waterProgressBar");
+        const label = document.getElementById("waterProgressLabel");
+        bar.style.width = percent + "%";
+        label.textContent = `${consumed} / ${goal} fl oz`;
+      }
+
+      async function logWater(oz) {
+        try {
+          const resp = await fetch("/api/log-water", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ounces: oz }),
+          });
+          if (!resp.ok) {
+            alert("Error logging water. " + resp.status);
+            return;
+          }
+          location.reload();
+        } catch (err) {
+          console.error("Error logging water:", err);
+          alert("Error logging water, check console");
+        }
+      }
+
+      function renderWaterTimeline(logs) {
+        const container = document.getElementById("waterLogTimeline");
+        container.innerHTML = "";
+
+        if (!logs || logs.length === 0) {
+          container.innerHTML = `<p class="text-[#4f968f] text-sm px-4 py-2">No water logs yet</p>`;
+          return;
+        }
+
+        logs.forEach((entry, idx) => {
+          const { time, ounces } = entry;
+
+          const col1 = document.createElement("div");
+          col1.className = "flex flex-col items-center gap-1";
+          if (idx === 0) {
+            col1.classList.add("pt-3");
+          }
+          if (idx < logs.length - 1) {
+            col1.innerHTML = `
+              <div>${bottleIcon()}</div>
+              <div class="w-[1.5px] bg-[#d0e6e4] h-2 grow"></div>
+            `;
+          } else {
+            col1.innerHTML = `
+              <div>${bottleIcon()}</div>
+            `;
+          }
+
+          const col2 = document.createElement("div");
+          col2.className = "flex flex-col py-3";
+          col2.innerHTML = `
+            <p class="text-[#0e1b19] text-base font-medium leading-normal">${time}</p>
+            <p class="text-[#4f968f] text-base font-normal leading-normal">${ounces} fl oz</p>
+          `;
+
+          container.appendChild(col1);
+          container.appendChild(col2);
+        });
+      }
+
+      function bottleIcon() {
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               fill="currentColor" viewBox="0 0 256 256">
+            <path
+              d="M245.66,42.34l-32-32a8,8,0,0,0-11.32,11.32l1.48,
+              1.47L148.65,64.51l-38.22,7.65a8.05,8.05,0,0,
+              0-4.09,2.18L23,157.66a24,24,0,0,0,0,33.94L64.4,
+              233a24,24,0,0,0,33.94,0l83.32-83.31a8,8,0,0,
+              0,2.18-4.09l7.65-38.22,41.38-55.17,1.47,1.48a8,
+              8,0,0,0,11.32-11.32Z"
+            ></path>
+          </svg>
+        `;
+      }
+
+      async function finishDay() {
+        try {
+          const resp = await fetch("/api/finish-day", {
+            method: "POST",
+          });
+          if (!resp.ok) {
+            alert("Error finishing day: " + resp.status);
+            return;
+          }
+          // on success => hide the button
+          alert("Day finished! Great job!");
+          const finishBtn = document.getElementById("finishDayBtn");
+          if (finishBtn) finishBtn.style.display = "none";
+        } catch (err) {
+          console.error("Error finishing day:", err);
+          alert("Error finishing day, check console.");
+        }
+      }
+    </script>
+  </body>
+</html>

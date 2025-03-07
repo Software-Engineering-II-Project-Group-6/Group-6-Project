@@ -105,7 +105,7 @@
               </label>
             </div>
 
-            <!-- Search Options Row -->
+            <!-- Search + Page Size Row -->
             <div class="px-4 py-3 flex items-center gap-4">
               <button
                 id="searchButton"
@@ -181,10 +181,10 @@
     </div>
 
     <script>
-      let debounceTimer; // for debouncing
+      let debounceTimer;
 
       window.addEventListener("DOMContentLoaded", () => {
-        // Our default fetch: "chicken"
+        // Default
         fetchFoods("chicken", "all", 10);
 
         const searchBtn = document.getElementById("searchButton");
@@ -199,17 +199,17 @@
             const query = searchInput.value.trim() || "chicken";
             const pageSize = pageSizeSelect.value;
             fetchFoods(query, "all", pageSize);
-          }, 1000); // 1 second after user stops typing
+          }, 800);
         });
 
-        // On Search button click
+        // Search button click
         searchBtn.addEventListener("click", () => {
           const query = searchInput.value.trim() || "chicken";
           const pageSize = pageSizeSelect.value;
           fetchFoods(query, "all", pageSize);
         });
 
-        // On Filter button click
+        // Filter buttons
         filterButtons.forEach((btn) => {
           btn.addEventListener("click", () => {
             const query = searchInput.value.trim() || "chicken";
@@ -221,7 +221,7 @@
       });
 
       async function fetchFoods(searchTerm, filter, pageSize) {
-        showError(""); // clear old errors
+        showError("");
         showLoading(true);
 
         try {
@@ -235,9 +235,9 @@
           const resp = await fetch(url);
           if (!resp.ok) {
             if (resp.status === 429) {
-              showError("Rate limit exceeded. Please wait a bit.");
+              showError("Rate limit exceeded. Please wait.");
             } else if (resp.status === 502) {
-              showError("Open Food Facts might be overloaded. Try later.");
+              showError("API might be overloaded. Try later.");
             } else {
               showError("Could not fetch. Status: " + resp.status);
             }
@@ -248,7 +248,7 @@
           renderFoods(foods);
         } catch (err) {
           console.error("Error fetching /api/foods:", err);
-          showError("Network error or DNS issue. Try again later.");
+          showError("Network error or DNS issue. Please try again later.");
         } finally {
           showLoading(false);
         }
@@ -275,7 +275,7 @@
                 style="background-image: url('${food.imageUrl}');"
               ></div>
               <div class="flex flex-col justify-center">
-                <p class="text-[#0e1b19] text-base font-medium leading-normal line-clamp-1">
+                <p class="text-[#0e1b19] text-base font-medium line-clamp-1">
                   ${food.name}
                 </p>
                 <p class="text-[#4f968f] text-sm font-normal leading-normal line-clamp-2">
@@ -283,15 +283,7 @@
                 </p>
               </div>
             </div>
-            <div class="shrink-0">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center rounded-full h-8 px-4 bg-[#e8f3f2] text-[#0e1b19] text-sm font-medium leading-normal"
-              >
-                <span class="truncate">Add to your plan</span>
-              </button>
-            </div>
           `;
-
           container.appendChild(itemDiv);
         });
       }
