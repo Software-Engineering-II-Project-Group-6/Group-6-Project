@@ -652,6 +652,12 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  chatMessages: [{
+    role: { type: String, enum: ['user', 'assistant', 'system'] },
+    content: String,
+    timestamp: { type: Date, default: Date.now }
+  }],
+
   createdAt: {
     type: Date,
     default: Date.now,
