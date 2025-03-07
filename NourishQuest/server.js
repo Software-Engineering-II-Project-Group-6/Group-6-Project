@@ -9,8 +9,6 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const cron = require("node-cron");
 const http = require('http');
-const { setupWebSocket } = require('./public/Socket_Service');
-const Redis = require('ioredis');
 
 const User = require("./models/User");
 
@@ -18,6 +16,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGO_URI);
+console.log('OpenAI API Key:', process.env.OPENAI_API_KEY ? 'Loaded' : 'MISSING');
+
+
 const dbConnection = mongoose.connection;
 dbConnection.once("open", () => {
   console.log("Connected to MongoDB successfully!");
@@ -65,6 +66,7 @@ class contextBlock {
     this.pageTitle = title;
     if (req.session?.userId) {
       this.layout = "protected";
+      this.userId = req.session.userId;
     }
   }
   rawify() {
@@ -91,6 +93,25 @@ app.get("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.status(200).render("login", new contextBlock(req, "Login"));
+});
+
+app.get("/nutrition-assistant", requireLogin, async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      return res.redirect("/login");
+    }
+    
+    const context = new contextBlock(req, "Nutrition Assistant");
+    context.userId = userId; 
+    
+    return res.render("nutrition-assistant", context);
+  } catch (err) {
+    console.error("Error loading nutrition assistant:", err);
+    res.status(500).send("Internal server error");
+  }
 });
 
 const aiRoutes = require('./routes/AI_Routes.js');
@@ -733,15 +754,13 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
-const server = http.createServer(app);
-
-setupWebSocket(server);
+let server;
 
 if (process.env.NODE_ENV !== "test") {
   server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`WebSocket server running on ws://localhost:${PORT}`);
   });
 }
+
 
 module.exports = { app, server, dbConnection };
