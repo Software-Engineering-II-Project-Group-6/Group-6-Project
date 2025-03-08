@@ -1,0 +1,68 @@
+<div id="chat-icon" class="fixed bottom-5 right-5 z-50">
+  <button id="toggle-chat" class="bg-[#1ce3cf] text-[#0e1b19] rounded-full h-14 w-14 flex items-center justify-center shadow-lg hover:bg-[#19d3c1]">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+      <path d="M180,232H63.86a28,28,0,0,1-26.13-17.93l-32.1-83.71a28,28,0,0,1,14.85-34.64L174.77,30.89a28,28,0,0,1,38.42,35.6L176.07,192A28,28,0,0,1,180,232ZM170.11,41.27,15.94,106.05a16,16,0,0,0-8.49,19.79L39.56,209.6A16,16,0,0,0,63.86,220H180a16,16,0,0,0,16-16,15.85,15.85,0,0,0-2.24-8.11L193,67.82a16,16,0,0,0-22.87-26.55ZM99.51,125.05a8,8,0,0,1,1.6,11.18l-24,30a8,8,0,0,1-12.45-10l.07-.08,24-30A8,8,0,0,1,99.51,125.05Zm32-25.58a8,8,0,0,1,1.6,11.18l-48,60a8,8,0,0,1-12.45-10l.07-.08,48-60A8,8,0,0,1,131.51,99.47Z"></path>
+    </svg>
+  </button>
+</div>
+
+<div id="chat-container" class="fixed bottom-5 right-5 z-50 bg-white rounded-xl shadow-md w-80 h-96 flex flex-col hidden">
+  <!-- Chat interface content similar to your nutrition-assistant.handlebars -->
+  <div class="flex justify-between items-center p-3 border-b border-[#d0e6e4] bg-[#f8fbfb]">
+    <h3 class="text-[#0e1b19] font-bold">Nutrition Assistant</h3>
+    <button id="close-chat" class="text-[#4f968f]">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+      </svg>
+    </button>
+  </div>
+  
+  <div id="messages-container" class="flex-1 overflow-y-auto p-3 space-y-3">
+    <div class="chat-message system">
+      <div class="message-content">How can I help with your nutrition today?</div>
+    </div>
+  </div>
+  
+  <div class="border-t border-[#d0e6e4] p-3 bg-[#f8fbfb]">
+    <div class="flex gap-2">
+      <input id="message-input" type="text" placeholder="Ask me anything..." class="flex-1 rounded-xl border border-[#d0e6e4] bg-white h-10 px-3 text-sm">
+      <button id="send-button" class="flex items-center justify-center rounded-full h-10 w-10 bg-[#1ce3cf] text-[#0e1b19]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256">
+          <path d="M227.32,28.68a16,16,0,0,0-15.66-4.08h-.15L19.57,82.84a16,16,0,0,0-2.42,29.84l85.62,40.55,40.55,85.62A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94.05-.15A16,16,0,0,0,227.32,28.68Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Add userId as a global variable
+window.currentUserId = "{{userId}}";
+</script>
+
+<style>
+  .chat-message {
+    margin-bottom: 8px;
+  }
+  
+  .message-content {
+    background-color: #f8fbfb;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  
+  .chat-message.user .message-content {
+    background-color: #e8f3f2;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  
+  .chat-message.assistant .message-content {
+    background-color: #def7f5;
+  }
+  
+  .chat-message.system .message-content {
+    background-color: #fff3cd;
+  }
+</style>

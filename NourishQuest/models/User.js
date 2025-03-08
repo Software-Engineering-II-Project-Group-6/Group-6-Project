@@ -81,6 +81,11 @@ const userSchema = new mongoose.Schema({
   // List of achievements unlocked
   achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }],
 
+  claimedAchievements: {
+    type: [String],
+    default: [],
+  },
+
   // ---------------------------
   // CART
   // ---------------------------
@@ -649,6 +654,14 @@ const userSchema = new mongoose.Schema({
     {
       title: { type: String, required: true },
       description: { type: String, required: true },
+    },
+  ],
+
+  chatMessages: [
+    {
+      role: { type: String, enum: ["user", "assistant", "system"] },
+      content: String,
+      timestamp: { type: Date, default: Date.now },
     },
   ],
 
