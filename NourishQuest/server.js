@@ -4,7 +4,7 @@ const exhandle = require("express-handlebars");
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const cron = require("node-cron");
@@ -33,11 +33,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "some-secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
+  cookieSession({
+    name: 'session',
+    secret: process.env.SESSION_SECRET,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+    httpOnly: true
   })
 );
 
