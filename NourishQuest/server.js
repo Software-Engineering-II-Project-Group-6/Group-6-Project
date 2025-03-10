@@ -100,6 +100,9 @@ const ACHIEVEMENTS = {
   // Liam will add more...
 };
 
+// Handlebars view directory path
+app.set('views', path.join(__dirname, 'NourishQuest', 'views'));
+
 // Handlebars engine
 app.engine(
   "handlebars",
