@@ -852,12 +852,16 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
-let server;
+// let server;
 
-if (process.env.NODE_ENV !== "test" && !server) {
-  server = app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
+// if (process.env.NODE_ENV !== "test") {
+//   server = app.listen(PORT, () => {
+//     console.log(`Server running on http://localhost:${PORT}`);
+//   });
+// }
 
-module.exports = server;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
+module.exports = app;
