@@ -642,11 +642,10 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) console.error("Session destruction error:", err);
-    res.clearCookie("connect.sid");
-    return res.redirect("/login");
-  });
+  res.status(200).clearCookie('session');
+  req.session = null;
+  res.status(200).send("Logged out");
+  return res.redirect("/login");
 });
 
 // ===========================================
