@@ -644,8 +644,7 @@ app.post("/login", async (req, res) => {
 app.post("/logout", (req, res) => {
   res.status(200).clearCookie('session');
   req.session = null;
-  res.status(200).send("Logged out");
-  return res.redirect("/login");
+  res.redirect("/login");
 });
 
 // ===========================================
