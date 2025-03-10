@@ -854,7 +854,7 @@ cron.schedule("0 0 * * *", async () => {
 
 let server;
 
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && !server) {
   server = app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
