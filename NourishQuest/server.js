@@ -42,7 +42,7 @@ app.use(
 );
 
 // Static files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "NourishQuest", "public")));
 
 // Simple login guard
 function requireLogin(req, res, next) {
@@ -54,7 +54,7 @@ function requireLogin(req, res, next) {
 
 app.get("/achievements", requireLogin, (req, res) => {
   res.sendFile(
-    path.join(__dirname, "archived", "protected", "achievements.html")
+    path.join(__dirname, "NourishQuest", "archived", "protected", "achievements.html")
   );
 });
 
@@ -177,6 +177,7 @@ app.get("/:protectedPage", requireLogin, (req, res, next) => {
   // Path to archived/protected/<pageName>.html
   const filePath = path.join(
     __dirname,
+    "NourishQuest",
     "views",
     "protected",
     `${pageName}.handlebars`
