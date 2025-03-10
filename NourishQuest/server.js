@@ -4,11 +4,11 @@ const exhandle = require("express-handlebars");
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const cron = require("node-cron");
-const http = require('http');
+const http = require("http");
 
 const User = require("./models/User");
 
@@ -16,8 +16,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGO_URI);
-console.log('OpenAI API Key:', process.env.OPENAI_API_KEY ? 'Loaded' : 'MISSING');
-
+console.log(
+  "OpenAI API Key:",
+  process.env.OPENAI_API_KEY ? "Loaded" : "MISSING"
+);
 
 const dbConnection = mongoose.connection;
 dbConnection.once("open", () => {
@@ -31,11 +33,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "some-secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
+  cookieSession({
+    name: 'session',
+    secret: process.env.SESSION_SECRET,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+    httpOnly: true
   })
 );
 
@@ -49,6 +52,57 @@ function requireLogin(req, res, next) {
   }
   next();
 }
+
+app.get("/achievements", requireLogin, (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "archived", "protected", "achievements.html")
+  );
+});
+
+const ACHIEVEMENT_POINTS = {
+  "67ca5a5b055f471527a03e73": 100,
+  "67ca5a5b055f471527a03e74": 100,
+  "67ca5a5b055f471527a03e75": 100,
+  "67ca5a5b055f471527a03e76": 50,
+  "67ca5a5b055f471527a03e79": 400,
+  "67ca5a5b055f471527a03e7a": 350,
+  "67ca5a5b055f471527a03e7b": 400,
+  "67ca5a5b055f471527a03e7c": 800,
+  "67ca5a5b055f471527a03e7d": 1200,
+  "67ca5a5b055f471527a03e7e": 50,
+  "67ca5a5b055f471527a03e7f": 2000,
+  "67ca5a5b055f471527a03e80": 2500,
+  "67ca5a5b055f471527a03e81": 2500,
+  "67ca5a5b055f471527a03e82": 500,
+};
+
+const ACHIEVEMENTS = {
+  "67ca5a5b055f471527a03e73": {
+    points: 100,
+    check: (user) => {
+      // Suppose user must have consumed at least 80% of dailyCalorieGoal
+      const day = getTodayName();
+      const dayData = user.dailyConsumption?.[day] || {};
+      if (!dayData.calories || !user.dailyCalorieGoal) return false;
+      return dayData.calories >= user.dailyCalorieGoal * 0.8;
+    },
+  },
+
+  "67ca5a5b055f471527a03e76": {
+    points: 50,
+    check: (user) => {
+      // 8 glasses water => 64 oz
+      const day = getTodayName();
+      const dayData = user.dailyConsumption?.[day] || {};
+      return (dayData.water || 0) >= 64;
+    },
+  },
+
+  // Liam will add more...
+};
+
+// Handlebars view directory path
+app.set('views', path.join(__dirname, 'views'));
 
 // Handlebars engine
 app.engine(
@@ -99,14 +153,14 @@ app.get("/nutrition-assistant", requireLogin, async (req, res) => {
   try {
     const userId = req.session.userId;
     const user = await User.findById(userId);
-    
+
     if (!user) {
       return res.redirect("/login");
     }
-    
+
     const context = new contextBlock(req, "Nutrition Assistant");
-    context.userId = userId; 
-    
+    context.userId = userId;
+
     return res.render("nutrition-assistant", context);
   } catch (err) {
     console.error("Error loading nutrition assistant:", err);
@@ -114,8 +168,8 @@ app.get("/nutrition-assistant", requireLogin, async (req, res) => {
   }
 });
 
-const aiRoutes = require('./routes/AI_Routes.js');
-app.use('/api/ai', aiRoutes);
+const aiRoutes = require("./routes/AI_Routes.js");
+app.use("/api/ai", aiRoutes);
 
 // ===========================================
 // UNIVERSAL ROUTE FOR .HTML FILES IN archived/protected
@@ -135,7 +189,12 @@ app.get("/:protectedPage", requireLogin, (req, res, next) => {
   // Check if the file exists
   if (fs.existsSync(filePath)) {
     // Serve that HTML
-    return res.status(200).render(path.join("protected",pageName), new contextBlock(req, pageName));
+    return res
+      .status(200)
+      .render(
+        path.join("protected", pageName),
+        new contextBlock(req, pageName)
+      );
   } else {
     // Otherwise, continue to next route or 404
     return next();
@@ -307,7 +366,9 @@ app.get("/api/foods", requireLogin, async (req, res) => {
     const apiKey = "iczhr8o07TEMJ4NmmWZ7B5cPelqIp7mFUCtnvhg4";
     const url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(
       searchTerm
-    )}&dataType=${encodeURIComponent("Foundation")}&pageSize=10&api_key=${apiKey}`;
+    )}&dataType=${encodeURIComponent(
+      "Foundation"
+    )}&pageSize=10&api_key=${apiKey}`;
     const response = await fetch(url);
     if (!response.ok) {
       return res
@@ -496,6 +557,47 @@ app.post("/api/change-password", requireLogin, async (req, res) => {
   }
 });
 
+app.post("/api/achievements/claim", requireLogin, async (req, res) => {
+  try {
+    const { achievementId } = req.body;
+    if (!achievementId) {
+      return res.status(400).json({ error: "No achievementId provided" });
+    }
+
+    const achievementObj = ACHIEVEMENTS[achievementId];
+    if (!achievementObj) {
+      return res.status(400).json({ error: "Invalid achievement ID" });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Already claimed?
+    if (user.claimedAchievements.includes(achievementId)) {
+      return res.status(400).json({ error: "Achievement already claimed" });
+    }
+
+    // Check if user meets criteria
+    if (!achievementObj.check(user)) {
+      return res.status(400).json({
+        error: "Criteria not met for this achievement",
+      });
+    }
+
+    // Award points
+    user.points += achievementObj.points;
+    user.claimedAchievements.push(achievementId);
+    await user.save();
+
+    res.json({ success: true, newPoints: user.points });
+  } catch (err) {
+    console.error("Error in /api/achievements/claim:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // ===========================================
 // Registration/Login
 // ===========================================
@@ -540,11 +642,9 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) console.error("Session destruction error:", err);
-    res.clearCookie("connect.sid");
-    return res.redirect("/login");
-  });
+  res.status(200).clearCookie('session');
+  req.session = null;
+  res.redirect("/login");
 });
 
 // ===========================================
@@ -754,13 +854,16 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
-let server;
+// let server;
 
-if (process.env.NODE_ENV !== "test") {
-  server = app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}
+// if (process.env.NODE_ENV !== "test") {
+//   server = app.listen(PORT, () => {
+//     console.log(`Server running on http://localhost:${PORT}`);
+//   });
+// }
 
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
 
-module.exports = { app, server, dbConnection };
+module.exports = app;
