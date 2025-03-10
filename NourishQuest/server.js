@@ -867,3 +867,5 @@ app.listen(PORT, () => {
 });
 
 module.exports = {app, dbConnection};
+
+export default app;
