@@ -1,4 +1,9 @@
 # Group 6 Project Proposal
+## LIVE WEBSITE LINKS
+We have two links, as our code has some nebulous issues that became present on each platform we attempted to deploy to, so as a result we deployed on both, so in total all features should be testable between the two instances of the site:
+- [Vercel](https://nourish-quest-demo.vercel.app/)
+- [OSU Classwork Server](http://classwork.engr.oregonstate.edu:3042/)
+
 ## Team Members and Roles
 **Yigit Onuk** (Back-End Development, Database Handler, Tester) 
 
