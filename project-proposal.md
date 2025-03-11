@@ -5,7 +5,7 @@ We have two links, as our code has some nebulous issues that became present on e
 - [OSU Classwork Server](http://classwork.engr.oregonstate.edu:3042/)
 
 ## Team Members and Roles
-**Yigit Onuk** (Back-End Development, Database Handler, Tester) 
+**Yigit Onuk** (Front-End Main Development, Back-End Development, Database Handler, Tester) 
 
 **Liam McAfee** (Front-End Development, Tester) 
 
@@ -13,8 +13,17 @@ We have two links, as our code has some nebulous issues that became present on e
 
 **Henry James** (Back-End Development, Tester, AI)
 
-**Benjamin Junge** (Front-End Development, Tester)
+**Benjamin Junge**
 
+## Reflections
+
+**Yigit Onuk:** Working on NourishQuest felt rewarding and demanding at the same times.  Along the way, we ran across a few API problems that pushed us to investigate other options and learned the value of adaptable designs.  Although it was challenging at times to combine several languages and technologies into one project, it gave important insight into cross compatibility and integration. Despite the challenges, working with my colleagues turned the experience into a group victory instead of a personal battle. We did it, and I'm glad we did. The knowledge gained will help me approach other tasks I will have in the future, both as a student and a worker.
+
+**Liam McAfee**
+
+**Gracie Armour**
+
+**Henry James**
 
 ## Rules and Communication
 1. **Respect:** Treat teammates courteously; value diverse perspectives and encourage open dialogue.
