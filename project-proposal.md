@@ -72,105 +72,110 @@ The riskiest part is depending on APIs for our products because depending on the
 4. Calorie/water tracker 
 
 ## Use Cases (Functional Requirements)
+## Use Cases (Functional Requirements)
+
 ### Use Case 1 (by Yigit)
-1. **Actors:** User who wants to see foods they aren’t allergic to, the web application that processes user inputs and provides the final nutrition plan
-2. **Triggers**: The user logs in and clicks the “Create New Plan” button 
-3. **Preconditions:** Allergen is included in our list of available allergens, the user already has a registered account and is logged in, the user profile contains necessary baseline data (e.g., age, weight, dietary preferences) 
-4. **Postconditions:** The new customized nutrition plan is successfully created and saved to the user’s account and the user can view and track this plan moving forward.
-5. **List of steps:**
-- The user navigates to the “My Plan” section and selects “Create New Plan.” 
-- The system prompts the user to input or confirm their dietary goals (weight loss, muscle gain, maintenance, etc.).
-- The system retrieves product information from the external nutrition API and filters them based on the user’s inputs.
-- The user selects preferred products or requests an AI-generated (stretch goal) list of suggestions.
-- The system calculates daily calorie/macro distribution and displays a proposed plan.
-- The user confirms the plan (optionally modifies or swaps products).
-- The system saves the new plan to the user’s account and displays a success message. 
-6. **Extensions/Variations:**
-- **Variation:** Upon creating a plan for the first time, the user unlocks a “Nutrition Novice” achievement.
-7. **Exceptions:**
-- **API Failure:** The external nutrition API is down or returns errors; the system notifies the user and offers limited product options or a retry.
-- **Insufficient User Data:** If user profile data (e.g., weight, dietary preferences) is incomplete, the system prompts the user to fill in missing information before proceeding.
-- **Server Error:** If the system is temporarily unavailable, the user receives an error message and can try again later.
+
+1. **Actors:** A logged-in user who wants to create or update a nutrition plan and incorporate recipes.
+2. **Triggers:** The user navigates to the “My Plan” page and selects “Create New Plan.”
+3. **Preconditions:**  
+   - The user must have a valid account and be logged in.  
+   - Necessary baseline data (e.g., age, weight, dietary preferences) must be present in the user’s profile.  
+4. **Postconditions:**  
+   - A new or updated nutrition plan is successfully created and stored in the database.  
+   - The user can add recipes to this plan for each meal, and any custom recipes are saved to the user’s account.  
+5. **List of steps:**  
+   - The user clicks “Create New Plan” and is prompted for dietary goals (weight loss, muscle gain, maintenance, etc.).  
+   - The system displays relevant foods and/or recipes, allowing the user to select or search for items.  
+   - The user confirms choices for breakfast, lunch, dinner, or other meals.  
+   - The system calculates calorie/macro distribution based on selections.  
+   - The plan (with or without custom recipes) is saved to the user’s account.  
+6. **Extensions/Variations:**  
+   - **Variation:** If the user wants to edit a specific meal or recipe, they can swap items before finalizing the plan.  
+   - **Variation:** If the user is creating a plan for the first time, they may unlock a “Plan Novice” achievement (depending on Liam’s achievement logic).  
+7. **Exceptions:**  
+   - **Insufficient Profile Data:** The system prompts the user to fill in missing info (like current weight) if needed.  
+   - **Server Error:** If the server fails to save the plan, the user is notified and can retry later.  
+   - **API Failure (Recipe/food lookups):** If an external API is down, the system notifies the user and offers limited offline suggestions.
+
+---
 
 ### Use Case 2 (by Gracie)
-1. **Actors:** User creates a new account on the platform
-2. **Triggers:** User presses the “sign up” button and fills out the form
-3. **Preconditions:** All required fields of the form are not empty, and each field contains valid input (text fields contain text of the required lengths, date fields contain valid dates not in the future, numeric fields contain numbers of the appropriate int vs float type, email field contains a valid email, etc.)
-4. **Postconditions:** New entry added to User Accounts database table with all form field data in the appropriate fields and no database errors.
+
+1. **Actors:** A logged-in user who wants to filter out foods they’re allergic to before seeing them in search results or plan suggestions.
+2. **Triggers:** The user searches for new foods/recipes or generates a plan, and the system automatically applies allergy filters.
+3. **Preconditions:**  
+   - User’s profile must include allergy information (e.g., peanuts, gluten).  
+   - The system’s filtering logic is set up to exclude items containing these allergens.
+4. **Postconditions:**  
+   - Any food lists or recipe searches automatically exclude items flagged with the user’s allergens.  
+   - The user sees only allergen-safe options in plan or recipe results.
 5. **List of steps:**  
-- User clicks the Sign Up button, and is redirected to Sign Up form 
-- User fills out Sign Up form, hits submit 
-- Form input is validated client-side 
-- If valid, form input is sent to server 
-- Form input is validated and formatted server side 
-- Form input is INSERTed into the database by the server 
-- User is logged in to the newly created account
-6. **Extensions/Variations:** 
-- **Extension:** If account email already exists in database during server-side validation, data is not sent to the database and user is not logged in. Instead, user receives a popup notification stating that the email used is already bound to an account, with a link to send a password reset email 
-7. **Exceptions:** 
-- **Server Error:** If the system is temporarily unavailable, the user receives an error message and can try again later.
-- **Database Error:** If the database connection is temporarily unavailable, the user receives an error message and can try again later.
-- **Invalid User Input** (Client-Side): Form field with invalid input has a message appear beside it stating the reason the input is invalid.
-- **Invalid User Input** (Server-Side): The user receives an error message popup, briefly describing the reason the input is invalid.
+   - The user updates their profile to include known allergens.  
+   - When performing a search or auto-generating a plan, the system retrieves the full list of items from the database or an external API.  
+   - The filtering logic checks item ingredients/tags for allergens.  
+   - All matching allergens are removed from the final displayed list.  
+   - The user sees and selects from only safe items.  
+6. **Extensions/Variations:**  
+   - **Extension:** The user can optionally see a warning for borderline items (e.g., “May Contain Traces of Nuts”) but still choose them manually.  
+   - **Extension:** The user could toggle allergy filters on or off if they only have mild intolerances.
+7. **Exceptions:**  
+   - **Incomplete Allergy List:** If the user has not updated their allergy data, the system displays all items by default.  
+   - **API or Database Failure:** If the system fails to retrieve food or ingredient info, the user is notified that results may not be fully accurate.
+
+---
 
 ### Use Case 3 (by Liam)
-1. **Actors:** A registered user who wants to track their progress (streak in this use case).
-2. **Triggers:** User logs in for the day.
-3. **Preconditions:** The user may or may not have an existing streak.
+
+1. **Actors:** A logged-in user who wants to view achievements and see the leaderboard ranks.
+2. **Triggers:** The user opens the “Achievements” or “Leaderboards” page in the UI.
+3. **Preconditions:**  
+   - The user already has at least one logged activity in the system (like logging water, finishing a day).  
+   - The system tracks user points and ranks in the database.
 4. **Postconditions:**  
-- If the user already has a streak, +1 will be added to the current streak when logging on for the first time of the day. 
-- If the user does not have a streak, a new streak will begin with the day’s first login. 
-- The achievement dashboard is updated to reflect the new streak. 
+   - The user’s achievements are displayed (locked vs. unlocked).  
+   - The user’s rank and points are shown on the leaderboards.  
+   - If the user meets the criteria for a new achievement, it is claimable.
 5. **List of steps:**  
-- User logs into the website.
-- The system checks if the user already has a streak
-  - If the user has an ongoing streak, the system increments the streak by +1.
-  - If the user does not have a streak, the system creates a new streak with a value of 1. 
-- The achievement dashboard is updated with the new streak value, and the user 	can now view the updated streak. 
+   - The user navigates to the Achievements page.  
+   - The system queries the database for the user’s completed tasks and points.  
+   - Any achievements that match criteria and are unclaimed become claimable.  
+   - The user may click “Claim” to finalize that achievement and add to total points.  
+   - The user may view the top 20 on the leaderboard or search for their rank.  
 6. **Extensions/Variations:**  
-- **Variation:** If the user misses a day of logging in, the streak will reset to 0. 
+   - **Variation:** If the user has a daily or weekly milestone in progress, achievements might display partial progress bars.  
+   - **Extension:** Once the user claims an achievement, it disappears from the “unlocked” but “unclaimed” list and moves to the “claimed” achievements.  
 7. **Exceptions:**  
-- If there is an issue with the server, the user is notified that their streak could not be updated. The system will attempt to update the streak during the user’s next login. 
+   - **Criteria Not Met:** The user sees an error if they try to claim an achievement they don’t actually qualify for.  
+   - **Server/Database Error:** If the system cannot retrieve or update user points, an error is displayed.
+
+---
 
 ### Use Case 4 (by Henry)
-1. **Actors:** User who wants to easily navigate health and nutrition
-2. **Triggers:** User has made an account and signed in
-3. **Preconditions:** User has a valid account, all input fields have valid inputs, and they have started making a nutritional plan.
-4. **Postconditions:** Users nutritional plan and chats have been saved to the database.
-5. **List of steps:**  
-- User enters a valid account information 
-- User enters in all necessary information such as allergy information 
-- User starts a chat or nutritional plan 
-- User is walked through a health plan or suggestion
-- User saves a chat or plan
-- Information is saved to the database
-- User logs off 
-6. **Extensions/Variations:** 
-- Guide and welcome message is pushed on new users.
-- If necessary information is not inputted a prompt for this information should be displayed 
-7. **Exceptions:** 
-- **API failure:** This project will use a few APIs that could go down.
-- Server can go down or have an issue.
-- The database can have a problem and not save user data.
 
-### Use Case 5 (by Benjamin)
-1. **Actors:** User who wants a recipe that fits their plan
-2. **Triggers:** User clicks the get recipe button
-3. **Preconditions:** User has a valid account, all input fields have valid inputs, and they have finished making a nutritional plan.
-4. **Postconditions:** A recipe is displayed  and a button is made available to the user to migrate the macros from the recipe into the users daily log.
-5. **List of steps:** 
-- User clicks button to get a recipe
-- A quarry is sent to check with the data on the user
-- Built in recipes are examined to match with the plan in question
-- A list of potential meals is displayed with images so user can choose
-- User chooses the recipe they want, and the instructions and ingredients are displayed
-- Options for the recipe to be saved in a saved recipe folder or the nutrients added to the user's daily log are displayed 
-6. **Extensions/Variations:**
-- **Variation:** User may leave site during this process causing interruption 
-7. **Exceptions:**
-- **API Failure:** The external nutrition API is down or returns errors; the system notifies the user and offers limited product options or a retry.
-- **Insufficient User Data:** If user profile data (e.g., weight, dietary preferences) is incomplete, the system prompts the user to fill in missing information before proceeding.
-- **Insufficient Options:** If the user profile is set in such a way that the system cannot find recipes that would match the plan. Alert user an allow user to potentially quarry Ai (strech goal)
+1. **Actors:** A logged-in user who wants AI-driven nutritional advice via a chat interface.
+2. **Triggers:** The user clicks a “Chat with AI” or “Nutrition Chatbot” button from the dashboard or main menu.
+3. **Preconditions:**  
+   - The system has an AI chat endpoint configured (e.g., an API key for GPT-like services).  
+   - The user has a valid account and is logged in.
+4. **Postconditions:**  
+   - The user can send messages about diet or meal questions, and the AI’s responses are displayed.  
+   - The conversation is optionally saved so the user can revisit it later.
+5. **List of steps:**  
+   - The user opens the “AI Chat” interface from the navigation.  
+   - The user types a nutrition-related question or request (e.g., “Suggest a healthy breakfast”).  
+   - The system sends the user’s message to an AI endpoint with relevant context (e.g., user allergies from Gracie’s filter).  
+   - The AI responds with suggestions or advice.  
+   - The user can continue the conversation or exit.  
+   - Optionally, the user saves the chat conversation for future reference.  
+6. **Extensions/Variations:**  
+   - **Extension:** The user can integrate the AI’s suggestions directly into a new or existing nutrition plan (tying back to Yigit’s plan system).  
+   - **Variation:** The system might track user metrics to refine the AI’s suggestions over time.
+7. **Exceptions:**  
+   - **AI Service Down:** If the AI API is offline, the user receives an error message or fallback generic advice.  
+   - **Invalid Input:** If the user’s request is nonsensical or violates usage guidelines, the system warns them or refuses.  
+   - **Server Error:** If the app cannot reach the AI endpoint for any other reason, the user is notified and can retry later.
+
 
 ## Non-Functional Requirements
 - Due to the nutritional, health-related nature of our product, we should comply with HIPAA, using the resources and tools provided by the Department of Health and Human Services [here](https://www.hhs.gov/hipaa/for-professionals/special-topics/health-apps/index.html) 
