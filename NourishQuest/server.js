@@ -200,7 +200,7 @@ const ACHIEVEMENTS = {
   },
 },
 
-"67ca5a5b055f471527a03e82": { // This achievement can be claimed whether you have done it or not -- user honesty -- I claimed it for testing purposes :)
+"67ca5a5b055f471527a03e82": { // Unchecked Achievement -- User honesty
     points: 500,
     check: (user) => {
       return !user.claimedAchievements.includes("67ca5a5b055f471527a03e82"); 
