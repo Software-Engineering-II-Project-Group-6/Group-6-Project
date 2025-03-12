@@ -19,7 +19,7 @@ We have two links, as our code has some nebulous issues that became present on e
 
 **Yigit Onuk:** Working on NourishQuest felt rewarding and demanding at the same times.  Along the way, we ran across a few API problems that pushed us to investigate other options and learned the value of adaptable designs.  Although it was challenging at times to combine several languages and technologies into one project, it gave important insight into cross compatibility and integration. Despite the challenges, working with my colleagues turned the experience into a group victory instead of a personal battle. We did it, and I'm glad we did. The knowledge gained will help me approach other tasks I will have in the future, both as a student and a worker.
 
-**Liam McAfee**
+**Liam McAfee** Working on NourishQuest was both challenging and rewarding. I learned a lot about integrating different features and troubleshooting issues along the way. What made it even more interesting for me was that at the start of this year I started tracking my macros and have been using Stupid Simple Macro Tracker after paying the one-time fee. Seeing how most apps either require a fee or a subscription, it was cool to help build something that’s completely free.
 
 **Gracie Armour**
 
