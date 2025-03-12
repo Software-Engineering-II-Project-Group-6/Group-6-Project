@@ -120,7 +120,6 @@ const ACHIEVEMENTS = {
     },
   },
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  // 🔵 Weekly Achievements
  "67ca5a5b055f471527a03e79": {
   points: 400,
@@ -200,7 +199,14 @@ const ACHIEVEMENTS = {
     return (user.recipes?.length || 0) >= 25;
   },
 },
-///////////////////////////////////////////////
+
+"67ca5a5b055f471527a03e82": { // This achievement can be claimed whether you have done it or not -- user honesty -- I claimed it for testing purposes :)
+    points: 500,
+    check: (user) => {
+      return !user.claimedAchievements.includes("67ca5a5b055f471527a03e82"); 
+    },
+  },
+
 };
 
 // Handlebars view directory path
