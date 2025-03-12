@@ -23,7 +23,7 @@ We have two links, as our code has some nebulous issues that became present on e
 
 **Gracie Armour** Working on NourishQuest was very challenging, primarily due to the similarity of project management duties between it and my actual professional work. I did learn a good deal about automated testing, and some useful terminology, but it was largely just rehashing things I've done for work for years. Getting to create a functional product was cool, and I'm very glad we achieved what we did under the stress and complications this term brought in droves. I'm sure the terminology and standards I learned about will benefit my work greatly moving forward.
 
-**Henry James**
+**Henry James** I had a good experience working on NourishQuest. I was excited to work on the website because its a product that I could use and have fun with. I learned a lot about automated testing and various technologies along the way. I enjoyed collaborating with my peers because it proposed some unique challenges and problems that I don't usually run into with individual or shorter group projects. I'm certain the knowledge I gained in various technologies, testing, and collaboration will further my development and skillset. 
 
 ## Rules and Communication
 1. **Respect:** Treat teammates courteously; value diverse perspectives and encourage open dialogue.
