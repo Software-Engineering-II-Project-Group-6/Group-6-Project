@@ -38,6 +38,11 @@
       >
     </div>
 
+    <!-- Streak Counter -->
+    <div class="flex items-center gap-2">
+      <span id="streakDisplay" class="text-lg font-bold text-[#0e1b19]">🔥 0</span>
+    </div>
+
     <!-- Log Out + Avatar -->
     <div class="flex items-center gap-8">
       <!-- Log Out Button as a POST form -->
@@ -60,3 +65,17 @@
     </div>
   </div>
 </header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch("/api/current-user")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.streak !== undefined) {
+          document.getElementById("streakDisplay").innerText = `🔥 ${data.streak}`;
+        }
+      })
+      .catch((error) => console.error("Error fetching streak:", error));
+  });
+</script>
+  
