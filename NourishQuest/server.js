@@ -80,7 +80,7 @@ const ACHIEVEMENTS = {
   "67ca5a5b055f471527a03e73": {
     points: 100,
     check: (user) => {
-      // Suppose user must have consumed at least 80% of dailyCalorieGoal
+      // User must consume at least 80% of daily calorie goal
       const day = getTodayName();
       const dayData = user.dailyConsumption?.[day] || {};
       if (!dayData.calories || !user.dailyCalorieGoal) return false;
@@ -91,14 +91,122 @@ const ACHIEVEMENTS = {
   "67ca5a5b055f471527a03e76": {
     points: 50,
     check: (user) => {
-      // 8 glasses water => 64 oz
+      // User must drink at least 8 glasses of water (64 oz)
       const day = getTodayName();
       const dayData = user.dailyConsumption?.[day] || {};
       return (dayData.water || 0) >= 64;
     },
   },
 
-  // Liam will add more...
+  "67ca5a5b055f471527a03e74": {
+    points: 100,
+    check: (user) => {
+      // User must consume at least 80% of daily protein goal
+      const day = getTodayName();
+      const dayData = user.dailyConsumption?.[day] || {};
+      if (!dayData.protein || !user.macros?.protein) return false;
+      return dayData.protein >= user.macros.protein * 0.8;
+    },
+  },
+
+  "67ca5a5b055f471527a03e75": {
+    points: 100,
+    check: (user) => {
+      // User must consume at least 80% of daily fat goal
+      const day = getTodayName();
+      const dayData = user.dailyConsumption?.[day] || {};
+      if (!dayData.fat || !user.macros?.fat) return false;
+      return dayData.fat >= user.macros.fat * 0.8;
+    },
+  },
+
+ // 🔵 Weekly Achievements
+ "67ca5a5b055f471527a03e79": {
+  points: 400,
+  check: (user) => {
+    // Must drink 64oz of water for 7 consecutive days
+    const days = Object.keys(user.dailyConsumption || {});
+    return days.every((day) => (user.dailyConsumption[day]?.water || 0) >= 64);
+  },
+},
+
+"67ca5a5b055f471527a03e7a": {
+  points: 350,
+  check: (user) => {
+    // Must have at least 3 recipes saved
+    return (user.recipes?.length || 0) >= 3;
+  },
+},
+
+"67ca5a5b055f471527a03e7b": {
+  points: 400,
+  check: (user) => {
+    // Must have logged food every day for the past 7 days
+    const days = Object.keys(user.dailyConsumption || {});
+    return days.every((day) => (user.dailyConsumption[day]?.calories || 0) > 0);
+  },
+},
+
+// 🔵 Monthly Achievements
+"67ca5a5b055f471527a03e7c": {
+  points: 800,
+  check: (user) => {
+    // Must drink 64oz of water for 30 consecutive days
+    const days = Object.keys(user.dailyConsumption || {});
+    return days.length >= 30 && days.every((day) => (user.dailyConsumption[day]?.water || 0) >= 64);
+  },
+},
+
+"67ca5a5b055f471527a03e7d": {
+  points: 1200,
+  check: (user) => {
+    // Must log food for 30 consecutive days
+    const days = Object.keys(user.dailyConsumption || {});
+    return days.length >= 30 && days.every((day) => (user.dailyConsumption[day]?.calories || 0) > 0);
+  },
+},
+
+// 🔵 Milestone Achievements
+"67ca5a5b055f471527a03e7e": {
+  points: 50,
+  check: (user) => {
+    // Must have logged at least one meal
+    return Object.values(user.dailyConsumption || {}).some((dayData) => (dayData.calories || 0) > 0);
+  },
+},
+
+"67ca5a5b055f471527a03e7f": {
+  points: 2000,
+  check: (user) => {
+    // Must have logged food for at least 100 days
+    return Object.keys(user.dailyConsumption || {}).length >= 100;
+  },
+},
+
+"67ca5a5b055f471527a03e80": {
+  points: 2500,
+  check: (user) => {
+    // Must have consumed 1,000 glasses of water in total
+    const totalWater = Object.values(user.dailyConsumption || {}).reduce((sum, dayData) => sum + (dayData.water || 0), 0);
+    return totalWater >= 1000;
+  },
+},
+
+"67ca5a5b055f471527a03e81": {
+  points: 2500,
+  check: (user) => {
+    // Must have tried at least 25 different recipes
+    return (user.recipes?.length || 0) >= 25;
+  },
+},
+
+"67ca5a5b055f471527a03e82": { // This achievement can be claimed whether you have done it or not -- user honesty -- I claimed it for testing purposes :)
+    points: 500,
+    check: (user) => {
+      return !user.claimedAchievements.includes("67ca5a5b055f471527a03e82"); 
+    },
+  },
+
 };
 
 // Handlebars view directory path
