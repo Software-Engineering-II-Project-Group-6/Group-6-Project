@@ -18,6 +18,18 @@ Run the following command to install the necessary dependencies via the included
 npm i
 ```
 
+Bonus: Here is a list of all the dependencies, listed separately for user information:
+
+```sh
+npm install dotenv
+npm install body-parser
+npm install express
+npm install bcrypt express-session
+npm install mongodb
+npm install mongoose
+npm install node-cron
+```
+
 These dependencies are essential for the website to function correctly. Missing any of them will prevent the application from running.
 
 ### 4. Running the Server
