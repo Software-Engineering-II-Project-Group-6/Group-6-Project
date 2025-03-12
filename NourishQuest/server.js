@@ -219,6 +219,7 @@ app.get("/api/current-user", requireLogin, async (req, res) => {
       gender: user.gender,
       dailyCalorieGoal: user.dailyCalorieGoal,
       macros: user.macros,
+      streak: user.streak,
     });
   } catch (error) {
     console.error("Error in /api/current-user:", error);
@@ -631,8 +632,40 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(400).send("Invalid email or password");
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).send("Invalid email or password");
+
+    // Get today's date (YYYY-MM-DD format)
+    const today = new Date().toISOString().split("T")[0];
+
+    // If last login was yesterday, increase streak
+    const lastLoginDate = user.lastLoginDate || null;
+
+    if (lastLoginDate) {
+      const lastDate = new Date(lastLoginDate).toISOString().split("T")[0];
+
+      // If last login was exactly yesterday, increment streak
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+      if (lastDate === yesterdayStr) {
+        user.streak += 1;
+      } 
+      // If last login was NOT yesterday (meaning they missed a day), reset streak
+      else if (lastDate !== today) {
+        user.streak = 0;
+      }
+    } else {
+      // First login, start streak at 1
+      user.streak = 1;
+    }
+
+    // Update last login date
+    user.lastLoginDate = today;
+
+    await user.save();
     req.session.userId = user._id;
     return res.redirect("/dashboard");
   } catch (err) {
@@ -640,6 +673,7 @@ app.post("/login", async (req, res) => {
     return res.status(500).send("Internal server error");
   }
 });
+
 
 app.post("/logout", (req, res) => {
   res.status(200).clearCookie('session');
