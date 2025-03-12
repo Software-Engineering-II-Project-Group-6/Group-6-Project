@@ -21,7 +21,7 @@ We have two links, as our code has some nebulous issues that became present on e
 
 **Liam McAfee** Working on NourishQuest was both challenging and rewarding. I learned a lot about integrating different features and troubleshooting issues along the way. What made it even more interesting for me was that this year I started tracking my macros and have been using Stupid Simple Macro Tracker after paying the one-time fee. Seeing how most apps either require a fee or a subscription, it was cool to help build something that’s completely free and not just trying to take your money.
 
-**Gracie Armour**
+**Gracie Armour** Working on NourishQuest was very challenging, primarily due to the similarity of project management duties between it and my actual professional work. I did learn a good deal about automated testing, and some useful terminology, but it was largely just rehashing things I've done for work for years. Getting to create a functional product was cool, and I'm very glad we achieved what we did under the stress and complications this term brought in droves. I'm sure the terminology and standards I learned about will benefit my work greatly moving forward.
 
 **Henry James**
 
